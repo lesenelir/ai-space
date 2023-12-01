@@ -5,7 +5,16 @@ import { authMiddleware } from "@clerk/nextjs"
 // Please edit this to allow other routes to be public as needed.
 // See https://clerk.com/docs/references/nextjs/auth-middleware for more information about configuring your Middleware.
 export default authMiddleware({
-  publicRoutes: ['/']
+  publicRoutes: ['/'],
+  async afterAuth(auth, req, res) {
+    // if (!auth.userId && !auth.isPublicRoute) {
+    //   return redirectToSignIn({ returnBackUrl: req.url })
+    // }
+
+    // console.log('🫣 auth.userId', auth.userId)
+    // console.log('😏 auth', auth)
+
+  }
 })
 
 export const config = {
