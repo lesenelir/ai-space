@@ -4,7 +4,7 @@ interface IProps {
   className?: string
 }
 
-function LZIcon(props: IProps) {
+export default function LZIcon(props: IProps) {
   const {width, height, className} = props
 
   return (
@@ -19,5 +19,3 @@ function LZIcon(props: IProps) {
     </div>
   )
 }
-
-export default LZIcon
