@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+.line {
+  @apply cursor-pointer hover:underline hover:underline-offset-4;
+}
+
 .Typewriter__cursor--hidden {
   display: none;
 }

@@ -34,7 +34,7 @@ export default function Navbar() {
         {/* left: main content + icon */}
         <div className={'flex flex-row'}>
           <LZIcon width={52} height={52}/>
-          <p className={'text-xl flex flex-row items-center'}>AI Space</p>
+          <p className={'text-xl font-medium flex flex-row items-center'}>AI Space</p>
         </div>
 
         {/* middle */}
