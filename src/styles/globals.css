@@ -1,3 +1,28 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.Typewriter__cursor--hidden {
+  display: none;
+}
+
+.Typewriter__cursor--circle {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background-color: currentColor;
+  animation: none;
+}
+
+.Typewriter__cursor--main {
+  display: inline-block;
+  width: 36px;
+  height: 36px;
+  padding: 4px;
+  border-radius: 50%;
+  opacity: 0;
+  background-color: currentColor;
+  transition: opacity 0.3s ease-in;
+  animation: none;
+}
