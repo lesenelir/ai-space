@@ -15,7 +15,7 @@ export default function ThirdContentArea() {
       <div className={'border-b mt-16 mb-8'}/>
 
       {/* Content */}
-      <div className={'flex flex-row gap-60 mb-10'}>
+      <div className={'flex flex-row sm:gap-60 max-sm:justify-between mb-10'}>
         <div className={'flex flex-col gap-2'}>
           <p>AI Space © 2023-Present</p>
           <p>Terms & policies</p>
@@ -24,7 +24,7 @@ export default function ThirdContentArea() {
         </div>
 
         <div className={'flex flex-col justify-between'}>
-          <ul className={'flex flex-row gap-8'}>
+          <ul className={'flex flex-row sm:gap-8 max-sm:gap-2'}>
             <li className={'line'}>
               <a href={'https://github.com/lesenelir'} target={'_blank'}>Github</a>
             </li>
