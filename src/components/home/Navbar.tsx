@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react'
-// import { UserButton } from '@clerk/nextjs'
+import { useAuth, UserButton } from '@clerk/nextjs'
 
 import LZIcon from '@/components/icons/LZIcon'
 import NavbarLi from '@/components/home/NavbarLi'
 
 export default function Navbar() {
+  const {userId} = useAuth()
   const [isScrolled, setIsScrolled] = useState<boolean>(false)
 
   const handlerScroll = () => {
@@ -47,8 +48,15 @@ export default function Navbar() {
 
         {/* right */}
         <ul className={'lg:flex flex-row max-lg:hidden gap-4'}>
-          <NavbarLi text={'Login'} href={'/sign-in'}/>
-          <NavbarLi text={'User'}/>
+          {
+            userId ? (
+              <div className={'flex flex-col justify-center'}>
+                <UserButton afterSignOutUrl={'/'}/>
+              </div>
+            ) : (
+              <NavbarLi text={'Login'} href={'/sign-in'}/>
+            )
+          }
         </ul>
 
         {/* mobile icon */}
@@ -56,9 +64,6 @@ export default function Navbar() {
           <NavbarLi text={'Menu'}/>
         </ul>
       </nav>
-      {/*<header>*/}
-      {/*  <UserButton afterSignOutUrl={'/'}/>*/}
-      {/*</header>*/}
     </>
   )
 }
