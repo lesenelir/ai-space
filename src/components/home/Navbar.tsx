@@ -47,7 +47,7 @@ export default function Navbar() {
 
         {/* right */}
         <ul className={'lg:flex flex-row max-lg:hidden gap-4'}>
-          <NavbarLi text={'Login'}/>
+          <NavbarLi text={'Login'} href={'/sign-in'}/>
           <NavbarLi text={'User'}/>
         </ul>
 

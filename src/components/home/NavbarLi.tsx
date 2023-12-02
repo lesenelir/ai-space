@@ -1,9 +1,12 @@
+import Link from 'next/link'
+
 interface IProps {
   text: string
+  href?: string
 }
 
 export default function NavbarLi(props: IProps) {
-  const { text } = props
+  const { text, href } = props
 
   return (
     <li
@@ -12,7 +15,13 @@ export default function NavbarLi(props: IProps) {
         hover:underline hover:underline-offset-4
       `}
     >
-      {text}
+      {href ? (
+        <Link href={href}>
+          {text}
+        </Link>
+      ) : (
+        <p>{text}</p>
+      )}
     </li>
   )
 }
