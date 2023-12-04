@@ -19,6 +19,8 @@ const config: Config = {
         homepage: {
           'second-background': '#E1EBFE',
           'second-text': '#104194',
+          'third-background': '#E9E8D8',
+          'third-text': '#22321C',
         },
         openai: {
           'b-0': '#235354',

@@ -1,4 +1,5 @@
 export * from './FirstContentArea'
 export * from './SecondContentArea'
+export * from './ThirdContentArea'
 export * from './FourthContentArea'
 export * from './FifthContentArea'
