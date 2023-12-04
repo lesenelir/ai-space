@@ -1,4 +1,4 @@
-import PlansCard from '@/components/home/PlansCard'
+import PlansCard from '@/components/home/FourthContentArea/PlansCard'
 
 export default function FourthContentArea() {
   return (

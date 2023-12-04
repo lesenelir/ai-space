@@ -11,7 +11,7 @@ export default function NavbarLi(props: IProps) {
   return (
     <li
       className={`
-        flex flex-row items-center cursor-pointer 
+        flex flex-row items-center cursor-pointer
         hover:underline hover:underline-offset-4
       `}
     >

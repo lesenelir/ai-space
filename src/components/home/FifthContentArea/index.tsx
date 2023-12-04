@@ -1,5 +1,5 @@
-import StripePattern from '@/components/home/StripePattern'
 import CornerRightUpIcon from '@/components/icons/CornerRightUpIcon'
+import StripePattern from '@/components/home/FifthContentArea/StripePattern'
 
 export default function FifthContentArea() {
   const handleBackToTop = () => {

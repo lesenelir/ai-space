@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useAuth, UserButton } from '@clerk/nextjs'
 
 import LZIcon from '@/components/icons/LZIcon'
-import NavbarLi from '@/components/home/NavbarLi'
+import NavbarLi from '@/components/home/FirstContentArea/NavbarLi'
 
 export default function Navbar() {
   const {userId} = useAuth()

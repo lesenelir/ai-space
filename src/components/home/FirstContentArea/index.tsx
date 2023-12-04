@@ -2,8 +2,8 @@ import Link from 'next/link'
 import { useEffect, useRef, useState } from 'react'
 import Typewriter, { TypewriterClass } from 'typewriter-effect'
 
-import Navbar from '@/components/home/Navbar'
-import FirstFooter from '@/components/home/FirstFooter'
+import Navbar from '@/components/home/FirstContentArea/Navbar'
+import FirstFooter from '@/components/home/FirstContentArea/FirstFooter'
 
 const textList: string[] = [
   "Let's go",
@@ -117,5 +117,4 @@ export default function FirstContentArea() {
       </div>
     </>
   )
-
 }
