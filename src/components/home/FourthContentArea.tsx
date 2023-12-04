@@ -1,6 +1,6 @@
 import PlansCard from '@/components/home/PlansCard'
 
-export default function SecondContentArea() {
+export default function FourthContentArea() {
   return (
     <div className={'min-h-[70vh] lg:px-32 px-8 py-4 max-sm:px-4 bg-fuchsia-800'}>
       <div className={'border mt-12'}/>

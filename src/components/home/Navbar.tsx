@@ -41,9 +41,8 @@ export default function Navbar() {
         {/* middle */}
         <ul className={'md:flex flex-row gap-4 max-md:hidden'}>
           <NavbarLi text={'Research'}/>
+          <NavbarLi text={'Safety'}/>
           <NavbarLi text={'Pricing'}/>
-          <NavbarLi text={'About'}/>
-          <NavbarLi text={'Docs'}/>
         </ul>
 
         {/* right */}

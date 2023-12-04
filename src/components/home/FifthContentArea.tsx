@@ -1,7 +1,7 @@
 import StripePattern from '@/components/home/StripePattern'
 import CornerRightUpIcon from '@/components/icons/CornerRightUpIcon'
 
-export default function ThirdContentArea() {
+export default function FifthContentArea() {
   const handleBackToTop = () => {
     window.scrollTo({
       top: 0,
