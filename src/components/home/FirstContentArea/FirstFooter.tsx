@@ -3,7 +3,7 @@ import Typewriter, { TypewriterClass } from 'typewriter-effect'
 export default function FirstFooter() {
   return (
     <>
-      <footer className={'md:px-32 px-8 max-sm:px-4 pb-16 h-44'}>
+      <footer className={'lg:px-32 px-8 max-sm:px-4 pb-16 h-44'}>
         <Typewriter
           options={{
             delay: 10,

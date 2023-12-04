@@ -1,6 +1,7 @@
 import { Inter } from 'next/font/google'
 
 import FirstContentArea from '@/components/home/FirstContentArea'
+import SecondContentArea from '@/components/home/SecondContentArea'
 import FourthContentArea from '@/components/home/FourthContentArea'
 import FifthContentArea from '@/components/home/FifthContentArea'
 
@@ -12,6 +13,9 @@ export default function Home() {
 
       {/* First Content Area */}
       <FirstContentArea/>
+
+      {/* Second Content Area */}
+      <SecondContentArea/>
 
       {/* Fourth Content Area */}
       <FourthContentArea/>

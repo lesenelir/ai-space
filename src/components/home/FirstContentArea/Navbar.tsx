@@ -28,7 +28,7 @@ export default function Navbar() {
     <>
       <nav
         className={`
-          h-22 md:px-32 px-8 py-4 max-sm:px-4 flex flex-row justify-between
+          h-22 lg:px-32 px-8 py-4 max-sm:px-4 flex flex-row justify-between
           ${isScrolled ? 'bg-black text-white fixed right-0 left-0 top-0 z-50' : ''}
         `}
       >

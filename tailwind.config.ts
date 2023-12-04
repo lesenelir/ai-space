@@ -16,6 +16,10 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        homepage: {
+          'second-background': '#E1EBFE',
+          'second-text': '#104194',
+        },
         openai: {
           'b-0': '#235354',
           't-0': '#FFFFDF',
@@ -27,10 +31,8 @@ const config: Config = {
           't-3': '#D4FDCC',
           'b-4': '#343324',
           't-4': '#FFFFDF',
-          'b-5': '#E7F1FE',
-          't-5': '#3E46F6',
-          'b-6': '#FFFFDF',
-          't-6': '#235354',
+          'b-5': '#FFFFDF',
+          't-5': '#235354',
         }
       },
     },
