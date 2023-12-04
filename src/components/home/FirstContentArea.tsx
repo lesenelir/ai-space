@@ -57,7 +57,7 @@ export default function FirstContentArea() {
         <Navbar/>
 
         {/* Content */}
-        <main className={'flex-1 flex flex-col justify-center items-center lg:px-32 px-8 py-4 max-sm:px-4'}>
+        <main className={'flex-1 flex flex-col justify-center items-center md:px-32 px-8 py-4 max-sm:px-4'}>
           <Typewriter
             options={{
               delay: 40,

@@ -28,7 +28,7 @@ export default function Navbar() {
     <>
       <nav
         className={`
-          h-22 lg:px-32 px-8 py-4 max-sm:px-4 flex flex-row justify-between
+          h-22 md:px-32 px-8 py-4 max-sm:px-4 flex flex-row justify-between
           ${isScrolled ? 'bg-black text-white fixed right-0 left-0 top-0 z-50' : ''}
         `}
       >
@@ -39,7 +39,7 @@ export default function Navbar() {
         </div>
 
         {/* middle */}
-        <ul className={'lg:flex flex-row gap-4 max-lg:hidden'}>
+        <ul className={'md:flex flex-row gap-4 max-md:hidden'}>
           <NavbarLi text={'Research'}/>
           <NavbarLi text={'Pricing'}/>
           <NavbarLi text={'About'}/>
@@ -47,7 +47,7 @@ export default function Navbar() {
         </ul>
 
         {/* right */}
-        <ul className={'lg:flex flex-row max-lg:hidden gap-4'}>
+        <ul className={'md:flex flex-row max-md:hidden gap-4'}>
           {
             userId ? (
               <div className={'flex flex-col justify-center'}>
@@ -59,9 +59,10 @@ export default function Navbar() {
           }
         </ul>
 
-        {/* mobile icon */}
-        <ul className={'lg:hidden max-lg:flex'}>
-          <NavbarLi text={'Menu'}/>
+        {/* mobile icon, right menu icon */}
+        <ul className={'md:hidden max-md:flex justify-center items-center'}>
+          {/*<NavbarLi text={'Menu'}/>*/}
+          <UserButton afterSignOutUrl={'/'}/>
         </ul>
       </nav>
     </>

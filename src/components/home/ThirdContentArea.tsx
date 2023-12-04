@@ -10,7 +10,7 @@ export default function ThirdContentArea() {
   }
 
   return (
-    <div className={'min-h-[70vh] bg-black text-white lg:px-32 px-8 py-4 max-sm:px-4'}>
+    <div className={'min-h-[70vh] bg-black text-white md:px-32 px-8 py-4 max-sm:px-4'}>
       {/* Line */}
       <div className={'border-b mt-16 mb-8'}/>
 
