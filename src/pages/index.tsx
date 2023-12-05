@@ -1,3 +1,5 @@
+import Head from 'next/head'
+
 import FirstContentArea from '@/components/home/FirstContentArea'
 import SecondContentArea from '@/components/home/SecondContentArea'
 import ThirdContentArea from '@/components/home/ThirdContentArea'
@@ -6,21 +8,29 @@ import FifthContentArea from '@/components/home/FifthContentArea'
 
 export default function Home() {
   return (
-    <div id={'homepage'}>
-      {/* First Content Area */}
-      <FirstContentArea/>
+    <>
+      <Head>
+        <title>AI Space</title>
+        <meta name='description' content='Lesenelir OpenAI Project'/>
+        <link rel='icon' href={`/favicon.ico`}/>
+      </Head>
 
-      {/* Second Content Area */}
-      <SecondContentArea/>
+      <div id={'homepage'}>
+        {/* First Content Area */}
+        <FirstContentArea/>
 
-      {/* Third Content Area */}
-      <ThirdContentArea/>
+        {/* Second Content Area */}
+        <SecondContentArea/>
 
-      {/* Fourth Content Area */}
-      <FourthContentArea/>
+        {/* Third Content Area */}
+        <ThirdContentArea/>
 
-      {/* Fifth Content Area */}
-      <FifthContentArea/>
-    </div>
+        {/* Fourth Content Area */}
+        <FourthContentArea/>
+
+        {/* Fifth Content Area */}
+        <FifthContentArea/>
+      </div>
+    </>
   )
 }

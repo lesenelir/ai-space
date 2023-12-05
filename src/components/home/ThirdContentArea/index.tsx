@@ -33,9 +33,9 @@ export default function ThirdContentArea() {
       <blockquote className={'text-justify mt-16 mb-12'}>
         <p className={'text-4xl font-serif'}>
           “AI Space ensures the stability of the system and the security of the data. We will
-          <span className={'text-red-800'}>not{' '}</span>
+          <span className={'text-red-800'}>{' '} not {' '}</span>
           use your data for any purpose and will
-          <span className={'text-red-800'}>never {' '}</span>
+          <span className={'text-red-800'}>{' '} never {' '}</span>
           steal your api key. You can use our platform with confidence.”
         </p>
         <cite className={'block mt-4 text-lg not-italic text-black'}>
