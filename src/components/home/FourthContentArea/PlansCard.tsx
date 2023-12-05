@@ -38,14 +38,14 @@ export default function PlansCard(props: IProps) {
 
         <div className={'border'}/>
 
-        {main === 'free' && freeCard.map((item: string, index: number) => (
+        {main === 'Free' && freeCard.map((item: string, index: number) => (
           <div key={index} className={'flex flex-row border-b pb-2'}>
             <CheckIcon width={20} height={20}/>
             <p>{item}</p>
           </div>
         ))}
 
-        {main === 'plus' && plusCard.map((item: string, index: number) => (
+        {main === 'Plus' && plusCard.map((item: string, index: number) => (
           <div key={index} className={'flex flex-row border-b pb-2'}>
             <CheckIcon width={20} height={20}/>
             <p>{item}</p>

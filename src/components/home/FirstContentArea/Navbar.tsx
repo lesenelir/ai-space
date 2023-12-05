@@ -35,14 +35,18 @@ export default function Navbar() {
         {/* left: main content + icon */}
         <div className={'flex flex-row'}>
           <LZIcon width={52} height={52}/>
-          <p className={'text-xl font-medium flex flex-row items-center'}>AI Space</p>
+          <NavbarLi
+            text={'AI Space'}
+            href={'#homepage'}
+            className={`text-xl font-medium hover:no-underline `}
+          />
         </div>
 
         {/* middle */}
         <ul className={'md:flex flex-row gap-4 max-md:hidden'}>
-          <NavbarLi text={'Research'}/>
-          <NavbarLi text={'Safety'}/>
-          <NavbarLi text={'Pricing'}/>
+          <NavbarLi text={'Research'} href={'#research'}/>
+          <NavbarLi text={'Safety'} href={'#safety'}/>
+          <NavbarLi text={'Pricing'} href={'#pricing'}/>
         </ul>
 
         {/* right */}

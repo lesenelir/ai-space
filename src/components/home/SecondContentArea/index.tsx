@@ -1,4 +1,8 @@
+import { Ephesis } from 'next/font/google'
+
 import Card from '@/components/home/SecondContentArea/Card'
+
+const ephesis = Ephesis({ subsets: ['latin'], weight: '400' })
 
 const cardData = [
   {
@@ -37,40 +41,26 @@ export default function SecondContentArea() {
         w-full min-h-[90vh] lg:px-32 px-8 py-4 max-sm:px-4
         text-homepage-second-text bg-homepage-second-background
       `}
+      id={'research'}
     >
       <div className={'border border-homepage-second-text mt-12 mb-6'}/>
 
       <h1 className={'text-xl'}>
-        <span className={'font-bold text-4xl'}>AI Space {' '}</span>
+        <span className={`font-bold text-6xl ${ephesis.className}`}>AI Space {' '}</span>
         integrates AI applications,
       </h1>
       <h1 className={'text-xl mb-6'}>which can see, hear, and speak.</h1>
 
       <div className={'w-full flex lg:flex-nowrap max-lg:flex-wrap max-lg:justify-between max-md:flex-col gap-4 '}>
-        {/*<Card*/}
-        {/*  image={{src: '/pictures/chat.png', alt: 'chat'}}*/}
-        {/*  href={'/chat'}*/}
-        {/*/>*/}
-        {/*<Card*/}
-        {/*  image={{src: '/pictures/dall.png', alt: 'dall'}}*/}
-        {/*  href={'/dall'}*/}
-        {/*/>*/}
-        {/*<Card*/}
-        {/*  image={{src: '/pictures/voice.png', alt: 'voice'}}*/}
-        {/*  href={'/chat'}*/}
-        {/*/>*/}
-
-        {
-          cardData.map((data, index) => (
-            <Card
-              key={index}
-              image={data.image}
-              title={data.title}
-              text={data.text}
-              href={data.href}
-            />
-          ))
-        }
+        {cardData.map((data, index) => (
+          <Card
+            key={index}
+            image={data.image}
+            title={data.title}
+            text={data.text}
+            href={data.href}
+          />
+        ))}
       </div>
 
     </div>
