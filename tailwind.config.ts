@@ -22,6 +22,11 @@ const config: Config = {
           'third-background': '#E9E8D8',
           'third-text': '#22321C',
         },
+        chatpage: {
+          'menu-background': '#202123',
+          'message-background-dark': '#343540',
+          'message-background-light': '#f9fafb', /* gray-50 */
+        },
         openai: {
           'b-0': '#235354',
           't-0': '#FFFFDF',
