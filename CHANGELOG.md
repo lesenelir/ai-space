@@ -12,3 +12,7 @@
 ### v0.0.2
 
 - complete the homepage.
+
+### v0.0.3
+
+- add framer-motion to make the homepage more beautiful.

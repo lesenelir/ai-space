@@ -51,7 +51,7 @@ export default function SecondContentArea() {
       </h1>
       <h1 className={'text-xl mb-6'}>which can see, hear, and speak.</h1>
 
-      <div className={'w-full flex lg:flex-nowrap max-lg:flex-wrap max-lg:justify-between max-md:flex-col gap-4 '}>
+      <div className={'w-full flex lg:flex-nowrap max-lg:flex-wrap max-lg:justify-between max-md:flex-col gap-4'}>
         {cardData.map((data, index) => (
           <Card
             key={index}
@@ -62,7 +62,6 @@ export default function SecondContentArea() {
           />
         ))}
       </div>
-
     </div>
   )
 }
