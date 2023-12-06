@@ -35,11 +35,13 @@ export default function Navbar() {
         {/* left: main content + icon */}
         <div className={'flex flex-row'}>
           <LZIcon width={52} height={52}/>
-          <NavbarLi
-            text={'AI Space'}
-            href={'#homepage'}
-            className={`text-xl font-medium hover:no-underline `}
-          />
+          <ul className={'flex items-center'}>
+            <NavbarLi
+              text={'AI Space'}
+              href={'#homepage'}
+              className={`text-xl font-medium hover:no-underline `}
+            />
+          </ul>
         </div>
 
         {/* middle */}
