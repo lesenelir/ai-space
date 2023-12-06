@@ -29,7 +29,13 @@ export default function PlansCard(props: IProps) {
       <div className={'border md:w-1/2 max-md:w-full text-white p-4 pb-12 flex flex-col gap-4'}>
         <h1 className={'text-4xl'}>{main}</h1>
         <h2 className={'text-xl'}>{price}</h2>
-        <div className={'border w-2/5 h-12 flex flex-row items-center justify-center cursor-pointer hover:bg-black hover:text-white'}>
+        <div
+          className={`
+            border w-2/5 h-12 flex items-center justify-center
+            cursor-pointer transition duration-300 ease-in-out 
+            hover:bg-black hover:text-white
+          `}
+        >
           <Link href={'/chat'}>
             {buttonText}
           </Link>

@@ -4,7 +4,7 @@ export default function FirstFooter() {
   return (
     <>
       <footer className={'lg:px-32 px-8 max-sm:px-4 pb-16 h-44'}>
-        <div className={'h-1/2'}>
+        <div className={'h-3/4'}>
           <Typewriter
             options={{
               delay: 10,
@@ -27,12 +27,7 @@ export default function FirstFooter() {
           />
         </div>
 
-        <p
-          className={`
-            mt-4 underline underline-offset-4 cursor-pointer 
-            transition duration-300 ease-in-out hover:decoration-slate-300
-          `}
-        >
+        <p className={`mt-1 underline underline-offset-4 cursor-pointer`}>
           <a href={'https://github.com/lesenelir'} target={'_blank'} rel={'noopener noreferrer'}>
             Find the author
           </a>

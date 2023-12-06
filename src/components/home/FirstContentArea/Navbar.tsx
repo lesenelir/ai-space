@@ -39,7 +39,7 @@ export default function Navbar() {
             <NavbarLi
               text={'AI Space'}
               href={'#homepage'}
-              className={`text-xl font-medium hover:no-underline `}
+              className={`text-xl font-medium hover:no-underline`}
             />
           </ul>
         </div>
@@ -51,13 +51,11 @@ export default function Navbar() {
           <NavbarLi text={'Pricing'} href={'#pricing'}/>
         </ul>
 
-        {/* right */}
-        <ul className={'md:flex flex-row max-md:hidden gap-4'}>
+        {/* pc icon, right menu icon */}
+        <ul className={'md:flex max-md:hidden flex-row items-center'}>
           {
             userId ? (
-              <div className={'flex flex-col justify-center'}>
-                <UserButton afterSignOutUrl={'/'}/>
-              </div>
+              <UserButton afterSignOutUrl={'/'}/>
             ) : (
               <NavbarLi text={'Login'} href={'/sign-in'}/>
             )
@@ -66,8 +64,13 @@ export default function Navbar() {
 
         {/* mobile icon, right menu icon */}
         <ul className={'md:hidden max-md:flex justify-center items-center'}>
-          {/*<NavbarLi text={'Menu'}/>*/}
-          <UserButton afterSignOutUrl={'/'}/>
+          {
+            userId ? (
+              <UserButton afterSignOutUrl={'/'}/>
+            ) : (
+              <NavbarLi text={'Login'} href={'/sign-in'}/>
+            )
+          }
         </ul>
       </nav>
     </>

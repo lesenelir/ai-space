@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react'
 import Typewriter, { TypewriterClass } from 'typewriter-effect'
 
 import Navbar from '@/components/home/FirstContentArea/Navbar'
+import ArrowUpRightIcon from '@/components/icons/ArrowUpRightIcon'
 import FirstFooter from '@/components/home/FirstContentArea/FirstFooter'
 
 const textList: string[] = [
@@ -90,23 +91,29 @@ export default function FirstContentArea() {
           />
 
           {/* Entry */}
-          <ul className={'list-none flex flex-row gap-2 m-6'}>
+          <ul className={'list-none flex flex-row gap-4 m-6'}>
             <li
               className={`
-                p-2 rounded-lg border bg-canvas-b-${colorIndex} text-canvas-t-${colorIndex} 
+                w-[100px] p-2 rounded-lg border flex justify-between items-center 
+                bg-canvas-b-${colorIndex} text-canvas-t-${colorIndex}
+                transition duration-300 ease-in-out 
                 hover:bg-black hover:text-white hover:cursor-pointer
               `}
             >
               <Link href={'/chat'}>ChatGPT</Link>
+              <ArrowUpRightIcon width={20} height={20}/>
             </li>
 
             <li
               className={`
-                p-2 rounded-lg border bg-canvas-b-${colorIndex} text-canvas-t-${colorIndex}
+                w-[100px] p-2 rounded-lg border flex justify-between items-center 
+                bg-canvas-b-${colorIndex} text-canvas-t-${colorIndex}
+                transition duration-300 ease-in-out
                 hover:bg-black hover:text-white hover:cursor-pointer                 
               `}
             >
               <Link href={'/dall'}>DALL-E</Link>
+              <ArrowUpRightIcon width={20} height={20}/>
             </li>
           </ul>
         </main>
