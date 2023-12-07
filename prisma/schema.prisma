@@ -11,6 +11,85 @@ datasource db {
 }
 
 model User {
-  id     Int    @id @default(autoincrement())
-  userId String @unique
+  id        Int     @id @default(autoincrement())
+  userId    String  @unique // user token
+  balance   Decimal
+  isPremium Boolean @default(false)
+
+  // Relations
+  chatItems      ChatItem[] // user -> chatItems (1 : n) : 1 user can have many chatItems
+  chatMessages   ChatMessage[] // user -> chatMessages (1 : n) : 1 user can have many chatMessages
+  userAPIKeys    UserAPIKey[] // user -> userAPIKey (1 : n) : 1 user can have many userAPIKey
+  apiRequestLogs APIRequestLog[] // user -> apiRequestLogs (1 : n) : 1 user can have many apiRequestLogs
+
+  @@map("user")
+}
+
+model ChatItem {
+  id         Int      @id @default(autoincrement())
+  item_name  String
+  item_uuid  String   @unique
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  user_primary_id Int // foreign key -> identify which user has this chat item
+  user            User @relation(fields: [user_primary_id], references: [id])
+
+  // Relations
+  ChatMessage ChatMessage[] // chatItem -> chatMessages (1 : n) : 1 chatItem can have many chatMessages
+
+  @@map("chatItem")
+}
+
+model ChatMessage {
+  id              Int      @id @default(autoincrement())
+  message_type    String // text, image, video
+  message_content String
+  message_role    String // user, robot
+  created_at      DateTime @default(now())
+
+  chat_item_primary_id Int // foreign key -> identify which chatItem has this chatMessage
+  chatItem             ChatItem @relation(fields: [chat_item_primary_id], references: [id])
+  user_primary_id      Int // foreign key -> identify which user has this chatMessage
+  user                 User     @relation(fields: [user_primary_id], references: [id])
+
+  // Relations
+  apiRequestLogs APIRequestLog[] // chatMessage -> apiRequestLogs (1 : n) : 1 chatMessage can have many apiRequestLogs (especially for robot message)
+
+  @@map("chatMessage")
+}
+
+model Model {
+  id         Int    @id @default(autoincrement())
+  model_name String
+
+  // Relations
+  userAPIKey UserAPIKey[] // model -> userAPIKey (1 : n) : 1 model can have many userAPIKey (belong to many users)
+
+  @@map("model")
+}
+
+model UserAPIKey {
+  id      Int    @id @default(autoincrement())
+  api_key String @unique
+
+  user_primary_id  Int // foreign key --> identify which user has this api key
+  user             User  @relation(fields: [user_primary_id], references: [id])
+  model_primary_id Int // foreign key --> identify which api key belongs to which model
+  model            Model @relation(fields: [model_primary_id], references: [id])
+
+  @@map("userApiKey")
+}
+
+model APIRequestLog {
+  id         Int      @id @default(autoincrement())
+  cost       Decimal
+  created_at DateTime @default(now())
+
+  chat_message_primary_id Int // foreign key
+  chatMessage             ChatMessage @relation(fields: [chat_message_primary_id], references: [id])
+  user_primary_id         Int
+  user                    User        @relation(fields: [user_primary_id], references: [id])
+
+  @@map("apiRequestLog")
 }
