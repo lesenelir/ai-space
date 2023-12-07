@@ -1,5 +1,8 @@
 import Head from 'next/head'
 
+import Menu from '@/components/chat/Menu'
+import Content from '@/components/chat/Content'
+
 export default function chatPage() {
   return (
     <>
@@ -9,7 +12,10 @@ export default function chatPage() {
         <link rel='icon' href={`/favicon.ico`}/>
       </Head>
 
-      hello
+      <div className={'w-full h-screen flex flex-row'}>
+        <Menu/>
+        <Content/>
+      </div>
     </>
   )
 }

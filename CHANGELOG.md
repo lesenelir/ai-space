@@ -16,3 +16,4 @@
 ### v0.0.3
 
 - add framer-motion to make the homepage more beautiful.
+- Resizeable UI component to custom the width of the menu.
