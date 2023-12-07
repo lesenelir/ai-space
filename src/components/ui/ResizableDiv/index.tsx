@@ -71,10 +71,16 @@ export default function ResizableDiv({
     <div
       ref={ref}
       style={{width: `${width}px`}}
-      className={`cursor-ew-resize active:border-r-4 active:border-r-gray-400 ${className}`}
-      onMouseDown={startResizing}
+      className={`relative ${className}`}
     >
       {children}
+      <div
+        className={`
+          absolute top-0 right-0 z-10 w-1 h-full 
+          cursor-ew-resize active:border-r-4 active:border-r-blue-500
+        `}
+        onMouseDown={startResizing}
+      />
     </div>
   )
 }
