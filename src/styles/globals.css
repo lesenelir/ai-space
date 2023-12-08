@@ -14,7 +14,7 @@
 
 /* menu */
 .menu-first-content-item {
-  @apply rounded-lg border border-gray-500 text-left flex justify-center items-center p-2;
+  @apply rounded-lg border border-gray-500 flex justify-start items-center p-2;
 }
 
 
