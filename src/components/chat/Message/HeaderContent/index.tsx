@@ -1,4 +1,6 @@
 import Select from '@/components/ui/Select'
+import I18Change from '@/components/chat/Message/HeaderContent/I18Change'
+import ThemeChange from '@/components/chat/Message/HeaderContent/ThemeChange'
 import { GPT3, GPT4 } from '@/components/chat/Message/HeaderContent/OptionData'
 
 const options = [
@@ -12,7 +14,7 @@ export default function HeaderContent() {
       {/* left icon */}
       <div>
         <Select
-          width={`min-w-fit`}
+          width={`w-fit`}
           options={options}
           className={'text-black'}
         />
@@ -20,8 +22,8 @@ export default function HeaderContent() {
 
       {/* right icon */}
       <div className={'flex flex-row gap-4'}>
-        <p>hello</p>
-        <p>ss</p>
+        <I18Change/>
+        <ThemeChange/>
       </div>
     </div>
   )
