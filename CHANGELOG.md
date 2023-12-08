@@ -17,3 +17,5 @@
 
 - add framer-motion to make the homepage more beautiful.
 - Resizeable UI component to custom the width of the menu.
+- complete chatpage layout.
+- add select ui component

@@ -1,5 +1,6 @@
-import { ReactNode, useRef, useState } from 'react'
+import Image from 'next/image'
 import { motion } from 'framer-motion'
+import { ReactNode, useRef, useState } from 'react'
 
 import useOutsideClick from '@/hooks/useOutsideClick'
 
@@ -35,10 +36,15 @@ export default function Select({
       ref={wrapperRef}
     >
       <div
-        className={'cursor-pointer border border-gray-200 rounded-md p-2 hover:bg-gray-200'}
+        className={'flex gap-2 p-2 cursor-pointer border border-gray-200 rounded-md hover:bg-gray-200'}
         onClick={() => setIsOpen(!isOpen)}
       >
         {selectedOption}
+        {isOpen ? (
+          <Image alt={'arrow Up'} width={16} height={16} src={'/chevron-up.svg'}/>
+        ): (
+          <Image alt={'arrow down'} width={16} height={16} src={'/chevron-down.svg'}/>
+        )}
       </div>
 
       {isOpen && (
