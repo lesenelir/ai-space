@@ -1,7 +1,7 @@
 import Head from 'next/head'
 
 import Menu from '@/components/chat/Menu'
-import Content from '@/components/chat/Content'
+import Message from '@/components/chat/Message'
 
 export default function chatPage() {
   return (
@@ -14,7 +14,7 @@ export default function chatPage() {
 
       <div className={'w-full h-screen flex flex-row'}>
         <Menu/>
-        <Content/>
+        <Message/>
       </div>
     </>
   )
