@@ -7,18 +7,26 @@ export default function FirstMenuContent() {
       {/* first content */}
       <div className={'w-full h-[48px] flex gap-2 mb-2'}>
         {/* new chat */}
-        <div className={'w-5/6 font-light menu-first-content-item'}>
+        <div className={`
+          w-5/6 font-light menu-first-content-item 
+          transition-change cursor-pointer hover:bg-gray-500/10
+        `}>
           + New Chat
         </div>
 
         <div className={'flex-1 flex justify-between gap-2 ml-auto'}>
           {/* create file folder */}
-          <div className={'menu-first-content-item'}>
+          <div className={`
+            menu-first-content-item transition-change 
+            cursor-pointer hover:bg-gray-500/10
+          `}>
             <FolderPlusIcon width={24} height={24}/>
           </div>
 
           {/* scalability */}
-          <div className={'menu-first-content-item'}>
+          <div className={`
+            menu-first-content-item transition-change cursor-pointer hover:bg-gray-500/10
+          `}>
             <ColumnsIcon width={24} height={24}/>
           </div>
         </div>
