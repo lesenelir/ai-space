@@ -19,10 +19,10 @@ export default function Menu() {
           <ResizableDiv
             initialWidth={320}
             minPercentage={1 / 6}
-            maxPercentage={1 / 4}
+            maxPercentage={0.26}
             className={`
-              w-full p-3 text-chatpage-menu-text bg-chatpage-menu-background
-              max-md:fixed max-md:top-0 max-md:left-0 z-10
+              w-full h-full p-3 text-chatpage-menu-text bg-chatpage-menu-background
+              max-md:fixed max-md:top-0 max-md:left-0 z-10 max-md:h-full
             `}
           >
             <div className={'w-full h-full flex flex-col'}>
