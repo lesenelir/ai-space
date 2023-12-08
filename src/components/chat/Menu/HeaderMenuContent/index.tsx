@@ -1,12 +1,11 @@
+import { useSetAtom } from 'jotai'
+
+import { isOpenAtom } from '@/atoms'
 import FolderPlusIcon from '@/components/icons/FolderPlusIcon'
 import ColumnsIcon from '@/components/icons/ColumnsIcon'
 
-interface IProps {
-  toggleShow: () => void
-}
-
-export default function HeaderMenuContent(props: IProps) {
-  const {toggleShow} = props
+export default function HeaderMenuContent() {
+  const setIsOpen = useSetAtom(isOpenAtom)
 
   return (
     <div className={'w-full mb-2'}>
@@ -34,7 +33,7 @@ export default function HeaderMenuContent(props: IProps) {
             className={`
               menu-first-content-item transition-change cursor-pointer hover:bg-gray-500/10
             `}
-            onClick={toggleShow}
+            onClick={() => setIsOpen(pre => !pre)}
           >
             <ColumnsIcon width={24} height={24}/>
           </div>

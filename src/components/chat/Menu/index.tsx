@@ -1,5 +1,6 @@
-import { useState } from 'react'
+import { useAtom } from 'jotai'
 
+import { isOpenAtom } from '@/atoms'
 import ResizableDiv from '@/components/ui/ResizableDiv'
 import HeaderMenuContent from '@/components/chat/Menu/HeaderMenuContent'
 import MainMenuContent from '@/components/chat/Menu/MainMenuContent'
@@ -7,16 +8,14 @@ import FooterMenuContent from '@/components/chat/Menu/FooterMenuContent'
 import ColumnsIcon from '@/components/icons/ColumnsIcon'
 
 export default function Menu() {
-  const [isShow, setIsShow] = useState<boolean>(true)
+  const [isOpen, setIsOpen] = useAtom(isOpenAtom)
 
-  const toggleShow = () => {
-    setIsShow(!isShow)
-  }
+  const toggleOpen = () => setIsOpen(!isOpen)
 
   return (
     <>
       {
-        isShow ? (
+        isOpen ? (
           <ResizableDiv
             initialWidth={320}
             minPercentage={1 / 6}
@@ -28,9 +27,7 @@ export default function Menu() {
           >
             <div className={'w-full h-full flex flex-col'}>
               {/* HeaderMenuContent: new chat + create folder icon + scalability icon */}
-              <HeaderMenuContent
-                toggleShow={toggleShow}
-              />
+              <HeaderMenuContent/>
 
               {/* Chat items and folder items */}
               <MainMenuContent/>
@@ -40,16 +37,13 @@ export default function Menu() {
             </div>
           </ResizableDiv>
         ) : (
-          <div className={'bg-gray-50'}>
-            {/* Header */}
-            <div className={'w-full flex items-center h-[66px] border-b p-3'}>
-              <ColumnsIcon
-                width={24}
-                height={24}
-                className={'border p-2 rounded-lg cursor-pointer hover:bg-gray-200 transition-change'}
-                onClick={toggleShow}
-              />
-            </div>
+          <div className={'fixed top-3 left-3'}>
+            <ColumnsIcon
+              width={24}
+              height={24}
+              className={'border p-2 rounded-lg cursor-pointer hover:bg-gray-200 transition-change'}
+              onClick={toggleOpen}
+            />
           </div>
         )
       }
