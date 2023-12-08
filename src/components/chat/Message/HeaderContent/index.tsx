@@ -1,4 +1,10 @@
 import Select from '@/components/ui/Select'
+import { GPT3, GPT4 } from '@/components/chat/Message/HeaderContent/OptionData'
+
+const options = [
+  {value: <GPT3/>, label: 'GPT-3.5 Turbo'},
+  {value: <GPT4/>, label: 'GPT-4 Turbo'},
+]
 
 export default function HeaderContent() {
   return (
@@ -6,12 +12,8 @@ export default function HeaderContent() {
       {/* left icon */}
       <div>
         <Select
-          width={`w-36`}
-          options={[
-            { value: 'GPT-3.5 Turbo', label: 'GPT-3.5 Turbo' },
-            { value: 'GPT-4 Turbo', label: 'GPT-4 Turbo' },
-            { value: 'Baidu Model', label: 'Baidu Model' },
-          ]}
+          width={`min-w-fit`}
+          options={options}
           className={'text-black'}
         />
       </div>
