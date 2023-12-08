@@ -67,6 +67,25 @@ export default function ResizableDiv({
     }
   }, [isResizing, maxPercentage, minPercentage])
 
+  useEffect(() => {
+    const handleResize = () => {
+      // When the screen is less than 768px, the menu width is fixed at 280px
+      if (window.innerWidth < 768) {
+        setWidth(280)
+      } else {
+        const savedWidth = localStorage.getItem('menuWidth')
+        setWidth(savedWidth ? Number(savedWidth) : initialWidth)
+      }
+    }
+
+    handleResize()
+    window.addEventListener('resize', handleResize)
+
+    return () => {
+      window.removeEventListener('resize', handleResize)
+    }
+  }, [initialWidth])
+
   return (
     <div
       ref={ref}
