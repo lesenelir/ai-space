@@ -24,6 +24,8 @@ const config: Config = {
         },
         chatpage: {
           'menu-background': '#202123',
+          'menu-text': '#E3E3E8',
+          'menu-hover':'#343540',
           'message-background-dark': '#343540',
           'message-background-light': '#f9fafb', /* gray-50 */
         },

@@ -2,10 +2,38 @@
 @tailwind components;
 @tailwind utilities;
 
+/* global */
 .line {
   @apply cursor-pointer hover:underline hover:underline-offset-4;
 }
 
+/* menu */
+.menu-first-content-item {
+  @apply rounded-lg border border-gray-500 text-left flex justify-center items-center p-2;
+}
+
+/* menu secondContentArea overflow scrollbar */
+.custom-scrollbar::-webkit-scrollbar {
+  /*background-color: #fff;*/
+  width: 1.2rem;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #27272a;
+  border-radius: 20px;
+  border: 6px solid transparent;
+  background-clip: content-box;
+}
+
+.custom-scrollbar:hover::-webkit-scrollbar-thumb {
+  background-color: #3f3f46;
+}
+
+/* homepage typewriter */
 .Typewriter__cursor--hidden {
   display: none;
 }

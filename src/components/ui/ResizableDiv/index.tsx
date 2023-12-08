@@ -46,7 +46,7 @@ export default function ResizableDiv({
         const min = viewportWidth * minPercentage
         const max = viewportWidth * maxPercentage
 
-        const width = Math.min(Math.max(newWidth, min), max)
+        const width = Math.min(Math.max(newWidth, min), max) < 320 ? 320 : Math.min(Math.max(newWidth, min), max)
         localStorage.setItem('menuWidth', String(width))
         setWidth(width)
       }
@@ -74,7 +74,7 @@ export default function ResizableDiv({
       className={`relative ${className}`}
     >
       {children}
-      <div
+      <span
         className={`
           absolute top-0 right-0 z-10 w-1 h-full 
           cursor-ew-resize active:border-r-4 active:border-r-blue-500
