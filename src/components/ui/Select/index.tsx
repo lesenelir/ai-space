@@ -36,7 +36,7 @@ export default function Select({
       ref={wrapperRef}
     >
       <div
-        className={'flex gap-2 p-2 cursor-pointer border border-gray-200 rounded-md hover:bg-gray-200'}
+        className={'flex gap-2 p-2 cursor-pointer border border-gray-200 rounded-md hover:bg-gray-200 transition-change'}
         onClick={() => setIsOpen(!isOpen)}
       >
         {selectedOption}
@@ -52,7 +52,7 @@ export default function Select({
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -10 }}
-          className={'absolute z-50 w-48 bg-gray-50 mt-1 border border-gray-200 rounded-md p-2'}
+          className={'absolute z-50 w-48 bg-gray-50 mt-1 border border-gray-200 rounded-md p-2 transition-change'}
         >
           {options.map((option, index) => (
             <motion.li

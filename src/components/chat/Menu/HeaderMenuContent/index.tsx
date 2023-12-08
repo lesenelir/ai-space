@@ -1,7 +1,13 @@
 import FolderPlusIcon from '@/components/icons/FolderPlusIcon'
 import ColumnsIcon from '@/components/icons/ColumnsIcon'
 
-export default function HeaderMenuContent() {
+interface IProps {
+  toggleShow: () => void
+}
+
+export default function HeaderMenuContent(props: IProps) {
+  const {toggleShow} = props
+
   return (
     <div className={'w-full mb-2'}>
       {/* first content */}
@@ -24,9 +30,12 @@ export default function HeaderMenuContent() {
           </div>
 
           {/* scalability */}
-          <div className={`
-            menu-first-content-item transition-change cursor-pointer hover:bg-gray-500/10
-          `}>
+          <div
+            className={`
+              menu-first-content-item transition-change cursor-pointer hover:bg-gray-500/10
+            `}
+            onClick={toggleShow}
+          >
             <ColumnsIcon width={24} height={24}/>
           </div>
         </div>

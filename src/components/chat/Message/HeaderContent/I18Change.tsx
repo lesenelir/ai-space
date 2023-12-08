@@ -9,7 +9,7 @@ export default function I18Change() {
         height={24}
         alt={'I18 Icon'}
         src={'/language-translate-light.svg'}
-        className={'cursor-pointer hover:opacity-60'}
+        className={'cursor-pointer hover:opacity-60 transition-change'}
       />
       {/*<Image*/}
       {/*  width={24}*/}

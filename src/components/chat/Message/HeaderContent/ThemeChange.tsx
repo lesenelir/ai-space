@@ -8,7 +8,7 @@ export default function ThemeChange() {
         alt={'sun icon'}
         width={24}
         height={24}
-        className={'cursor-pointer hover:opacity-60'}
+        className={'cursor-pointer hover:opacity-60 transition-change'}
       />
       {/*<Image*/}
       {/*  src={'/moon.svg'}*/}
