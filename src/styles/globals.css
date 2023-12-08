@@ -18,7 +18,6 @@
 
 /* menu secondContentArea overflow scrollbar */
 .custom-scrollbar::-webkit-scrollbar {
-  /*background-color: #fff;*/
   width: 1.2rem;
 }
 
@@ -35,6 +34,26 @@
 
 .custom-scrollbar:hover::-webkit-scrollbar-thumb {
   background-color: #3f3f46;
+}
+
+/* message mainContent overflow scrollbar light */
+.custom-message-light-scrollbar::-webkit-scrollbar {
+  width: 1.2rem;
+}
+
+.custom-message-light-scrollbar::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+.custom-message-light-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #e5e7eb;
+  border-radius: 20px;
+  border: 6px solid transparent;
+  background-clip: content-box;
+}
+
+.custom-message-light-scrollbar:hover::-webkit-scrollbar-thumb {
+  background-color: #d1d5db;
 }
 
 /* homepage typewriter */
