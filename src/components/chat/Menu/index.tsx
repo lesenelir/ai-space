@@ -9,7 +9,7 @@ export default function Menu() {
       initialWidth={320}
       minPercentage={1/6}
       maxPercentage={2/5}
-      className={'w-full p-2 text-chatpage-menu-text bg-chatpage-menu-background'}
+      className={'w-full p-3 text-chatpage-menu-text bg-chatpage-menu-background'}
     >
       <div className={'w-full h-full flex flex-col'}>
         {/* FirstMenuContent: new chat + create folder icon + scalability icon */}
