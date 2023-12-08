@@ -11,10 +11,12 @@
   @apply transition-all duration-300 ease-in-out;
 }
 
+
 /* menu */
 .menu-first-content-item {
   @apply rounded-lg border border-gray-500 text-left flex justify-center items-center p-2;
 }
+
 
 /* menu secondContentArea overflow scrollbar */
 .custom-scrollbar::-webkit-scrollbar {
@@ -36,6 +38,7 @@
   background-color: #3f3f46;
 }
 
+
 /* message mainContent overflow scrollbar light */
 .custom-message-light-scrollbar::-webkit-scrollbar {
   width: 1.2rem;
@@ -55,6 +58,7 @@
 .custom-message-light-scrollbar:hover::-webkit-scrollbar-thumb {
   background-color: #d1d5db;
 }
+
 
 /* homepage typewriter */
 .Typewriter__cursor--hidden {

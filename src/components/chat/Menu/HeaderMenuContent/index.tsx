@@ -1,7 +1,7 @@
 import FolderPlusIcon from '@/components/icons/FolderPlusIcon'
 import ColumnsIcon from '@/components/icons/ColumnsIcon'
 
-export default function FirstMenuContent() {
+export default function HeaderMenuContent() {
   return (
     <div className={'w-full mb-2'}>
       {/* first content */}

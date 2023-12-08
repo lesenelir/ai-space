@@ -1,7 +1,7 @@
 import ResizableDiv from '@/components/ui/ResizableDiv'
-import FirstMenuContent from '@/components/chat/Menu/FirstMenuContent'
-import SecondMenuContent from '@/components/chat/Menu/SecondMenuContent'
-import ThirdMenuContent from '@/components/chat/Menu/ThirdMenuContent'
+import HeaderMenuContent from 'src/components/chat/Menu/HeaderMenuContent'
+import MainMenuContent from 'src/components/chat/Menu/MainMenuContent'
+import FooterMenuContent from 'src/components/chat/Menu/FooterMenuContent'
 
 export default function Menu() {
   return (
@@ -12,14 +12,14 @@ export default function Menu() {
       className={'w-full p-3 text-chatpage-menu-text bg-chatpage-menu-background'}
     >
       <div className={'w-full h-full flex flex-col'}>
-        {/* FirstMenuContent: new chat + create folder icon + scalability icon */}
-        <FirstMenuContent/>
+        {/* HeaderMenuContent: new chat + create folder icon + scalability icon */}
+        <HeaderMenuContent/>
 
         {/* Chat items and folder items */}
-        <SecondMenuContent/>
+        <MainMenuContent/>
 
         {/* User */}
-        <ThirdMenuContent/>
+        <FooterMenuContent/>
       </div>
     </ResizableDiv>
   )

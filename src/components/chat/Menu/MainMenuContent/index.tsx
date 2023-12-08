@@ -1,5 +1,5 @@
 
-export default function SecondMenuContent() {
+export default function MainMenuContent() {
   return (
     <div className={'flex-1 overflow-y-scroll custom-scrollbar mb-2'}>
       second
