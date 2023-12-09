@@ -20,7 +20,7 @@
 
 /* menu secondContentArea overflow scrollbar */
 .custom-scrollbar::-webkit-scrollbar {
-  width: 1.2rem;
+  width: 1rem;
 }
 
 .custom-scrollbar::-webkit-scrollbar-track {
@@ -41,7 +41,7 @@
 
 /* message mainContent overflow scrollbar light */
 .custom-message-light-scrollbar::-webkit-scrollbar {
-  width: 1.2rem;
+  width: 1rem;
 }
 
 .custom-message-light-scrollbar::-webkit-scrollbar-track {

@@ -22,11 +22,11 @@ export default function FooterContent() {
   }
 
   return (
-    <div className={'flex justify-center items-center p-3'}>
+    <div className={'w-full flex justify-center items-center p-3'}>
       <TextArea
         ref={ref}
         placeholder={'Type a message ...'}
-        className={'lg:w-[640px]'}
+        className={'lg:w-[640px] -ml-6'}
         onKeyDown={handleKeyDown}
       />
 
