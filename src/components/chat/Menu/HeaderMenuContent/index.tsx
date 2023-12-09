@@ -16,7 +16,7 @@ export default function HeaderMenuContent() {
           w-5/6 font-light menu-first-content-item 
           transition-change cursor-pointer hover:bg-gray-500/10
         `}>
-          + New Chat
+          New Chat
         </div>
 
         <div className={'flex-1 flex justify-between gap-2 ml-auto'}>
