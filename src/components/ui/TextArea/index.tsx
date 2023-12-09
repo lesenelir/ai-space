@@ -24,4 +24,6 @@ const TextArea = forwardRef<HTMLTextAreaElement, TextareaProps>((
   )
 })
 
+TextArea.displayName = 'TextArea'
+
 export default TextArea
