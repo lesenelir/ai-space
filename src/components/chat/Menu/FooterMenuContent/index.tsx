@@ -1,22 +1,39 @@
 import Image from 'next/image'
 import { useRouter } from 'next/router'
-import { type MouseEvent, useRef, useState } from 'react'
 import { UserButton, useUser } from '@clerk/nextjs'
+import { type MouseEvent, useRef, useState } from 'react'
 
+import Modal from '@/components/ui/Modal'
 import DropDown from '@/components/ui/DropDown'
 import useOutsideClick from '@/hooks/useOutsideClick'
 import UserCard, { userData } from '@/components/chat/Menu/FooterMenuContent/UserCard'
+import ModalPlan from '@/components/chat/Menu/FooterMenuContent/ModalPlan'
+import ModalSettings from '@/components/chat/Menu/FooterMenuContent/ModalSettings'
 
 export default function FooterMenuContent() {
+  const router = useRouter()
   const {user} = useUser()
-  const [isDropDownOpen, setIsDropDownOpen] = useState(false)
+  const [isDropDownOpen, setIsDropDownOpen] = useState<boolean>(false)
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
+  const [activeModal, setActiveModal] = useState<string | null>(null)
   const dropDownDivRef = useRef<HTMLDivElement>(null)
   const triggerDivRef = useRef<HTMLDivElement>(null)
-  const router = useRouter()
 
   useOutsideClick(dropDownDivRef, (event) => {
     if (!triggerDivRef.current?.contains(event!.target as Node)) setIsDropDownOpen(false)
   })
+
+  const handlerMyPlan = () => {
+    setIsDropDownOpen(false)
+    setIsModalOpen(true)
+    setActiveModal('MyPlan')
+  }
+
+  const handlerSettings = () => {
+    setIsDropDownOpen(false)
+    setIsModalOpen(true)
+    setActiveModal('Settings')
+  }
 
   return (
     <>
@@ -34,6 +51,7 @@ export default function FooterMenuContent() {
                   imageSrc={item.imageSrc}
                   imageAlt={item.imageAlt}
                   text={item.text}
+                  onClick={item.id === 1 ? handlerMyPlan : handlerSettings}
                 />
               ))
             }
@@ -52,6 +70,15 @@ export default function FooterMenuContent() {
               <p className={'text-sm'}>Go Back</p>
             </div>
           </DropDown>
+        )
+      }
+
+      {
+        isModalOpen && (
+          <Modal onClose={() => setIsModalOpen(false)}>
+            {activeModal === 'MyPlan' && <ModalPlan/>}
+            {activeModal === 'Settings' && <ModalSettings/>}
+          </Modal>
         )
       }
 

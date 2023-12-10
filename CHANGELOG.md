@@ -20,3 +20,5 @@
 - complete chatpage layout.
 - add select ui component
 - add textarea ui component
+- add dropdown ui component
+- add modal ui component
