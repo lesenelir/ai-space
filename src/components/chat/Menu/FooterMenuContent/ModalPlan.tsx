@@ -29,7 +29,7 @@ export default function ModalPlan(props: IProps) {
       </div>
 
       {/* main */}
-      <div className={'flex-1 p-4'}>
+      <div className={'flex-1 p-4 overflow-y-auto custom-scrollbar'}>
         <div className={'flex items-center gap-3'}>
           <Image
             width={36}

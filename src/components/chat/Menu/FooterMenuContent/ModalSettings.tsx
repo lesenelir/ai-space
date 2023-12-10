@@ -31,16 +31,16 @@ export default function ModalSettings(props: IProps) {
       </div>
 
       {/* Main */}
-      <div className={'flex-1 p-4 flex flex-row'}>
+      <div className={'flex-1 p-4 flex flex-row overflow-y-auto custom-scrollbar'}>
         <div className={'w-2/3'}>
           <form onSubmit={handlerSave}>
             <label className={''} htmlFor="openai">
               <span className={'text-sm'}>Openai API Key:</span>
-              <Input id={'openai'} type={'password'} className={'w-1/2 h-6 text-gray-900'}/>
+              <Input id={'openai'} type={'password'} className={'h-6 text-gray-900'}/>
             </label>
             <label className={''} htmlFor="baidu">
               <span className={'text-sm'}>Baidu API Key:</span>
-              <Input id={'baidu'} type={'password'} className={'w-1/2 h-6 text-gray-900'}/>
+              <Input id={'baidu'} type={'password'} className={'h-6 text-gray-900'}/>
             </label>
             <button type={'submit'} className={'mt-2 p-1 rounded-md bg-gray-200 text-gray-900 hover:bg-gray-300 transition-change'}>Save All</button>
           </form>
