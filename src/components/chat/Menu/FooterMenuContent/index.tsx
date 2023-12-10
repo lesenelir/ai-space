@@ -76,8 +76,8 @@ export default function FooterMenuContent() {
       {
         isModalOpen && (
           <Modal onClose={() => setIsModalOpen(false)}>
-            {activeModal === 'MyPlan' && <ModalPlan/>}
-            {activeModal === 'Settings' && <ModalSettings/>}
+            {activeModal === 'MyPlan' && <ModalPlan setIsModalOpen={setIsModalOpen}/>}
+            {activeModal === 'Settings' && <ModalSettings setIsModalOpen={setIsModalOpen}/>}
           </Modal>
         )
       }

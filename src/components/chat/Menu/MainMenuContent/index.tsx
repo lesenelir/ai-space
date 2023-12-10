@@ -1,7 +1,7 @@
 
 export default function MainMenuContent() {
   return (
-    <div className={'flex-1 overflow-y-scroll custom-scrollbar mb-2'}>
+    <div className={'flex-1 overflow-y-auto custom-scrollbar mb-2'}>
       second
       secondsecondsecondas asdasdas asdasdasd asdasdasdas asdasdas
 

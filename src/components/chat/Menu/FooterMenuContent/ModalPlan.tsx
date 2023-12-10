@@ -4,7 +4,12 @@ import { useRouter } from 'next/router'
 import XIcon from '@/components/icons/XIcon'
 import CheckIcon from '@/components/icons/CheckIcon'
 
-export default function ModalPlan() {
+interface IProps {
+  setIsModalOpen: (isModalOpen: boolean) => void
+}
+
+export default function ModalPlan(props: IProps) {
+  const {setIsModalOpen} = props
   const router = useRouter()
 
   return (
@@ -15,7 +20,12 @@ export default function ModalPlan() {
           <p className={'font-medium text-2xl'}>My Plan</p>
           <p className={'font-medium text-2xl'}>Upgrade your plan</p>
         </div>
-        <XIcon width={24} height={24} className={'h-1/4 cursor-pointer text-gray-200/70 hover:text-gray-200 transition-change'}/>
+        <XIcon
+          width={24}
+          height={24}
+          className={'h-1/4 cursor-pointer text-gray-200/70 hover:text-gray-200 transition-change'}
+          onClick={() => setIsModalOpen(false)}
+        />
       </div>
 
       {/* main */}
