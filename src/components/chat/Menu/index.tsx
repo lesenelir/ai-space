@@ -25,7 +25,7 @@ export default function Menu() {
               max-md:fixed max-md:top-0 max-md:left-0 z-10 max-md:h-full
             `}
           >
-            <div className={'w-full h-full flex flex-col'}>
+            <div className={'relative w-full h-full flex flex-col'}>
               {/* HeaderMenuContent: new chat + create folder icon + scalability icon */}
               <HeaderMenuContent/>
 
