@@ -18,7 +18,7 @@ const Modal = forwardRef<HTMLDivElement, IProps>((
     >
       {/* Content */}
       <motion.div
-        className={`w-1/3 h-1/3 p-3 bg-blue-400 max-lg:w-8/12`}
+        className={`w-1/3 h-1/2 bg-chatpage-menu-background rounded-md max-lg:w-8/12`}
         initial={{
           opacity: 0,
           scale: 0.75,
