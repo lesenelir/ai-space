@@ -16,9 +16,9 @@ const DropDown = forwardRef<HTMLDivElement, IDropDownProps>((
     >
       {/* motion.div cant have ref props, so we need to wrapper one layer */}
       <motion.div
-        initial={{ opacity: 0, y: '100%' }}
+        initial={{ opacity: 0, y: '20%' }}
         animate={{ opacity: 1, y: 0 }}
-        className={`bg-blue-400 w-full p-3 rounded-md flex flex-col gap-4 mb-2`}
+        className={`bg-gray-300 text-gray-900 w-full p-3 rounded-md flex flex-col gap-2 mb-2`}
       >
         {children}
       </motion.div>

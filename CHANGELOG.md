@@ -19,3 +19,4 @@
 - Resizeable UI component to custom the width of the menu.
 - complete chatpage layout.
 - add select ui component
+- add textarea ui component
