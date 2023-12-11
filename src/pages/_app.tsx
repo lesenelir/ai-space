@@ -2,12 +2,13 @@ import { Inter } from 'next/font/google'
 import type { AppProps } from 'next/app'
 import { ThemeProvider } from 'next-themes'
 import { ClerkProvider } from '@clerk/nextjs'
+import { appWithTranslation } from 'next-i18next'
 
 import '@/styles/globals.css'
 
 const inter = Inter({ subsets: ['latin'] })
 
-export default function App({ Component, pageProps }: AppProps) {
+function App({ Component, pageProps }: AppProps) {
   return (
     <div className={`${inter.className}`}>
       <ThemeProvider>
@@ -18,3 +19,5 @@ export default function App({ Component, pageProps }: AppProps) {
     </div>
   )
 }
+
+export default appWithTranslation(App)

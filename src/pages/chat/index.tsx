@@ -1,4 +1,6 @@
 import Head from 'next/head'
+import { type GetServerSideProps } from 'next'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 import Menu from '@/components/chat/Menu'
 import Message from '@/components/chat/Message'
@@ -18,6 +20,16 @@ export default function chatPage() {
       </div>
     </>
   )
+}
+
+export const getServerSideProps: GetServerSideProps = async ({locale}) => {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale!, [
+        'common',
+      ]))
+    }
+  }
 }
 
 // import { UserButton } from '@clerk/nextjs'
