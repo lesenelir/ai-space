@@ -1,25 +1,32 @@
 # Changelog
 
+This changelog provides a detailed record of the updates and improvements made to the project since its inception.
+
 ## Beta
 
 ### v0.0.1
 
-- get started
-- use `clerk` package to manage login and logout
-- use `prisma` package to manage the database
+- Initialized project setup.
+- Integrated `clerk` for authentication (login/logout).
+- Integrated `prisma` for database management.
 
 
 ### v0.0.2
 
-- complete the homepage.
+- Integrated `typewriter-effect` for home page animation.
+- Completed homepage design and code.
 
 ### v0.0.3
 
-- add framer-motion to make the homepage more beautiful.
-- Resizeable UI component to custom the width of the menu.
-- complete chatpage layout.
-- add select ui component
-- add textarea ui component
-- add dropdown ui component
-- add modal ui component
-- add darkMode & themeSwitcher
+- Integrated `framer-motion` for enhanced UI animations.
+- Implemented resizable UI for menu customization.
+- UI components added:
+  - dropdown
+  - modal
+  - select
+  - textarea
+  - resizable 
+- Integrated `next-themes` for dark mode and theme switching.
+- Integrated `next-i18next` for internationalization support.
+- Completed basic implementation of the chat page.
+
