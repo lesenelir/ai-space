@@ -4,6 +4,7 @@ const config: Config = {
   content: [
     './src/**/*.{js,ts,jsx,tsx,mdx}'
   ],
+  darkMode: ['class', '[data-theme="dark"]'],
   safelist: [
     'bg-openai-b-0', 'text-openai-t-0', 'bg-openai-t-0',
     'bg-openai-b-1', 'text-openai-t-1', 'bg-openai-t-1',
