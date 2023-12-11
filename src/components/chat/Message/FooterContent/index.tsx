@@ -1,10 +1,12 @@
 import { type ChangeEvent, type KeyboardEvent, useRef } from 'react'
+import { useTranslation } from 'next-i18next'
 
 import TextArea from '@/components/ui/TextArea'
 import SendIcon from '@/components/icons/SendIcon'
 
 export default function FooterContent() {
   const ref = useRef<HTMLTextAreaElement>(null)
+  const { t } = useTranslation('common')
   const maxHeight = 200
 
   const handleSubmit = () => {
@@ -33,7 +35,7 @@ export default function FooterContent() {
     <div className={'w-full flex justify-center items-center p-3'}>
       <TextArea
         ref={ref}
-        placeholder={'Type a message ...'}
+        placeholder={t('chatPage.message.textAreaPlaceholder')}
         className={`
           lg:w-[640px] -ml-6 resize-none rounded-xl drop-shadow custom-message-light-scrollbar
           dark:bg-chatpage-message-background-dark 

@@ -2,7 +2,7 @@ export default function MainContent() {
   return (
     <div className={'w-full flex-1 overflow-y-auto custom-message-light-scrollbar'}>
       {/* basic content */}
-      <div className={'lg:w-[640px] mx-auto p-3'}>
+      <div className={'lg:w-[640px] mx-auto p-3 dark:text-gray-50'}>
         <p>hello</p>
         <p>hello</p>
         <p>hello</p>

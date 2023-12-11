@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import { useRouter } from 'next/router'
+import { useTranslation } from 'next-i18next'
 
 import XIcon from '@/components/icons/XIcon'
 import CheckIcon from '@/components/icons/CheckIcon'
@@ -10,6 +11,7 @@ interface IProps {
 
 export default function ModalPlan(props: IProps) {
   const {setIsModalOpen} = props
+  const {t} = useTranslation('common')
   const router = useRouter()
 
   return (
@@ -17,8 +19,8 @@ export default function ModalPlan(props: IProps) {
       {/* header */}
       <div className={'h-1/4 p-4 flex flex-row justify-between rounded-t-md bg-chatpage-menu-hover'}>
         <div className={'flex flex-col justify-between'}>
-          <p className={'font-medium text-2xl'}>My Plan</p>
-          <p className={'font-medium text-2xl'}>Upgrade your plan</p>
+          <p className={'font-medium text-2xl'}>{t('chatPage.menu.plan')}</p>
+          <p className={'font-medium text-2xl'}>{t('chatPage.menu.upgradeText')}</p>
         </div>
         <XIcon
           width={24}
@@ -37,9 +39,9 @@ export default function ModalPlan(props: IProps) {
             src={'/leaf.svg'}
             alt={'Leaf'}
           />
-          <span className={'text-xl'}>Plus</span>
+          <span className={'text-xl'}>{t('chatPage.menu.plus')}</span>
         </div>
-        <p className={'my-2 text-gray-200/40'}>Credit: USD $5/Once</p>
+        <p className={'my-2 text-gray-200/40'}>{t('chatPage.menu.credit')}</p>
 
         <button
           className={`
@@ -47,28 +49,30 @@ export default function ModalPlan(props: IProps) {
           `}
           onClick={() => console.log('Todo: Go to plus page')}
         >
-          Go to Plus
+          {t('chatPage.menu.plusLink')}
         </button>
 
         <div className={'flex gap-2 my-2'}>
           <CheckIcon width={16} height={16}/>
-          <p className={'text-sm'}>Use credit points to substitute API_Key</p>
+          <p className={'text-sm'}>{t('chatPage.menu.plus1')}</p>
         </div>
         <div className={'flex gap-2 my-2'}>
           <CheckIcon width={16} height={16}/>
-          <p className={'text-sm'}>Charge only 0.3 more than the official fee</p>
+          <p className={'text-sm'}>{t('chatPage.menu.plus2')}</p>
         </div>
         <div className={'flex gap-2 my-2'}>
           <CheckIcon width={16} height={16}/>
-          <p className={'text-sm'}>Get 100 credit points for free when you register</p>
+          <p className={'text-sm'}>{t('chatPage.menu.plus3')}</p>
         </div>
       </div>
 
       {/* footer */}
       <div className={'h-1/6 flex justify-center items-center p-2 text-sm rounded-b-md bg-chatpage-menu-hover'}>
         <p>
-          Need more capabilities? See {' '}
-          <span className={'underline cursor-pointer'} onClick={() => router.push('/#research')}>AI Space Website</span>
+          {t('chatPage.menu.footer')} {' '}
+          <span className={'underline cursor-pointer'} onClick={() => router.push('/#research')}>
+            {t('chatPage.menu.footerLink')}
+          </span>
         </p>
       </div>
     </div>

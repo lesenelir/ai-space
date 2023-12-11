@@ -2,6 +2,7 @@ import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { UserButton, useUser } from '@clerk/nextjs'
 import { type MouseEvent, useRef, useState } from 'react'
+import { useTranslation } from 'next-i18next'
 
 import Modal from '@/components/ui/Modal'
 import DropDown from '@/components/ui/DropDown'
@@ -12,6 +13,7 @@ import ModalSettings from '@/components/chat/Menu/FooterMenuContent/ModalSetting
 
 export default function FooterMenuContent() {
   const router = useRouter()
+  const {t} = useTranslation('common')
   const {user} = useUser()
   const [isDropDownOpen, setIsDropDownOpen] = useState<boolean>(false)
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
@@ -50,7 +52,7 @@ export default function FooterMenuContent() {
                   key={item.id}
                   imageSrc={item.imageSrc}
                   imageAlt={item.imageAlt}
-                  text={item.text}
+                  text={t(item.textKey)}
                   onClick={item.id === 1 ? handlerMyPlan : handlerSettings}
                 />
               ))
@@ -67,7 +69,7 @@ export default function FooterMenuContent() {
                 src={'/log-out.svg'}
                 alt={'Logout'}
               />
-              <p className={'text-sm'}>Go Back</p>
+              <p className={'text-sm'}>{t('chatPage.menu.back')}</p>
             </div>
           </DropDown>
         )

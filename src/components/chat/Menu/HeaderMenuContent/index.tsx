@@ -1,4 +1,5 @@
 import { useSetAtom } from 'jotai'
+import { useTranslation } from 'next-i18next'
 
 import { isOpenAtom } from '@/atoms'
 import FolderPlusIcon from '@/components/icons/FolderPlusIcon'
@@ -6,6 +7,7 @@ import ColumnsIcon from '@/components/icons/ColumnsIcon'
 
 export default function HeaderMenuContent() {
   const setIsOpen = useSetAtom(isOpenAtom)
+  const { t } = useTranslation('common')
 
   return (
     <div className={'w-full mb-2'}>
@@ -16,7 +18,7 @@ export default function HeaderMenuContent() {
           w-5/6 font-light menu-first-content-item 
           transition-change cursor-pointer hover:bg-gray-500/10
         `}>
-          New Chat
+          {t('chatPage.menu.newChat')}
         </div>
 
         <div className={'flex-1 flex justify-between gap-2 ml-auto'}>
@@ -43,7 +45,7 @@ export default function HeaderMenuContent() {
       {/* Search */}
       <input
         type="text"
-        placeholder={'search...'}
+        placeholder={t('chatPage.menu.search')}
         className={`
           w-full h-[48px] menu-first-content-item bg-chatpage-menu-background
           focus:outline-none focus:ring-2 focus:ring-gray-400 focus:border-transparent
