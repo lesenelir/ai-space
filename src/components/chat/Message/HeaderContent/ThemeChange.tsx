@@ -4,7 +4,7 @@ import { useTheme } from 'next-themes'
 
 export default function ThemeChange() {
   const [mounted, setMounted] = useState<boolean>(false)
-  const {theme, setTheme} = useTheme()
+  const {resolvedTheme, setTheme} = useTheme()
 
   useEffect(() => {
     setMounted(true)
@@ -12,12 +12,10 @@ export default function ThemeChange() {
 
   if (!mounted) return null
 
-  console.log('theme: ', theme)
-
   return (
     <div>
       {
-        theme === 'light' ? (
+        resolvedTheme === 'light' ? (
           <Image
             src={'/sun.svg'}
             alt={'sun icon'}
