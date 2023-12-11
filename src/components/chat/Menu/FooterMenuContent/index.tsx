@@ -61,7 +61,7 @@ export default function FooterMenuContent() {
             {/* logout */}
             <div
               className={'flex items-center gap-4 p-3 rounded-md cursor-pointer hover:bg-gray-200 transition-change'}
-              onClick={() => router.back()}
+              onClick={() => router.push('/')}
             >
               <Image
                 width={20}
