@@ -41,7 +41,10 @@ export default function Menu() {
             <ColumnsIcon
               width={24}
               height={24}
-              className={'border p-2 rounded-lg cursor-pointer hover:bg-gray-200 transition-change'}
+              className={`
+                border p-2 rounded-lg cursor-pointer hover:bg-gray-200 transition-change
+                dark:border-gray-500 dark:hover:bg-gray-500/20
+              `}
               onClick={toggleOpen}
             />
           </div>

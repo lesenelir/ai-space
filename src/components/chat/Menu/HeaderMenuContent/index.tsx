@@ -46,6 +46,7 @@ export default function HeaderMenuContent() {
         placeholder={'search...'}
         className={`
           w-full h-[48px] menu-first-content-item bg-chatpage-menu-background
+          focus:outline-none focus:ring-2 focus:ring-gray-400 focus:border-transparent
         `}
       />
     </div>

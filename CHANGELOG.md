@@ -22,3 +22,4 @@
 - add textarea ui component
 - add dropdown ui component
 - add modal ui component
+- add darkMode & themeSwitcher

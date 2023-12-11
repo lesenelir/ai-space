@@ -1,23 +1,13 @@
-import Image from 'next/image'
+import LanguageIcon from '@/components/icons/LanguageIcon'
 
 export default function I18Change() {
   return (
     <div className={''}>
-      {/* black */}
-      <Image
+      <LanguageIcon
         width={24}
         height={24}
-        alt={'I18 Icon'}
-        src={'/language-translate-light.svg'}
         className={'cursor-pointer hover:opacity-60 transition-change'}
       />
-      {/*<Image*/}
-      {/*  width={24}*/}
-      {/*  height={24}*/}
-      {/*  alt={'I18 Icon'}*/}
-      {/*  src={'/language-translate-dark.svg'}*/}
-      {/*  className={'cursor-pointer hover:opacity-60'}*/}
-      {/*/>*/}
     </div>
   )
 }
