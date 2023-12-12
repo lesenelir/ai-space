@@ -1,6 +1,6 @@
 import { useAtomValue } from 'jotai'
 
-import { isOpenAtom } from '@/atoms'
+import { isMenuOpenAtom } from '@/atoms'
 import Select from '@/components/ui/Select'
 import I18Change from '@/components/chat/Message/HeaderContent/I18Change'
 import ThemeChange from '@/components/chat/Message/HeaderContent/ThemeChange'
@@ -12,7 +12,7 @@ const options = [
 ]
 
 export default function HeaderContent() {
-  const isOpen = useAtomValue(isOpenAtom)
+  const isMenuOpen = useAtomValue(isMenuOpenAtom)
 
   return (
     <div
@@ -22,7 +22,7 @@ export default function HeaderContent() {
       `}
     >
       {/* left icon */}
-      <div className={`${isOpen ? '' : 'ml-12'}`}>
+      <div className={`${isMenuOpen ? '' : 'ml-12'}`}>
         <Select
           width={`w-fit`}
           options={options}

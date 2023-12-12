@@ -1,6 +1,6 @@
 import { useAtom } from 'jotai'
 
-import { isOpenAtom } from '@/atoms'
+import { isMenuOpenAtom } from '@/atoms'
 import ResizableDiv from '@/components/ui/ResizableDiv'
 import HeaderMenuContent from '@/components/chat/Menu/HeaderMenuContent'
 import MainMenuContent from '@/components/chat/Menu/MainMenuContent'
@@ -8,14 +8,14 @@ import FooterMenuContent from '@/components/chat/Menu/FooterMenuContent'
 import ColumnsIcon from '@/components/icons/ColumnsIcon'
 
 export default function Menu() {
-  const [isOpen, setIsOpen] = useAtom(isOpenAtom)
+  const [isMenuOpen, setIsMenuOpen] = useAtom(isMenuOpenAtom)
 
-  const toggleOpen = () => setIsOpen(!isOpen)
+  const toggleOpen = () => setIsMenuOpen(!isMenuOpen)
 
   return (
     <>
       {
-        isOpen ? (
+        isMenuOpen ? (
           <ResizableDiv
             initialWidth={320}
             minPercentage={1 / 6}
@@ -50,7 +50,6 @@ export default function Menu() {
           </div>
         )
       }
-
     </>
   )
 }

@@ -1,12 +1,12 @@
 import { useSetAtom } from 'jotai'
 import { useTranslation } from 'next-i18next'
 
-import { isOpenAtom } from '@/atoms'
+import { isMenuOpenAtom } from '@/atoms'
 import FolderPlusIcon from '@/components/icons/FolderPlusIcon'
 import ColumnsIcon from '@/components/icons/ColumnsIcon'
 
 export default function HeaderMenuContent() {
-  const setIsOpen = useSetAtom(isOpenAtom)
+  const setIsMenuOpen = useSetAtom(isMenuOpenAtom)
   const { t } = useTranslation('common')
 
   return (
@@ -35,7 +35,7 @@ export default function HeaderMenuContent() {
             className={`
               menu-first-content-item transition-change cursor-pointer hover:bg-gray-500/10
             `}
-            onClick={() => setIsOpen(pre => !pre)}
+            onClick={() => setIsMenuOpen(pre => !pre)}
           >
             <ColumnsIcon width={24} height={24}/>
           </div>
