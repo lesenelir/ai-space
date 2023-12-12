@@ -34,24 +34,34 @@ export default function ModalSettings(props: IProps) {
 
       {/* Main */}
       <div className={'flex-1 p-4 flex flex-row overflow-y-auto custom-scrollbar'}>
+        {/* Main Left */}
         <div className={'w-2/3'}>
-          <form onSubmit={handlerSave}>
-            <label className={''} htmlFor="openai">
+          <form onSubmit={handlerSave} className={'flex flex-col gap-2'}>
+            <label htmlFor="openai">
               <span className={'text-sm'}>{t('chatPage.menu.openAPIKey')}：</span>
-              <Input id={'openai'} type={'password'} className={'h-6 text-gray-900'}/>
+              <Input
+                id={'openai'}
+                type={'password'}
+                className={'h-8 text-gray-50'}
+              />
             </label>
-            <label className={''} htmlFor="baidu">
+            <label htmlFor="baidu">
               <span className={'text-sm'}>{t('chatPage.menu.baiduAPIKey')}：</span>
-              <Input id={'baidu'} type={'password'} className={'h-6 text-gray-900'}/>
+              <Input
+                id={'baidu'}
+                type={'password'}
+                className={'h-8 text-gray-50'}
+              />
             </label>
-            <button type={'submit'} className={'mt-2 p-1 rounded-md bg-gray-200 text-gray-900 hover:bg-gray-300 transition-change'}>
+            <button type={'submit'} className={'mt-2 w-4/5 p-1 rounded-md bg-gray-200 text-gray-900 hover:bg-gray-300 transition-change'}>
               {t('chatPage.menu.saveAll')}
             </button>
           </form>
         </div>
 
-        <div className={'w-[1px] h-full bg-gray-300'}></div>
+        <div className={'w-[1px] h-full bg-gray-300'}/>
 
+        {/* Main Right */}
         <div className={'w-1/3 flex flex-col items-end gap-4'}>
           <button className={'w-4/5 p-1 rounded-md bg-gray-200 text-gray-900 hover:bg-gray-300 transition-change'}>
             {t('chatPage.menu.importData')}
@@ -60,7 +70,6 @@ export default function ModalSettings(props: IProps) {
             {t('chatPage.menu.exportData')}
           </button>
         </div>
-
       </div>
 
       {/* Footer */}
