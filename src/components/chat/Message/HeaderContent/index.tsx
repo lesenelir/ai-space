@@ -1,3 +1,4 @@
+import { ReactNode } from 'react'
 import { useAtomValue } from 'jotai'
 
 import { isMenuOpenAtom } from '@/atoms'
@@ -6,7 +7,12 @@ import I18Change from '@/components/chat/Message/HeaderContent/I18Change'
 import ThemeChange from '@/components/chat/Message/HeaderContent/ThemeChange'
 import { GPT3, GPT4 } from '@/components/chat/Message/HeaderContent/OptionData'
 
-const options = [
+export type TOptions = {
+  value: ReactNode
+  label: string
+}
+
+const options: TOptions[] = [
   {value: <GPT3/>, label: 'GPT-3.5 Turbo'},
   {value: <GPT4/>, label: 'GPT-4 Turbo'},
 ]

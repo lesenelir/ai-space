@@ -1,14 +1,10 @@
 import { motion } from 'framer-motion'
-import { ReactNode, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 
 import useOutsideClick from '@/hooks/useOutsideClick'
 import ChevronUpIcon from '@/components/icons/ChevronUpIcon'
 import ChevronDownIcon from '@/components/icons/ChevronDownIcon'
-
-type TOptions = {
-  value: ReactNode
-  label: string
-}
+import { type TOptions } from '@/components/chat/Message/HeaderContent'
 
 interface IProps {
   width: string
