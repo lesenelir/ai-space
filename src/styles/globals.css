@@ -11,6 +11,10 @@
   @apply transition-all duration-300 ease-in-out;
 }
 
+.hover-transition-change {
+  @apply hover:transition-all hover:duration-300 hover:ease-in-out;
+}
+
 
 /* menu */
 .menu-first-content-item {

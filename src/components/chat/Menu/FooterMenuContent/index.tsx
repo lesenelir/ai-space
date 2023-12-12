@@ -44,6 +44,10 @@ export default function FooterMenuContent() {
           <DropDown
             ref={dropDownDivRef}
             className={'absolute left-0 bottom-12 w-full rounded-md z-10'}
+            motionAnimation={{
+              initial: { opacity: 0, y: '20%' },
+              animate: { opacity: 1, y: 0 },
+            }}
           >
             {/* user data */}
             {
