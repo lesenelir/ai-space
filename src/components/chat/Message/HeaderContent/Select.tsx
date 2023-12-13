@@ -25,26 +25,29 @@ export default function Select(props: IProps) {
   return (
     <div
       className={`
-        w-fit relative flex gap-2 p-2 cursor-pointer rounded-lg text-sm 
+        w-fit relative flex gap-3 p-2 cursor-pointer rounded-lg
         border border-gray-200 hover:bg-gray-200/80 hover-transition-change
         dark:border-gray-500 dark:hover:bg-gray-500/10
       `}
       ref={wrapperRef}
       onClick={() => setIsDropDownOpen(!isDropDownOpen)}
     >
-      {selectedOption}
-      {isDropDownOpen ? (
-        <ChevronUpIcon width={16} height={16} className={'flex items-center'}/>
-      ) : (
-        <ChevronDownIcon width={16} height={16} className={'flex items-center'}/>
-      )}
+      <p className={'text-sm'}>{selectedOption}</p>
+      {
+        isDropDownOpen ? (
+          <ChevronUpIcon width={16} height={16} className={'flex items-center'}/>
+        ) : (
+          <ChevronDownIcon width={16} height={16} className={'flex items-center'}/>
+        )
+      }
 
+      {/* Dropdown Items */}
       {
         isDropDownOpen && (
           <DropDown
-            className={'absolute left-0 top-10 w-60 rounded-md z-10'}
+            className={'absolute left-0 top-10 w-56 rounded-md z-10'}
             motionClassName={`
-              w-60 bg-gray-50 border border-gray-200 rounded-md p-2
+              w-full bg-gray-50 border border-gray-200 rounded-md p-2
               dark:bg-chatpage-message-background-dark dark:border-gray-500
             `}
             motionAnimation={{
