@@ -42,7 +42,7 @@ export default function ModalSettings(props: IProps) {
               <Input
                 id={'openai'}
                 type={'password'}
-                className={'h-8 text-gray-50'}
+                className={'h-8 text-gray-900 dark:text-gray-50'}
               />
             </label>
             <label htmlFor="baidu">
@@ -50,7 +50,7 @@ export default function ModalSettings(props: IProps) {
               <Input
                 id={'baidu'}
                 type={'password'}
-                className={'h-8 text-gray-50'}
+                className={'h-8 text-gray-900 dark:text-gray-50'}
               />
             </label>
             <button type={'submit'} className={'mt-2 w-4/5 p-1 rounded-md bg-gray-200 text-gray-900 hover:bg-gray-300 transition-change'}>
