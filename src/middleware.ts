@@ -1,4 +1,4 @@
-import { authMiddleware } from "@clerk/nextjs"
+import { authMiddleware, redirectToSignIn } from "@clerk/nextjs"
 
 /**
  *  This file will be run before every pages router and api routes.
@@ -13,26 +13,29 @@ import { authMiddleware } from "@clerk/nextjs"
 // Please edit this to allow other routes to be public as needed.
 // See https://clerk.com/docs/references/nextjs/auth-middleware for more information about configuring your Middleware.
 export default authMiddleware({
-  publicRoutes: ['/', '/api/auth'],    // Able to prevent Clerk authentication from protecting the api route.
-  // async afterAuth(auth, req, res) {
-  //   // When you are in Postman to debug api, it will run this code. So you should comment on it.
-  //   if (!auth.userId && !auth.isPublicRoute) {
-  //     return redirectToSignIn({ returnBackUrl: req.url })
-  //   }
-  //   console.log('11', auth.userId, auth.user)
-  //   const options = {
-  //     method: 'POST',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //     },
-  //     body: JSON.stringify({ userId: auth.userId })
-  //   }
-  //   const response = await fetch('http:localhost:3000/api/auth', options)
-  //   const data = await response.json()
-  //   // get user data
-  //   // data.status & data.user
-  //   console.log(data)
-  // }
+  publicRoutes: ['/'],    // Able to prevent Clerk authentication from protecting the api route.
+  async afterAuth(auth, req) {
+    // When you are in Postman to debug api, it will run this code. So you should comment on it.
+    if (!auth.userId && !auth.isPublicRoute) {
+      return redirectToSignIn({ returnBackUrl: req.url })
+    }
+
+    // Check if the current user exists in my database.
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL
+    const options = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ userId: auth.userId })
+    }
+
+    try {
+      await fetch(`${apiUrl}/api/auth`, options)
+    } catch (e) {
+      console.log('Error from middleware: ', e)
+    }
+  }
 })
 
 export const config = {
