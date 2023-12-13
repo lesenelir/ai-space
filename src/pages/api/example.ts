@@ -3,7 +3,9 @@ import type { NextApiRequest, NextApiResponse } from "next"
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
   const { userId } = getAuth(req)
+
   console.log(userId)
+
   if (!userId) {
     return res.status(401).json({ error: "Unauthorized" })
   }
