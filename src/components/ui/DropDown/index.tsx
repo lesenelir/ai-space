@@ -22,7 +22,7 @@ const DropDown = forwardRef<HTMLDivElement, IDropDownProps>((
   return (
     <div
       ref={ref}
-      className={`absolute left-0 bottom-12 w-full ${className}`}
+      className={`absolute w-full ${className}`}
       {...props}
     >
       {/* motion.div cant have ref props, so we need to wrapper one layer */}

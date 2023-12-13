@@ -25,8 +25,8 @@ export default function Select(props: IProps) {
   return (
     <div
       className={`
-        w-fit relative flex gap-2 p-2 cursor-pointer border border-gray-20 rounded-lg text-sm 
-        hover:bg-gray-200/80 hover-transition-change
+        w-fit relative flex gap-2 p-2 cursor-pointer rounded-lg text-sm 
+        border border-gray-200 hover:bg-gray-200/80 hover-transition-change
         dark:border-gray-500 dark:hover:bg-gray-500/10
       `}
       ref={wrapperRef}
@@ -42,9 +42,9 @@ export default function Select(props: IProps) {
       {
         isDropDownOpen && (
           <DropDown
-            className={'absolute top-12 w-full rounded-md z-10'}
+            className={'absolute left-0 top-10 w-60 rounded-md z-10'}
             motionClassName={`
-              w-56 bg-gray-50 border border-gray-200 rounded-md p-2 hover-transition-change
+              w-60 bg-gray-50 border border-gray-200 rounded-md p-2
               dark:bg-chatpage-message-background-dark dark:border-gray-500
             `}
             motionAnimation={{
