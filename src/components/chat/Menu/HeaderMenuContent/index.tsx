@@ -9,15 +9,35 @@ export default function HeaderMenuContent() {
   const setIsMenuOpen = useSetAtom(isMenuOpenAtom)
   const { t } = useTranslation('common')
 
+  const handleNewChat = async () => {
+    const options = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }
+
+    try {
+      const response = await fetch('/api/chat/newChat', options)
+      const data = await response.json()
+      console.log(data)
+    } catch (e) {
+      console.error(e)
+    }
+  }
+
   return (
     <div className={'w-full mb-2'}>
       {/* first content */}
       <div className={'w-full h-[48px] flex gap-2 mb-2'}>
         {/* new chat */}
-        <div className={`
-          w-5/6 font-light menu-first-content-item 
-          transition-change cursor-pointer hover:bg-gray-500/10
-        `}>
+        <div
+          className={`
+            w-5/6 font-light menu-first-content-item 
+            transition-change cursor-pointer hover:bg-gray-500/10
+          `}
+          onClick={handleNewChat}
+        >
           {t('chatPage.menu.newChat')}
         </div>
 
