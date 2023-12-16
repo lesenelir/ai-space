@@ -3,6 +3,7 @@ import { PrismaClient } from '@prisma/client'
 import { createRouter } from 'next-connect'
 import { getAuth } from '@clerk/nextjs/server'
 import type { NextApiRequest, NextApiResponse } from 'next'
+import { toCamelArr } from '@/utils'
 
 const prisma = new PrismaClient()
 const router = createRouter<NextApiRequest, NextApiResponse>()
@@ -22,7 +23,7 @@ const handleNewChat = async (req: NextApiRequest, res: NextApiResponse) => {
     })
 
     // create a new chat item
-    const newChatItem = await prisma.chatItem.create({
+    await prisma.chatItem.create({
       data: {
         item_name: 'New Chat',
         item_uuid: uuidv4(),
@@ -32,7 +33,19 @@ const handleNewChat = async (req: NextApiRequest, res: NextApiResponse) => {
       }
     })
 
-    return res.status(200).json({ status: 'New Chat Item', newChatItem })
+    const userWithChatItems = await prisma.user.findUnique({
+      where: {
+        userId
+      },
+      include: {
+        chatItems: true
+      }
+    })
+
+    const chatItems = toCamelArr(userWithChatItems!.chatItems)
+    console.log(chatItems)
+
+    return res.status(200).json({ status: 'New Chat Item', chatItems })
   } catch (e) {
     return res.status(500).json({ error: e })}
 }

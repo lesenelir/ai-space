@@ -1,13 +1,14 @@
 import { useSetAtom } from 'jotai'
 import { useTranslation } from 'next-i18next'
 
-import { isMenuOpenAtom } from '@/atoms'
+import { chatItemsAtom, isMenuOpenAtom } from '@/atoms'
 import FolderPlusIcon from '@/components/icons/FolderPlusIcon'
 import ColumnsIcon from '@/components/icons/ColumnsIcon'
 
 export default function HeaderMenuContent() {
-  const setIsMenuOpen = useSetAtom(isMenuOpenAtom)
   const { t } = useTranslation('common')
+  const setIsMenuOpen = useSetAtom(isMenuOpenAtom)
+  const setChatItems = useSetAtom(chatItemsAtom)
 
   const handleNewChat = async () => {
     const options = {
@@ -19,8 +20,9 @@ export default function HeaderMenuContent() {
 
     try {
       const response = await fetch('/api/chat/newChat', options)
-      const data = await response.json()
+      const data = (await response.json()).chatItems
       console.log(data)
+      setChatItems(data)
     } catch (e) {
       console.error(e)
     }
