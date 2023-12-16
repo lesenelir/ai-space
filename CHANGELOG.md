@@ -32,6 +32,8 @@ This changelog provides a detailed record of the updates and improvements made t
 
 
 ### v0.0.4
-- finish frontend logic MainMenuContent ChatItemCard components
+- Complete the frontend logic for MainMenuContent and ChatItemCard components.
+- Add new Chat api routes.
+- Implement pre-rendering of chatItem list data using ssr when accessing the chat page.
 
 

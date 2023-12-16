@@ -4,5 +4,6 @@ export type TChatItem = {
   itemUuid: string
   createdAt: string
   updatedAt: string
+  userPrimaryId: number
 }
 
