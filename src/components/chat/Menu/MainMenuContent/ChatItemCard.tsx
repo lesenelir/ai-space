@@ -11,14 +11,14 @@ import MessageIcon from '@/components/icons/MessageIcon'
 interface IProps {
   id: number
   text: string
+  uuid: string
 }
 
 export default function ChatItemCard(props: IProps) {
-  const {text, id} = props
+  const {text, id, uuid} = props
+  const inputRef = useRef<HTMLInputElement>(null)
   const [isEdit, setIsEdit] = useState<boolean>(false)
   const [isDelete, setIsDelete] = useState<boolean>(false)
-  const [displayText, setDisplayText] = useState<string>(text)
-  const inputRef = useRef<HTMLInputElement>(null)
   const [chatItems, setChatItems] = useAtom(chatItemsAtom)
 
   const handleEditClick = () => {
@@ -30,15 +30,27 @@ export default function ChatItemCard(props: IProps) {
     }, 0)
   }
 
-  const handleEditCheckClick = () => {
-    setIsEdit(false)
-    if (inputRef.current) {
-      setDisplayText(inputRef.current.value)
+  // update chat item name
+  const handleEditCheckClick = async () => {
+    const options = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        item_uuid: uuid,
+        item_name: inputRef.current?.value
+      })
     }
-  }
 
-  const handleDeleteClick = () => {
-    setIsDelete(true)
+    try {
+      const response = await fetch('/api/chat/updateChatName', options)
+      const data = (await response.json()).chatItems
+      setChatItems(data)
+      setIsEdit(false)
+    } catch (e) {
+      console.log('update item name error: ', e)
+    }
   }
 
   const handleDeleteCheckClick = () => {
@@ -57,7 +69,7 @@ export default function ChatItemCard(props: IProps) {
           {/* left */}
           <div className={'flex flex-row gap-2 overflow-hidden'}>
             <MessageIcon width={16} height={16} className={'flex items-center'}/>
-            <p className={'truncate'}>{displayText}</p>
+            <p className={'truncate'}>{text}</p>
           </div>
           {/* right */}
           <div
@@ -100,7 +112,7 @@ export default function ChatItemCard(props: IProps) {
                     width={16}
                     height={16}
                     className={'flex items-center hover:text-white hover-transition-change'}
-                    onClick={handleDeleteClick}
+                    onClick={() => setIsDelete(true)}
                   />
                 </>
               )
@@ -116,7 +128,7 @@ export default function ChatItemCard(props: IProps) {
             <input
               ref={inputRef}
               type="text"
-              defaultValue={displayText}
+              defaultValue={text}
               className={`
                 rounded-md w-2/3 h-full p-2 bg-gray-500
                 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent

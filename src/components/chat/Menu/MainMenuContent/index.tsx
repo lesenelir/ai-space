@@ -15,6 +15,7 @@ export default function MainMenuContent() {
             key={chatItem.id}
             id={chatItem.id}
             text={chatItem.itemName}
+            uuid={chatItem.itemUuid}
           />
         ))
       }

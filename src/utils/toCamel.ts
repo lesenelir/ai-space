@@ -7,7 +7,7 @@ function toCamelCase(str: string): string {
   }).join('')
 }
 
-export default function toCamel(arr: AnyObject[]): AnyObject[] {
+export function toCamelArr(arr: AnyObject[]): AnyObject[] {
   let res: AnyObject[] = []
 
   for (const item of arr) {

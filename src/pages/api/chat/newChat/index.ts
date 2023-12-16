@@ -1,12 +1,11 @@
+import { v4 as uuidv4 } from 'uuid'
 import { PrismaClient } from '@prisma/client'
 import { createRouter } from 'next-connect'
 import { getAuth } from '@clerk/nextjs/server'
-import {v4 as uuidv4} from 'uuid'
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 const prisma = new PrismaClient()
 const router = createRouter<NextApiRequest, NextApiResponse>()
-
 
 const handleNewChat = async (req: NextApiRequest, res: NextApiResponse) => {
   const { userId } = getAuth(req)

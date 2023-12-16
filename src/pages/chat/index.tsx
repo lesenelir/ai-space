@@ -7,9 +7,9 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 import { TChatItem } from '@/types'
 import { chatItemsAtom } from '@/atoms'
+import { toCamelArr } from '@/utils/toCamel'
 import Menu from '@/components/chat/Menu'
 import Message from '@/components/chat/Message'
-import toCamel from '@/utils/toCamel'
 
 const prisma = new PrismaClient()
 
@@ -61,8 +61,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     }
   })
 
-  const chatItems = JSON.parse(JSON.stringify(toCamel(userWithChatItems!.chatItems)))
-  console.log(chatItems)
+  const chatItems = JSON.parse(JSON.stringify(toCamelArr(userWithChatItems!.chatItems)))
 
   return {
     props: {
