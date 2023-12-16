@@ -13,6 +13,7 @@ export default function MainMenuContent() {
         chatItemLists.map((chatItem: TChatItem) => (
           <ChatItemCard
             key={chatItem.id}
+            id={chatItem.id}
             text={chatItem.itemName}
           />
         ))

@@ -30,3 +30,8 @@ This changelog provides a detailed record of the updates and improvements made t
 - Integrated `next-i18next` for internationalization support.
 - Completed basic implementation of the chat page.
 
+
+### v0.0.4
+- finish frontend logic MainMenuContent ChatItemCard components
+
+
