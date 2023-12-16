@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react'
-import { useAtom } from 'jotai'
+import { useSetAtom } from 'jotai'
 
 import { chatItemsAtom } from '@/atoms'
 import XIcon from '@/components/icons/XIcon'
@@ -9,17 +9,17 @@ import CheckIcon from '@/components/icons/CheckIcon'
 import MessageIcon from '@/components/icons/MessageIcon'
 
 interface IProps {
-  id: number
+  id?: number
   text: string
   uuid: string
 }
 
 export default function ChatItemCard(props: IProps) {
-  const {text, id, uuid} = props
+  const {text, uuid} = props
   const inputRef = useRef<HTMLInputElement>(null)
   const [isEdit, setIsEdit] = useState<boolean>(false)
   const [isDelete, setIsDelete] = useState<boolean>(false)
-  const [chatItems, setChatItems] = useAtom(chatItemsAtom)
+  const setChatItems = useSetAtom(chatItemsAtom)
 
   const handleEditClick = () => {
     setIsEdit(true)
@@ -53,10 +53,24 @@ export default function ChatItemCard(props: IProps) {
     }
   }
 
-  const handleDeleteCheckClick = () => {
-    const newChatItems = chatItems.filter((chatItem) => chatItem.id !== id)
-    setChatItems(newChatItems)
-    setIsDelete(false)
+  // delete chat item
+  const handleDeleteCheckClick = async () => {
+    const options = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({item_uuid: uuid})
+    }
+
+    try {
+      const response = await fetch('/api/chat/deleteChatItem', options)
+      const data = (await response.json()).chatItems
+      setChatItems(data)
+      setIsDelete(false)
+    } catch (e) {
+      console.log('delete item error: ', e)
+    }
   }
 
   return (
