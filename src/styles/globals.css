@@ -21,18 +21,6 @@
   @apply rounded-lg border border-gray-500 flex justify-start items-center p-2;
 }
 
-.chat-item:hover .icon-hidden {
-  opacity: 1;
-}
-
-.icon-hidden {
-  @apply opacity-0 transition-opacity duration-300 ease-in-out;
-}
-
-.icon-show {
-  @apply opacity-100 transition-opacity duration-300 ease-in-out;
-}
-
 
 /* menu secondContentArea overflow scrollbar */
 .custom-scrollbar::-webkit-scrollbar {

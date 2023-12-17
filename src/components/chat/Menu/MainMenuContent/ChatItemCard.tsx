@@ -7,6 +7,7 @@ import EditIcon from '@/components/icons/EditIcon'
 import TrashIcon from '@/components/icons/TrashIcon'
 import CheckIcon from '@/components/icons/CheckIcon'
 import MessageIcon from '@/components/icons/MessageIcon'
+import StarIcon from '@/components/icons/StarIcon'
 
 interface IProps {
   id?: number
@@ -76,22 +77,18 @@ export default function ChatItemCard(props: IProps) {
   return (
     <div className={`
       w-full h-11 p-2 flex justify-between cursor-pointer rounded-md
-      hover:bg-chatpage-menu-hover hover-transition-change chat-item
+      hover:bg-chatpage-menu-hover hover-transition-change group
     `}>
       {!isEdit && (
         <>
           {/* left */}
           <div className={'flex flex-row gap-2 overflow-hidden'}>
-            <MessageIcon width={16} height={16} className={'flex items-center'}/>
+            <MessageIcon width={16} height={16} className={'flex items-center group-hover:hidden'}/>
+            <StarIcon width={16} height={16} className={'hidden group-hover:flex group-hover:items-center'} />
             <p className={'truncate flex items-center tracking-wide'}>{text}</p>
           </div>
           {/* right */}
-          <div
-            className={`
-              flex flex-row gap-2 ml-4
-              ${isDelete ? 'icon-show' : 'icon-hidden'}  
-            `}
-          >
+          <div className={'flex flex-row gap-2 ml-4'}>
             {
               isDelete ? (
                 <>
@@ -119,13 +116,13 @@ export default function ChatItemCard(props: IProps) {
                   <EditIcon
                     width={16}
                     height={16}
-                    className={'flex items-center hover:text-white hover-transition-change'}
+                    className={'hidden group-hover:flex group-hover:items-center'}
                     onClick={handleEditClick}
                   />
                   <TrashIcon
                     width={16}
                     height={16}
-                    className={'flex items-center hover:text-white hover-transition-change'}
+                    className={'hidden group-hover:flex group-hover:items-center'}
                     onClick={() => setIsDelete(true)}
                   />
                 </>
