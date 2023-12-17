@@ -41,27 +41,52 @@ export default function MainMenuContent() {
 
   return (
     <div className={'flex-1 overflow-y-auto custom-scrollbar mb-2'}>
-      {
-        Object.entries(categorizedChatItemLists).map(([categoryDate, chatItemsList]) => (
-          <div key={categoryDate} className={'mb-1'}>
-            <h3 className={'text-sm font-light text-gray-400'}>{t(`chatPage.menu.${categoryDate}`)}</h3>
-            <div className={'flex flex-col gap-1'}>
-              {
-                chatItemsList
-                  .sort((a: TChatItem, b: TChatItem) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
-                  .map((chatItem: TChatItem) => (
-                    <ChatItemCard
-                      key={chatItem.id}
-                      id={chatItem.id}
-                      text={chatItem.itemName}
-                      uuid={chatItem.itemUuid}
-                    />
-                  ))
-              }
+      {/* Star Lists */}
+      <div className={'w-full'}>
+        {
+          chatItemLists
+            .filter((chatItem: TChatItem) => chatItem.isStarred)
+            .sort((a: TChatItem, b: TChatItem) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
+            .map((chatItem: TChatItem) => (
+              <ChatItemCard
+                key={chatItem.id}
+                id={chatItem.id}
+                text={chatItem.itemName}
+                uuid={chatItem.itemUuid}
+                isStarred={chatItem.isStarred}
+              />
+            ))
+        }
+      </div>
+
+      <div className={'border-b border-gray-500 mt-1 mb-2'}/>
+
+      {/* No Star Lists based on Date */}
+      <div className={'w-full'}>
+        {
+          Object.entries(categorizedChatItemLists).map(([categoryDate, chatItemsList]) => (
+            <div key={categoryDate} className={'mb-1'}>
+              <p className={'text-xs font-light text-gray-400'}>{t(`chatPage.menu.${categoryDate}`)}</p>
+              <div className={'flex flex-col gap-1'}>
+                {
+                  chatItemsList
+                    .filter((chatItem: TChatItem) => !chatItem.isStarred)
+                    .sort((a: TChatItem, b: TChatItem) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
+                    .map((chatItem: TChatItem) => (
+                      <ChatItemCard
+                        key={chatItem.id}
+                        id={chatItem.id}
+                        text={chatItem.itemName}
+                        uuid={chatItem.itemUuid}
+                        isStarred={chatItem.isStarred}
+                      />
+                    ))
+                }
+              </div>
             </div>
-          </div>
-        ))
-      }
+          ))
+        }
+      </div>
     </div>
   )
 }

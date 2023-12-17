@@ -13,14 +13,33 @@ interface IProps {
   id?: number
   text: string
   uuid: string
+  isStarred: boolean
 }
 
 export default function ChatItemCard(props: IProps) {
-  const {text, uuid} = props
+  const {text, uuid, isStarred} = props
   const inputRef = useRef<HTMLInputElement>(null)
   const [isEdit, setIsEdit] = useState<boolean>(false)
   const [isDelete, setIsDelete] = useState<boolean>(false)
   const setChatItems = useSetAtom(chatItemsAtom)
+
+  const handleStarClick = async () => {
+    const options = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({item_uuid: uuid})
+    }
+
+    try {
+      const response = await fetch('/api/chat/starChatItem', options)
+      const data = (await response.json()).chatItems
+      setChatItems(data)
+    } catch (e) {
+      console.log('star item error: ', e)
+    }
+  }
 
   const handleEditClick = () => {
     setIsEdit(true)
@@ -86,12 +105,18 @@ export default function ChatItemCard(props: IProps) {
             <MessageIcon
               width={16}
               height={16}
-              className={`flex items-center group-hover:hidden`}
+              className={`
+                ${isStarred ? 'hidden' : 'flex items-center group-hover:hidden'}
+              `}
             />
             <StarIcon
               width={16}
               height={16}
-              className={`hidden group-hover:flex group-hover:items-center hover:text-yellow-500`}
+              className={`${isStarred 
+                ? 'flex items-center text-yellow-500' 
+                : 'hidden group-hover:flex group-hover:items-center hover:text-yellow-500'
+              }`}
+              onClick={handleStarClick}
             />
             <p className={'truncate flex items-center tracking-wide'}>{text}</p>
           </div>

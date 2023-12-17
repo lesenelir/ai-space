@@ -31,6 +31,7 @@ model ChatItem {
   item_uuid  String   @unique
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
+  isStarred  Boolean  @default(false)
 
   user_primary_id Int // foreign key -> identify which user has this chat item
   user            User @relation(fields: [user_primary_id], references: [id])
