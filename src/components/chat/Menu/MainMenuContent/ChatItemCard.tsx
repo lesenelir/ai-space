@@ -23,6 +23,15 @@ export default function ChatItemCard(props: IProps) {
   const [isDelete, setIsDelete] = useState<boolean>(false)
   const setChatItems = useSetAtom(chatItemsAtom)
 
+  const handleEditClick = () => {
+    setIsEdit(true)
+    setTimeout(() => { // focus on input
+      if(inputRef.current) {
+        inputRef.current.focus()
+      }
+    }, 0)
+  }
+
   const handleStarClick = async () => {
     const options = {
       method: 'POST',
@@ -39,15 +48,6 @@ export default function ChatItemCard(props: IProps) {
     } catch (e) {
       console.log('star item error: ', e)
     }
-  }
-
-  const handleEditClick = () => {
-    setIsEdit(true)
-    setTimeout(() => { // focus on input
-      if(inputRef.current) {
-        inputRef.current.focus()
-      }
-    }, 0)
   }
 
   // update chat item name
