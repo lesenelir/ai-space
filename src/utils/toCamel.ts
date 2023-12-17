@@ -1,6 +1,6 @@
 type AnyObject = { [key: string]: string | number | boolean | Date}
 
-function toCamelCase(str: string): string {
+export function toCamelCase(str: string): string {
   return str.split('_').map((part, index) => {
     if (index === 0) return part
     return part.charAt(0).toUpperCase() + part.slice(1)
