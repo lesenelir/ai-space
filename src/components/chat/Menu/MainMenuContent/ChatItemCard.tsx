@@ -83,8 +83,16 @@ export default function ChatItemCard(props: IProps) {
         <>
           {/* left */}
           <div className={'flex flex-row gap-2 overflow-hidden'}>
-            <MessageIcon width={16} height={16} className={'flex items-center group-hover:hidden'}/>
-            <StarIcon width={16} height={16} className={'hidden group-hover:flex group-hover:items-center'} />
+            <MessageIcon
+              width={16}
+              height={16}
+              className={`flex items-center group-hover:hidden`}
+            />
+            <StarIcon
+              width={16}
+              height={16}
+              className={`hidden group-hover:flex group-hover:items-center hover:text-yellow-500`}
+            />
             <p className={'truncate flex items-center tracking-wide'}>{text}</p>
           </div>
           {/* right */}
@@ -116,13 +124,13 @@ export default function ChatItemCard(props: IProps) {
                   <EditIcon
                     width={16}
                     height={16}
-                    className={'hidden group-hover:flex group-hover:items-center'}
+                    className={'hidden group-hover:flex group-hover:items-center hover:text-stone-400 hover-transition-change'}
                     onClick={handleEditClick}
                   />
                   <TrashIcon
                     width={16}
                     height={16}
-                    className={'hidden group-hover:flex group-hover:items-center'}
+                    className={'hidden group-hover:flex group-hover:items-center hover:text-red-500 hover-transition-change'}
                     onClick={() => setIsDelete(true)}
                   />
                 </>
