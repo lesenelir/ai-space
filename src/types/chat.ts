@@ -7,3 +7,6 @@ export type TChatItem = {
   userPrimaryId: number
 }
 
+export type TCategorizedChatItems = {
+  [key: string]: TChatItem[]
+}

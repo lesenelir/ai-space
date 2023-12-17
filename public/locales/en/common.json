@@ -19,7 +19,12 @@
       "baiduAPIKey": "Baidu API Key",
       "saveAll": "Save All",
       "importData": "Import Data",
-      "exportData": "Export Data"
+      "exportData": "Export Data",
+      "today": "Today",
+      "yesterday": "Yesterday",
+      "previous7Days": "Previous 7 Days",
+      "previous30Days": "Previous 30 Days",
+      "older": "Older"
     },
     "message": {
       "textAreaPlaceholder": "Type a message..."

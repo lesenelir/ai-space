@@ -19,7 +19,12 @@
       "baiduAPIKey": "Baidu 密钥",
       "saveAll": "保存",
       "importData": "导入数据",
-      "exportData": "导出数据"
+      "exportData": "导出数据",
+      "today": "今天",
+      "yesterday": "昨天",
+      "previous7Days": "过去 7 天",
+      "previous30Days": "过去 30 天",
+      "older": "更早之前"
     },
     "message": {
       "textAreaPlaceholder": "输入消息..."
