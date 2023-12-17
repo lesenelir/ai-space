@@ -11,18 +11,9 @@ export default function MainMenuContent() {
   const chatItemLists =  useAtomValue(chatItemsAtom)
   const {t} = useTranslation('common')
 
-
-  const sortedChatItemLists = useMemo(() => {
-    return  chatItemLists.sort((a: TChatItem, b: TChatItem) => {
-      const dateA = new Date(a.createdAt)
-      const dateB = new Date(b.createdAt)
-      return dateA.getTime() - dateB.getTime()
-    })
-  }, [chatItemLists])
-
   // { key: Date, value: [chatItem, chatItem, ...] }
   const categorizedChatItemLists = useMemo(() => {
-    return sortedChatItemLists.reduce<TCategorizedChatItems>((pre: TCategorizedChatItems, item: TChatItem) => {
+    return chatItemLists.reduce<TCategorizedChatItems>((pre: TCategorizedChatItems, item: TChatItem) => {
       let category
       const updatedAt = new Date(item.updatedAt)
 
@@ -45,7 +36,7 @@ export default function MainMenuContent() {
       pre[category].push(item)
       return pre
     }, {})
-  }, [sortedChatItemLists])
+  }, [chatItemLists])
 
   return (
     <div className={'flex-1 overflow-y-auto custom-scrollbar mb-2'}>
@@ -55,7 +46,9 @@ export default function MainMenuContent() {
             <h3 className={'text-sm font-light text-gray-400'}>{t(`chatPage.menu.${categoryDate}`)}</h3>
             <div className={'flex flex-col gap-1'}>
               {
-                chatItemsList.map((chatItem: TChatItem) => (
+                chatItemsList
+                  .sort((a: TChatItem, b: TChatItem) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
+                  .map((chatItem: TChatItem) => (
                   <ChatItemCard
                     key={chatItem.id}
                     id={chatItem.id}
