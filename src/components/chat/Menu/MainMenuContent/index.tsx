@@ -17,6 +17,7 @@ export default function MainMenuContent() {
       let category
       const updatedAt = new Date(item.updatedAt)
 
+      // Note: category value must be the same as the key in i18n/common.json
       if (isToday(updatedAt)) {
         category = 'today'
       } else if (isYesterday(updatedAt)) {
@@ -49,13 +50,13 @@ export default function MainMenuContent() {
                 chatItemsList
                   .sort((a: TChatItem, b: TChatItem) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
                   .map((chatItem: TChatItem) => (
-                  <ChatItemCard
-                    key={chatItem.id}
-                    id={chatItem.id}
-                    text={chatItem.itemName}
-                    uuid={chatItem.itemUuid}
-                  />
-                ))
+                    <ChatItemCard
+                      key={chatItem.id}
+                      id={chatItem.id}
+                      text={chatItem.itemName}
+                      uuid={chatItem.itemUuid}
+                    />
+                  ))
               }
             </div>
           </div>

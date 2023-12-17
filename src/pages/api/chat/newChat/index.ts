@@ -43,7 +43,6 @@ const handleNewChat = async (req: NextApiRequest, res: NextApiResponse) => {
     })
 
     const chatItems = toCamelArr(userWithChatItems!.chatItems)
-    console.log(chatItems)
 
     return res.status(200).json({ status: 'New Chat Item', chatItems })
   } catch (e) {
