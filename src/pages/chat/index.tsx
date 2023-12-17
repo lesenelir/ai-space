@@ -1,17 +1,15 @@
 import Head from 'next/head'
 import { useSetAtom } from 'jotai'
 import { type GetServerSideProps } from 'next'
-import { PrismaClient } from '@prisma/client'
 import { getAuth } from '@clerk/nextjs/server'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
+import prisma from '@/utils/db.server'
 import { TChatItem } from '@/types'
 import { chatItemsAtom } from '@/atoms'
 import { toCamelArr } from '@/utils/toCamel'
 import Menu from '@/components/chat/Menu'
 import Message from '@/components/chat/Message'
-
-const prisma = new PrismaClient()
 
 interface IProps {
   chatItems: TChatItem[]

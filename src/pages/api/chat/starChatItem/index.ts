@@ -1,10 +1,10 @@
-import { PrismaClient } from '@prisma/client'
 import { createRouter } from 'next-connect'
 import { getAuth } from '@clerk/nextjs/server'
 import type { NextApiRequest, NextApiResponse } from 'next'
+
+import prisma from '@/utils/db.server'
 import { toCamelArr } from '@/utils'
 
-const prisma = new PrismaClient()
 const router = createRouter<NextApiRequest, NextApiResponse>()
 
 const handleStarChatItem = async (req: NextApiRequest, res: NextApiResponse) => {

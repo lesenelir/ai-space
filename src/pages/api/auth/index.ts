@@ -1,8 +1,7 @@
 import { createRouter } from 'next-connect'
-import { PrismaClient } from '@prisma/client'
 import type { NextApiRequest, NextApiResponse } from 'next'
 
-const prisma = new PrismaClient()
+import prisma from '@/utils/db.server'
 const router = createRouter<NextApiRequest, NextApiResponse>()
 
 const handlerAuth = async (req: NextApiRequest, res: NextApiResponse) => {
