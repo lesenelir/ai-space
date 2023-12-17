@@ -34,8 +34,9 @@ This changelog provides a detailed record of the updates and improvements made t
 ### v0.0.4
 - Complete the frontend logic for MainMenuContent and ChatItemCard components.
 - Implement pre-rendering of chatItem list data using ssr when accessing the chat page.
-- Add new chat api routes.
-- Add delete chatItem api routes.
-- Add update chatItem name routes.
+- Add `new chat api routes` and implement the logic for creating new chat.
+- Add `delete chatItem api routes` and implement the logic for deleting chatItem.
+- Add `update chatItem name routes` and implement the logic for updating chatItem name.
+- Add `start chat api routes` and implement the logic for starting a chat.
 
 
