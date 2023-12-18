@@ -1,5 +1,6 @@
-import { useRef, useState } from 'react'
 import { useSetAtom } from 'jotai'
+import { useRouter } from 'next/router'
+import { type MouseEvent, useRef, useState } from 'react'
 
 import { chatItemsAtom } from '@/atoms'
 import XIcon from '@/components/icons/XIcon'
@@ -22,8 +23,11 @@ export default function ChatItemCard(props: IProps) {
   const [isEdit, setIsEdit] = useState<boolean>(false)
   const [isDelete, setIsDelete] = useState<boolean>(false)
   const setChatItems = useSetAtom(chatItemsAtom)
+  const router = useRouter()
 
-  const handleEditClick = () => {
+  const handleEditClick = (e: MouseEvent) => {
+    e.stopPropagation()
+
     setIsEdit(true)
     setTimeout(() => { // focus on input
       if(inputRef.current) {
@@ -32,7 +36,9 @@ export default function ChatItemCard(props: IProps) {
     }, 0)
   }
 
-  const handleStarClick = async () => {
+  const handleStarClick = async (e: MouseEvent) => {
+    e.stopPropagation()
+
     const options = {
       method: 'POST',
       headers: {
@@ -51,7 +57,9 @@ export default function ChatItemCard(props: IProps) {
   }
 
   // update chat item name
-  const handleEditCheckClick = async () => {
+  const handleEditCheckClick = async (e: MouseEvent) => {
+    e.stopPropagation()
+
     const options = {
       method: 'POST',
       headers: {
@@ -74,7 +82,9 @@ export default function ChatItemCard(props: IProps) {
   }
 
   // delete chat item
-  const handleDeleteCheckClick = async () => {
+  const handleDeleteCheckClick = async (e: MouseEvent) => {
+    e.stopPropagation()
+
     const options = {
       method: 'POST',
       headers: {
@@ -93,11 +103,19 @@ export default function ChatItemCard(props: IProps) {
     }
   }
 
+  // handle click event on container div
+  const handleContainerDivClick = async () => {
+    await router.push(`/chat/${uuid}`)
+  }
+
   return (
-    <div className={`
-      w-full h-11 p-2 flex justify-between cursor-pointer rounded-md
-      hover:bg-chatpage-menu-hover hover-transition-change group
-    `}>
+    <div
+      className={`
+        w-full h-11 p-2 flex justify-between cursor-pointer rounded-md
+        hover:bg-chatpage-menu-hover hover-transition-change group
+      `}
+      onClick={handleContainerDivClick}
+    >
       {!isEdit && (
         <>
           {/* left */}
@@ -141,7 +159,10 @@ export default function ChatItemCard(props: IProps) {
                       flex items-center text-red-500 p-1 border border-gray-500 rounded-md
                       hover:text-red-600 hover:bg-gray-500/10 hover-transition-change
                     `}
-                    onClick={() => setIsDelete(false)}
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      setIsDelete(false)
+                    }}
                   />
                 </>
               ) : (
@@ -156,7 +177,10 @@ export default function ChatItemCard(props: IProps) {
                     width={16}
                     height={16}
                     className={'hidden group-hover:flex group-hover:items-center hover:text-red-500 hover-transition-change'}
-                    onClick={() => setIsDelete(true)}
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      setIsDelete(true)
+                    }}
                   />
                 </>
               )
@@ -191,7 +215,10 @@ export default function ChatItemCard(props: IProps) {
                 width={16}
                 height={16}
                 className={'flex items-center hover:text-white hover-transition-change'}
-                onClick={() => setIsEdit(false)}
+                onClick={(e) => {
+                  e.stopPropagation()
+                  setIsEdit(false)
+                }}
               />
             </div>
           </>
