@@ -1,15 +1,15 @@
 import Head from 'next/head'
-import { useSetAtom } from 'jotai'
 import { type GetServerSideProps } from 'next'
 import { getAuth } from '@clerk/nextjs/server'
+import { useHydrateAtoms } from 'jotai/utils'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 import prisma from '@/utils/db.server'
+import Menu from '@/components/chat/Menu'
+import Message from '@/components/chat/Message'
 import { TChatItem } from '@/types'
 import { chatItemsAtom } from '@/atoms'
 import { toCamelArr } from '@/utils/toCamel'
-import Menu from '@/components/chat/Menu'
-import Message from '@/components/chat/Message'
 
 interface IProps {
   chatItems: TChatItem[]
@@ -17,9 +17,14 @@ interface IProps {
 
 export default function ChatPage(props: IProps) {
   const { chatItems } = props
-  const setChatItems = useSetAtom(chatItemsAtom)
 
-  setChatItems(chatItems) // useEffect
+  // setChatItems(chatItems)  // wrong, because setState is the effect of render
+  // useEffect + setChatItems(chatItems) // wrong, because it will wait for the first render, wasting ssr advantage
+
+  // hydrate chatItems ==> initialize from the server data
+  useHydrateAtoms([
+    [chatItemsAtom, chatItems],
+  ])
 
   return (
     <>

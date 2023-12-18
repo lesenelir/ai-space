@@ -40,5 +40,6 @@ This changelog provides a detailed record of the updates and improvements made t
 - Add `start chat api routes` and implement the logic for starting a chat.
 - Integrated `Vitest` for testing.
 - Integrated search functionality for chatItem list.
+- Click on chatItem to open `/chat/uuid` page.
 
 
