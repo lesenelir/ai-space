@@ -1,6 +1,7 @@
 import { useSetAtom } from 'jotai'
 import { useTranslation } from 'next-i18next'
 import { type ChangeEvent, useRef } from 'react'
+import { useRouter } from 'next/router'
 
 import { chatItemsAtom, isMenuOpenAtom, isSearchActiveAtom, searchQueryNameAtom } from '@/atoms'
 import FolderPlusIcon from '@/components/icons/FolderPlusIcon'
@@ -13,6 +14,7 @@ export default function HeaderMenuContent() {
   const setIsSearchActive = useSetAtom(isSearchActiveAtom)
   const setSearchQueryName = useSetAtom(searchQueryNameAtom)
   const inputRef = useRef<HTMLInputElement>(null)
+  const router = useRouter()
 
   const handleNewChat = async () => {
     const options = {
@@ -52,6 +54,16 @@ export default function HeaderMenuContent() {
     <div className={'w-full mb-2'}>
       {/* first content */}
       <div className={'w-full h-[48px] flex gap-2 mb-2'}>
+        <span
+          className={`
+            text-xl font-extrabold inline-flex items-center cursor-pointer
+            text-transparent bg-clip-text bg-gradient-to-r from-lime-500 to-orange-300
+          `}
+          onClick={() => router.push('/chat')}
+        >
+          Chat
+        </span>
+
         {/* new chat */}
         <div
           className={`
@@ -84,7 +96,7 @@ export default function HeaderMenuContent() {
         </div>
       </div>
 
-      {/* Search */}
+      {/* second content Search */}
       <input
         ref={inputRef}
         type="text"
