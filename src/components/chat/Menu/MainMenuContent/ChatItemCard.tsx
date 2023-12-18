@@ -129,6 +129,7 @@ export default function ChatItemCard(props: IProps) {
               height={16}
               className={`
                 ${isStarred ? 'hidden' : 'flex items-center group-hover:hidden'}
+                ${isCurrentChat && 'text-blue-200'}
               `}
             />
             <StarIcon
