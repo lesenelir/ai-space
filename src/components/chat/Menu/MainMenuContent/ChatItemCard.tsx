@@ -25,6 +25,9 @@ export default function ChatItemCard(props: IProps) {
   const setChatItems = useSetAtom(chatItemsAtom)
   const router = useRouter()
 
+  const urlUuid = router.query.id as string | undefined
+  const isCurrentChat = urlUuid === uuid
+
   const handleEditClick = (e: MouseEvent) => {
     e.stopPropagation()
 
@@ -112,7 +115,8 @@ export default function ChatItemCard(props: IProps) {
     <div
       className={`
         w-full h-11 p-2 flex justify-between cursor-pointer rounded-md
-        hover:bg-chatpage-menu-hover hover-transition-change group
+        hover:bg-chatpage-menu-hover hover-transition-change group 
+        ${isCurrentChat && 'bg-chatpage-menu-hover'}
       `}
       onClick={handleContainerDivClick}
     >
