@@ -1,7 +1,8 @@
 import { useSetAtom } from 'jotai'
 import { useTranslation } from 'next-i18next'
+import { type ChangeEvent, useRef } from 'react'
 
-import { chatItemsAtom, isMenuOpenAtom } from '@/atoms'
+import { chatItemsAtom, isMenuOpenAtom, isSearchActiveAtom, searchQueryNameAtom } from '@/atoms'
 import FolderPlusIcon from '@/components/icons/FolderPlusIcon'
 import ColumnsIcon from '@/components/icons/ColumnsIcon'
 
@@ -9,6 +10,9 @@ export default function HeaderMenuContent() {
   const { t } = useTranslation('common')
   const setIsMenuOpen = useSetAtom(isMenuOpenAtom)
   const setChatItems = useSetAtom(chatItemsAtom)
+  const setIsSearchActive = useSetAtom(isSearchActiveAtom)
+  const setSearchQueryName = useSetAtom(searchQueryNameAtom)
+  const inputRef = useRef<HTMLInputElement>(null)
 
   const handleNewChat = async () => {
     const options = {
@@ -24,6 +28,23 @@ export default function HeaderMenuContent() {
       setChatItems(data)
     } catch (e) {
       console.error(e)
+    }
+  }
+
+  const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setSearchQueryName(e.target.value)
+  }
+
+  const handleSearchFocus = () => {
+    setIsSearchActive(true)
+    setSearchQueryName('')
+  }
+
+  const handleSearchBlur = () => {
+    setIsSearchActive(false)
+    if (inputRef.current) {
+      inputRef.current.value = ''
+      setSearchQueryName('')
     }
   }
 
@@ -65,12 +86,16 @@ export default function HeaderMenuContent() {
 
       {/* Search */}
       <input
+        ref={inputRef}
         type="text"
         placeholder={t('chatPage.menu.search')}
         className={`
           w-full h-[48px] menu-first-content-item bg-chatpage-menu-background
           focus:outline-none focus:ring-2 focus:ring-gray-400 focus:border-transparent
         `}
+        onChange={handleSearchChange}
+        onFocus={handleSearchFocus}
+        onBlur={handleSearchBlur}
       />
     </div>
   )

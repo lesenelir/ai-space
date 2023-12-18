@@ -39,5 +39,6 @@ This changelog provides a detailed record of the updates and improvements made t
 - Add `update chatItem name routes` and implement the logic for updating chatItem name.
 - Add `start chat api routes` and implement the logic for starting a chat.
 - Integrated `Vitest` for testing.
+- Integrated search functionality for chatItem list.
 
 
