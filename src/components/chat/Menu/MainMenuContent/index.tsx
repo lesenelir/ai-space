@@ -41,7 +41,7 @@ export default function MainMenuContent() {
       pre[category].push(item)
       return pre
     }, {})
-  }, [chatItemLists])
+  }, [chatItemLists, renderOrder])
 
   return (
     <div className={'flex-1 overflow-y-auto custom-scrollbar mb-2'}>
