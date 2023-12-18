@@ -11,23 +11,27 @@ export default function MainMenuContent() {
   const chatItemLists =  useAtomValue(chatItemsAtom)
   const {t} = useTranslation('common')
 
+  // Note: category value must be the same as the key in i18n/common.json
+  const renderOrder = useMemo(() => {
+    return ['today', 'yesterday', 'previous7Days', 'previous30Days', 'older']
+  }, [])
+
   // { key: Date, value: [chatItem, chatItem, ...] }
   const categorizedChatItemLists = useMemo(() => {
     return chatItemLists.reduce<TCategorizedChatItems>((pre: TCategorizedChatItems, item: TChatItem) => {
       let category
       const updatedAt = new Date(item.updatedAt)
 
-      // Note: category value must be the same as the key in i18n/common.json
       if (isToday(updatedAt)) {
-        category = 'today'
+        category = renderOrder[0]
       } else if (isYesterday(updatedAt)) {
-        category = 'yesterday'
+        category = renderOrder[1]
       } else if (updatedAt >= subDays(new Date(), 7)) {
-        category = 'previous7Days'
+        category = renderOrder[2]
       } else if (updatedAt >= subDays(new Date(), 30)) {
-        category = 'previous30Days'
+        category = renderOrder[3]
       } else {
-        category = 'older'
+        category = renderOrder[4]
       }
 
       if (!pre[category]) {
@@ -64,27 +68,32 @@ export default function MainMenuContent() {
       {/* No Star Lists based on Date */}
       <div className={'w-full'}>
         {
-          Object.entries(categorizedChatItemLists).map(([categoryDate, chatItemsList]) => (
-            <div key={categoryDate} className={'mb-1'}>
-              <p className={'text-xs font-light text-gray-400'}>{t(`chatPage.menu.${categoryDate}`)}</p>
-              <div className={'flex flex-col gap-1'}>
-                {
-                  chatItemsList
-                    .filter((chatItem: TChatItem) => !chatItem.isStarred)
-                    .sort((a: TChatItem, b: TChatItem) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
-                    .map((chatItem: TChatItem) => (
-                      <ChatItemCard
-                        key={chatItem.id}
-                        id={chatItem.id}
-                        text={chatItem.itemName}
-                        uuid={chatItem.itemUuid}
-                        isStarred={chatItem.isStarred}
-                      />
-                    ))
-                }
+          renderOrder.map((categoryDate: string) => {
+            const chatItemsList = categorizedChatItemLists[categoryDate]
+            if (!chatItemsList) return null
+
+            return (
+              <div key={categoryDate} className={'mb-1'}>
+                <p className={'text-xs font-light text-gray-400'}>{t(`chatPage.menu.${categoryDate}`)}</p>
+                <div className={'flex flex-col gap-1'}>
+                  {
+                    chatItemsList
+                      .filter((chatItem: TChatItem) => !chatItem.isStarred)
+                      .sort((a: TChatItem, b: TChatItem) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
+                      .map((chatItem: TChatItem) => (
+                        <ChatItemCard
+                          key={chatItem.id}
+                          id={chatItem.id}
+                          text={chatItem.itemName}
+                          uuid={chatItem.itemUuid}
+                          isStarred={chatItem.isStarred}
+                        />
+                      ))
+                  }
+                </div>
               </div>
-            </div>
-          ))
+            )
+          })
         }
       </div>
     </div>
