@@ -203,6 +203,7 @@ export default function ChatItemCard(props: IProps) {
               ref={inputRef}
               type="text"
               defaultValue={text}
+              onClick={(e) => e.stopPropagation()}
               className={`
                 rounded-md w-2/3 h-full p-2 bg-gray-500
                 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent
