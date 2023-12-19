@@ -1,6 +1,6 @@
 import { useSetAtom } from 'jotai'
 import { useRouter } from 'next/router'
-import { type MouseEvent, useRef, useState } from 'react'
+import { type KeyboardEvent, type MouseEvent, useRef, useState } from 'react'
 
 import { chatItemsAtom } from '@/atoms'
 import XIcon from '@/components/icons/XIcon'
@@ -27,6 +27,7 @@ export default function ChatItemCard(props: IProps) {
 
   const isCurrentChat = router.query.id === uuid
 
+  // click edit icon
   const handleEditClick = (e: MouseEvent) => {
     e.stopPropagation()
 
@@ -38,6 +39,7 @@ export default function ChatItemCard(props: IProps) {
     }, 0)
   }
 
+  // click star icon
   const handleStarClick = async (e: MouseEvent) => {
     e.stopPropagation()
 
@@ -59,9 +61,7 @@ export default function ChatItemCard(props: IProps) {
   }
 
   // update chat item name
-  const handleEditCheckClick = async (e: MouseEvent) => {
-    e.stopPropagation()
-
+  const updateChatItemName = async () => {
     const options = {
       method: 'POST',
       headers: {
@@ -84,7 +84,20 @@ export default function ChatItemCard(props: IProps) {
     }
   }
 
-  // delete chat item
+  // when in edit mode, click check icon -> update chat item name
+  const handleEditCheckClick = async (e: MouseEvent) => {
+    e.stopPropagation()
+    await updateChatItemName()
+  }
+
+  // when in edit mode, press enter -> update chat item name
+  const handleInputKeyDown = async (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      await updateChatItemName()
+    }
+  }
+
+  // when in delete mode, click check icon -> delete chat item
   const handleDeleteCheckClick = async (e: MouseEvent) => {
     e.stopPropagation()
 
@@ -107,7 +120,7 @@ export default function ChatItemCard(props: IProps) {
     }
   }
 
-  // handle click event on container div
+  // handle click event on container div -> go to specific chat page /chat/*(uuid)
   const handleContainerDivClick = async () => {
     await router.push(`/chat/${uuid}`)
   }
@@ -204,6 +217,7 @@ export default function ChatItemCard(props: IProps) {
               type="text"
               defaultValue={text}
               onClick={(e) => e.stopPropagation()}
+              onKeyDown={handleInputKeyDown}
               className={`
                 rounded-md w-2/3 h-full p-2 bg-gray-500
                 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent
