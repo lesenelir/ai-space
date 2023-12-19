@@ -27,7 +27,8 @@
       "older": "Older"
     },
     "message": {
-      "textAreaPlaceholder": "Type a message..."
+      "textAreaPlaceholder": "Type a message...",
+      "openaiKey": "OpenAI API Key"
     }
   }
 }

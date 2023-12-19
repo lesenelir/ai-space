@@ -27,7 +27,8 @@
       "older": "更早之前"
     },
     "message": {
-      "textAreaPlaceholder": "输入消息..."
+      "textAreaPlaceholder": "输入消息...",
+      "openaiKey": "OpenAI API 密钥"
     }
   }
 }
