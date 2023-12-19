@@ -2,11 +2,18 @@ import { motion } from 'framer-motion'
 import { forwardRef, type HTMLProps, type MouseEvent } from 'react'
 
 interface IProps extends HTMLProps<HTMLDivElement> {
+  motionClassName?: string
   onClose: () => void
 }
 
 const Modal = forwardRef<HTMLDivElement, IProps>((
-  {className, children, onClose, ...props},
+  {
+    className,
+    motionClassName,
+    children,
+    onClose,
+    ...props
+  },
   ref
 ) => {
   return (
@@ -18,7 +25,7 @@ const Modal = forwardRef<HTMLDivElement, IProps>((
     >
       {/* Content */}
       <motion.div
-        className={`w-1/3 h-3/5 bg-chatpage-menu-background rounded-md max-lg:w-8/12 max-sm:w-11/12`}
+        className={`w-1/3 h-3/5 bg-chatpage-menu-background rounded-md max-lg:w-8/12 max-sm:w-11/12 ${motionClassName}`}
         initial={{
           opacity: 0,
           scale: 0.75,

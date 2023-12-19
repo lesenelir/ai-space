@@ -49,7 +49,7 @@ export default function FooterMenuContent() {
               animate: { opacity: 1, y: 0 },
             }}
           >
-            {/* user data */}
+            {/* user data: my plan & settings */}
             {
               userData.map((item) => (
                 <UserCard
@@ -61,8 +61,10 @@ export default function FooterMenuContent() {
                 />
               ))
             }
+
             <div className={'border-b border-gray-900'}/>
-            {/* logout */}
+
+            {/* go back home page */}
             <div
               className={'flex items-center gap-4 p-3 rounded-md cursor-pointer hover:bg-gray-200 transition-change'}
               onClick={() => router.push('/')}
@@ -79,9 +81,13 @@ export default function FooterMenuContent() {
         )
       }
 
+      {/* global modal dialog  */}
       {
         isModalOpen && (
-          <Modal onClose={() => setIsModalOpen(false)}>
+          <Modal
+            motionClassName={`${activeModal === 'Settings' && 'w-2/3 h-4/5 max-lg:w-4/5 max-md:w-full max-sm:w-full max-sm:h-5/6'}`}
+            onClose={() => setIsModalOpen(false)}
+          >
             {activeModal === 'MyPlan' && <ModalPlan setIsModalOpen={setIsModalOpen}/>}
             {activeModal === 'Settings' && <ModalSettings setIsModalOpen={setIsModalOpen}/>}
           </Modal>
