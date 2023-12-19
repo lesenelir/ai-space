@@ -6,6 +6,12 @@ export type TChatItem = {
   updatedAt: string
   isStarred: boolean
   userPrimaryId: number
+  modelPrimaryId: number
+}
+
+export type TModel = {
+  id: number
+  modelName: string
 }
 
 export type TCategorizedChatItems = {

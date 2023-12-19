@@ -1,27 +1,29 @@
-import { useSetAtom } from 'jotai'
+import { useAtomValue, useSetAtom } from 'jotai'
 import { useTranslation } from 'next-i18next'
 import { type ChangeEvent, useRef } from 'react'
 import { useRouter } from 'next/router'
 
-import { chatItemsAtom, isMenuOpenAtom, isSearchActiveAtom, searchQueryNameAtom } from '@/atoms'
+import { chatItemsAtom, isMenuOpenAtom, isSearchActiveAtom, searchQueryNameAtom, selectedModelIdAtom } from '@/atoms'
 import FolderPlusIcon from '@/components/icons/FolderPlusIcon'
 import ColumnsIcon from '@/components/icons/ColumnsIcon'
 
 export default function HeaderMenuContent() {
+  const router = useRouter()
   const { t } = useTranslation('common')
+  const selectedModelId = useAtomValue(selectedModelIdAtom)
   const setIsMenuOpen = useSetAtom(isMenuOpenAtom)
   const setChatItems = useSetAtom(chatItemsAtom)
   const setIsSearchActive = useSetAtom(isSearchActiveAtom)
   const setSearchQueryName = useSetAtom(searchQueryNameAtom)
   const inputRef = useRef<HTMLInputElement>(null)
-  const router = useRouter()
 
   const handleNewChat = async () => {
     const options = {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
-      }
+      },
+      body: JSON.stringify({ model_primary_id: selectedModelId })
     }
 
     try {

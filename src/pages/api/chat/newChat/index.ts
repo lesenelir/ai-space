@@ -10,6 +10,7 @@ const router = createRouter<NextApiRequest, NextApiResponse>()
 
 const handleNewChat = async (req: NextApiRequest, res: NextApiResponse) => {
   const { userId } = getAuth(req)
+  const { model_primary_id } = req.body
 
   if (!userId) {
     return res.status(400).json({ status: 'User not found' })
@@ -29,7 +30,8 @@ const handleNewChat = async (req: NextApiRequest, res: NextApiResponse) => {
         item_uuid: uuidv4(),
         created_at: new Date(),
         updated_at: new Date(),
-        user_primary_id: user!.id
+        user_primary_id: user!.id,
+        model_primary_id: model_primary_id,  // from the request body, user selected model
       }
     })
 

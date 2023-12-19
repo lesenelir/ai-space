@@ -18,15 +18,14 @@ interface IProps {
 }
 
 export default function ChatItemCard(props: IProps) {
+  const router = useRouter()
   const {text, uuid, isStarred} = props
   const inputRef = useRef<HTMLInputElement>(null)
   const [isEdit, setIsEdit] = useState<boolean>(false)
   const [isDelete, setIsDelete] = useState<boolean>(false)
   const setChatItems = useSetAtom(chatItemsAtom)
-  const router = useRouter()
 
-  const urlUuid = router.query.id as string | undefined
-  const isCurrentChat = urlUuid === uuid
+  const isCurrentChat = router.query.id === uuid
 
   const handleEditClick = (e: MouseEvent) => {
     e.stopPropagation()
@@ -79,6 +78,7 @@ export default function ChatItemCard(props: IProps) {
       const data = (await response.json()).chatItems
       setChatItems(data)
       setIsEdit(false)
+      await router.push(`/chat/${uuid}`)
     } catch (e) {
       console.log('update item name error: ', e)
     }
@@ -101,6 +101,7 @@ export default function ChatItemCard(props: IProps) {
       const data = (await response.json()).chatItems
       setChatItems(data)
       setIsDelete(false)
+      await router.push('/chat')
     } catch (e) {
       console.log('delete item error: ', e)
     }

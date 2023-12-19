@@ -36,6 +36,9 @@ model ChatItem {
   user_primary_id Int // foreign key -> identify which user has this chat item
   user            User @relation(fields: [user_primary_id], references: [id])
 
+  model_primary_id Int // foreign key -> identify which model has this chat item
+  model            Model @relation(fields: [model_primary_id], references: [id])
+
   // Relations
   ChatMessage ChatMessage[] // chatItem -> chatMessages (1 : n) : 1 chatItem can have many chatMessages
 
@@ -66,6 +69,7 @@ model Model {
 
   // Relations
   userAPIKey UserAPIKey[] // model -> userAPIKey (1 : n) : 1 model can have many userAPIKey (belong to many users)
+  chatItems  ChatItem[] // model -> chatItems (1 : n) : 1 model can have many chatItems
 
   @@map("model")
 }

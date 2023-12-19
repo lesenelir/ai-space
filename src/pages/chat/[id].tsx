@@ -8,21 +8,23 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import prisma from '@/utils/db.server'
 import Menu from '@/components/chat/Menu'
 import Message from '@/components/chat/Message'
-import { TChatItem } from '@/types'
-import { chatItemsAtom } from '@/atoms'
+import type { TChatItem, TModel } from '@/types'
+import { chatItemsAtom, modelsAtom } from '@/atoms'
 import { toCamelArr } from '@/utils/toCamel'
 
 interface IProps {
   chatItems: TChatItem[]
+  models: TModel[]
 }
 
 export default function ChatPage(props: IProps) {
-  const { chatItems } = props
+  const { chatItems, models } = props
   const router = useRouter()
 
   // hydrate chatItems ==> initialize from the server data
   useHydrateAtoms([
     [chatItemsAtom, chatItems],
+    [modelsAtom, models]
   ])
 
   const currentChatUUID = router.query.id as string
@@ -71,10 +73,13 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
   const chatItems = JSON.parse(JSON.stringify(toCamelArr(userWithChatItems!.chatItems)))
 
+  const models = toCamelArr(await prisma.model.findMany())
+
   return {
     props: {
       ...(await serverSideTranslations(ctx.locale!, ['common'])),
-      chatItems
+      chatItems,
+      models
     }
   }
 }
