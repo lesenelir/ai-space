@@ -32,7 +32,7 @@ export default function ChatHome() {
           type={'submit'}
           className={'p-2 font-normal border border-input bg-background hover:bg-accent hover:text-accent-foreground0'}
         >
-          Save
+          {t('chatPage.message.save')}
         </Button>
       </form>
     </>

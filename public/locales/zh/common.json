@@ -28,7 +28,8 @@
     },
     "message": {
       "textAreaPlaceholder": "输入消息...",
-      "openaiKey": "OpenAI API 密钥"
+      "openaiKey": "OpenAI API 密钥",
+      "save": "保存"
     }
   }
 }

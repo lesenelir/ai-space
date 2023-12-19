@@ -28,7 +28,8 @@
     },
     "message": {
       "textAreaPlaceholder": "Type a message...",
-      "openaiKey": "OpenAI API Key"
+      "openaiKey": "OpenAI API Key",
+      "save": "Save"
     }
   }
 }
