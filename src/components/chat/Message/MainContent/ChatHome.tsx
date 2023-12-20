@@ -30,7 +30,7 @@ export default function ChatHome() {
         />
         <Button
           type={'submit'}
-          className={'p-2 font-normal border border-input bg-background hover:bg-accent hover:text-accent-foreground0'}
+          className={'p-2 font-normal border border-input hover:bg-gray-200/80 dark:hover:bg-gray-500/10 hover-transition-change'}
         >
           {t('chatPage.message.save')}
         </Button>

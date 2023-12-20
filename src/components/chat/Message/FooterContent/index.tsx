@@ -48,7 +48,7 @@ export default function FooterContent() {
         width={24}
         height={24}
         className={`
-          cursor-pointer drop-shadow text-gray-600 hover:opacity-50 transition-change -ml-12
+          cursor-pointer drop-shadow text-gray-600 hover:opacity-70 hover-transition-change -ml-12
           dark:text-gray-50/80 dark:hover:opacity-70
         `}
         onClick={handleSubmit}
