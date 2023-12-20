@@ -1,7 +1,9 @@
 import { atom } from 'jotai'
+import { atomWithStorage } from 'jotai/utils'
 import type { TChatItem, TModel } from '@/types'
 
 // client atoms:
+export const resizableWidthAtom = atomWithStorage<number>('resizableWidth', 320)
 export const isMenuOpenAtom = atom<boolean>(true)
 export const isSearchActiveAtom = atom<boolean>(false)
 export const searchQueryNameAtom = atom<string>('')

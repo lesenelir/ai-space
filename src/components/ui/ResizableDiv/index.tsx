@@ -1,21 +1,22 @@
+import { useAtom } from 'jotai'
 import React, { ReactNode, useRef, useState, useEffect, useCallback } from 'react'
 
+import { resizableWidthAtom } from '@/atoms'
+
 interface IProps {
-  initialWidth: number
-  minPercentage: number
-  maxPercentage: number
   children: ReactNode
+  minWidth?: number
+  maxWidth?: number
   className?: string
 }
 
 export default function ResizableDiv({
-  initialWidth = 320,
-  minPercentage = 1 / 6,
-  maxPercentage = 2 / 3,
+  minWidth = 280,
+  maxWidth = 520,
   children,
   className,
 }: IProps) {
-  const [width, setWidth] = useState<number>(initialWidth)
+  const [width, setWidth] = useAtom(resizableWidthAtom)
   const [isResizing, setIsResizing] = useState<boolean>(false)
   const ref = useRef<HTMLDivElement>(null)
   const startXRef = useRef<number>(0)
@@ -27,14 +28,6 @@ export default function ResizableDiv({
     setIsResizing(true)
   }, [])
 
-  // component-first render
-  useEffect(() => {
-    const saveWidth = localStorage.getItem('menuWidth')
-    if (saveWidth) {
-      setWidth(Number(saveWidth))
-    }
-  }, [])
-
   // component-update render
   useEffect(() => {
     const doResize = (mouseMoveEvent: MouseEvent) => {
@@ -42,13 +35,8 @@ export default function ResizableDiv({
         const currentX = mouseMoveEvent.clientX
         const newWidth = startWidthRef.current + currentX - startXRef.current
 
-        const viewportWidth = window.innerWidth
-        const min = viewportWidth * minPercentage
-        const max = viewportWidth * maxPercentage
-
-        const width = Math.min(Math.max(newWidth, min), max) < 320 ? 320 : Math.min(Math.max(newWidth, min), max)
-        localStorage.setItem('menuWidth', String(width))
-        setWidth(width)
+        const newValidWidth = Math.max(Math.min(newWidth, maxWidth), minWidth)
+        setWidth(newValidWidth)
       }
     }
 
@@ -65,26 +53,22 @@ export default function ResizableDiv({
       window.removeEventListener('mousemove', doResize)
       window.removeEventListener('mouseup', stopResizing)
     }
-  }, [isResizing, maxPercentage, minPercentage])
+  }, [isResizing, maxWidth, minWidth, setWidth])
 
+  // When the screen is less than 768px, the menu width is fixed at 280px
   useEffect(() => {
     const handleResize = () => {
-      // When the screen is less than 768px, the menu width is fixed at 280px
       if (window.innerWidth < 768) {
         setWidth(280)
-      } else {
-        const savedWidth = localStorage.getItem('menuWidth')
-        setWidth(savedWidth ? Number(savedWidth) : initialWidth)
       }
     }
 
-    handleResize()
     window.addEventListener('resize', handleResize)
 
     return () => {
       window.removeEventListener('resize', handleResize)
     }
-  }, [initialWidth])
+  }, [setWidth])
 
   return (
     <div

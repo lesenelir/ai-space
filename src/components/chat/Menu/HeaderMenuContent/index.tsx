@@ -61,7 +61,7 @@ export default function HeaderMenuContent() {
             text-xl font-extrabold inline-flex items-center cursor-pointer
             text-transparent bg-clip-text bg-gradient-to-r from-lime-500 to-orange-300
           `}
-          onClick={() => router.push('/chat')}
+          onClick={async () => await router.push('/chat')}
         >
           Chat
         </span>
