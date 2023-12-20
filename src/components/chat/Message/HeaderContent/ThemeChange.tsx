@@ -19,8 +19,8 @@ export default function ThemeChange() {
           <Image
             src={'/sun.svg'}
             alt={'sun icon'}
-            width={24}
-            height={24}
+            width={20}
+            height={20}
             className={'cursor-pointer hover:opacity-60 transition-change'}
             onClick={() => setTheme('dark')}
           />
@@ -28,8 +28,8 @@ export default function ThemeChange() {
           <Image
             src={'/moon.svg'}
             alt={'moon icon'}
-            width={24}
-            height={24}
+            width={20}
+            height={20}
             className={'cursor-pointer hover:opacity-60 transition-change'}
             onClick={() => setTheme('light')}
           />

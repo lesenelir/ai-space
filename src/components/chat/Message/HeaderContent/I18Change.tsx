@@ -14,8 +14,8 @@ export default function I18Change() {
   return (
     <>
       <LanguageIcon
-        width={24}
-        height={24}
+        width={20}
+        height={20}
         className={'cursor-pointer hover:opacity-60 transition-opacity duration-300 ease-in-out'}
         onClick={handlerLanguageChange}
       />
