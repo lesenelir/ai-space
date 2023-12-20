@@ -7,7 +7,7 @@ export const resizableWidthAtom = atomWithStorage<number>('resizableWidth', 320)
 export const isMenuOpenAtom = atom<boolean>(true)
 export const isSearchActiveAtom = atom<boolean>(false)
 export const searchQueryNameAtom = atom<string>('')
-export const selectedModelIdAtom = atom<number>(1)
+export const selectedModelIdAtom = atom<number>(1) // Must: depends model id
 
 
 // server atoms:

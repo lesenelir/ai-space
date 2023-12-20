@@ -76,13 +76,14 @@ model Model {
 
 model UserAPIKey {
   id      Int    @id @default(autoincrement())
-  api_key String @unique
+  api_key String
 
   user_primary_id  Int // foreign key --> identify which user has this api key
   user             User  @relation(fields: [user_primary_id], references: [id])
   model_primary_id Int // foreign key --> identify which api key belongs to which model
   model            Model @relation(fields: [model_primary_id], references: [id])
 
+  @@unique([user_primary_id, model_primary_id])
   @@map("userApiKey")
 }
 

@@ -8,10 +8,25 @@ export default function ChatHome() {
   const {t} = useTranslation('common')
   const ref = useRef<HTMLInputElement>(null)
 
-  // Todo: save openai key to db
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    console.log(ref.current?.value)
+
+    if (ref.current) {
+      const options = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({openAIKey: ref.current?.value}),
+      }
+
+      try {
+        await fetch('/api/chat/saveOpenAIKey', options)
+        ref.current.value = ''
+      } catch (e) {
+        console.log('save openai key error: ', e)
+      }
+    }
   }
 
   return (
