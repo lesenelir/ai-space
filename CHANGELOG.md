@@ -42,5 +42,6 @@ This changelog provides a detailed record of the updates and improvements made t
 - Integrated search functionality for chatItem list.
 - Click on chatItem to open `/chat/uuid` page.
 - Add `Model Table` for model management. When creating a new chat, the chatItem will be automatically detected the model id and saved to the database.
+- Refactor Message Footer Component.
 
 
