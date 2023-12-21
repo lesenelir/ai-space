@@ -8,16 +8,17 @@ import prisma from '@/utils/db.server'
 import Menu from '@/components/chat/Menu'
 import Message from '@/components/chat/Message'
 import type { TChatItem, TModel } from '@/types'
-import { chatItemsAtom, modelsAtom } from '@/atoms'
+import { chatItemsAtom, isUserSaveOpenAIKeyAtom, modelsAtom } from '@/atoms'
 import { toCamelArr } from '@/utils/toCamel'
 
 interface IProps {
   chatItems: TChatItem[]
   models: TModel[]
+  isUserSaveOpenAIKey: boolean
 }
 
 export default function ChatPage(props: IProps) {
-  const { chatItems, models } = props
+  const { chatItems, models, isUserSaveOpenAIKey } = props
 
   // setChatItems(chatItems)  // wrong, because setState is the effect of render
   // useEffect + setChatItems(chatItems) // wrong, because it will wait for the first render, wasting ssr advantage
@@ -25,7 +26,8 @@ export default function ChatPage(props: IProps) {
   // hydrate chatItems ==> initialize from the server data
   useHydrateAtoms([
     [chatItemsAtom, chatItems],
-    [modelsAtom, models]  // this data will never change.
+    [modelsAtom, models],  // this data will never change.
+    [isUserSaveOpenAIKeyAtom, isUserSaveOpenAIKey]
   ])
 
   return (
@@ -56,6 +58,12 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     }
   }
 
+  const user = await prisma.user.findUnique({
+    where: {
+      userId
+    }
+  })
+
   // userId exists, then fetch chat items
   const userWithChatItems = await prisma.user.findUnique({
     where: {
@@ -71,11 +79,19 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const models = toCamelArr(await prisma.model.findMany()) // This data will never change.
   // Admin controls model table.
 
+  const isUserSaveKey = await prisma.userAPIKey.findMany({
+    where: {
+      user_primary_id: user!.id,
+      model_primary_id: 1
+    }
+  })
+
   return {
     props: {
       ...(await serverSideTranslations(ctx.locale!, ['common'])),
       chatItems,
-      models
+      models,
+      isUserSaveOpenAIKey: isUserSaveKey.length > 0
     }
   }
 }

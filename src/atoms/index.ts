@@ -11,6 +11,7 @@ export const selectedModelIdAtom = atom<number>(1) // Must: depends model id
 
 
 // server atoms:
+export const isUserSaveOpenAIKeyAtom = atom<boolean>(false) // maintains the user's openAI key status
 export const chatItemsAtom = atom<TChatItem[]>([]) // maintains the chat items data
 export const modelsAtom = atom<TModel[]>([]) // maintains the model data. read-only
 
