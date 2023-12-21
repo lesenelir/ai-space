@@ -85,7 +85,7 @@ export default function FooterMenuContent() {
       {
         isModalOpen && (
           <Modal
-            motionClassName={`${activeModal === 'Settings' && 'w-2/3 h-4/5 max-lg:w-4/5 max-md:w-full max-sm:w-full max-sm:h-5/6'}`}
+            motionClassName={`${activeModal === 'Settings' && 'w-2/5 h-4/5 max-lg:w-4/5 max-md:w-full max-sm:w-full max-sm:h-5/6'}`}
             onClose={() => setIsModalOpen(false)}
           >
             {activeModal === 'MyPlan' && <ModalPlan setIsModalOpen={setIsModalOpen}/>}

@@ -1,29 +1,33 @@
-import { type FormEvent } from 'react'
 import { useRouter } from 'next/router'
 import { useTranslation } from 'next-i18next'
 
 import XIcon from '@/components/icons/XIcon'
-import Input from '@/components/ui/Input'
+import Tabs from '@/components/ui/Tabs'
+import {
+  GeneralTab,
+  ModelTab,
+  GeneralContent,
+  ModelContent
+} from '@/components/chat/Menu/FooterMenuContent/SettingsData'
 
 interface IProps {
   setIsModalOpen: (isModalOpen: boolean) => void
 }
+
+const tabsData = [
+  { key: 'tab1', title: <GeneralTab/>, content: <GeneralContent/> },
+  { key: 'tab2', title: <ModelTab/>, content: <ModelContent/> },
+]
 
 export default function ModalSettings(props: IProps) {
   const {setIsModalOpen} = props
   const {t} = useTranslation('common')
   const router = useRouter()
 
-  // Todo: save API Key
-  const handlerSave = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    console.log('Todo: Save API Key')
-  }
-
   return (
     <div className={'w-full h-full flex flex-col text-white overflow-y-auto custom-scrollbar'}>
       {/* header */}
-      <div className={'h-1/6 p-4 flex flex-row justify-between rounded-t-md bg-chatpage-menu-hover'}>
+      <div className={'h-20 p-4 flex flex-row justify-between rounded-t-md bg-chatpage-menu-hover'}>
         <p className={'font-medium text-2xl'}>{t('chatPage.menu.settings')}</p>
         <XIcon
           width={24}
@@ -34,47 +38,12 @@ export default function ModalSettings(props: IProps) {
       </div>
 
       {/* Main */}
-      <div className={'flex-1 p-4 flex flex-row overflow-y-auto custom-scrollbar'}>
-        {/* Main Left */}
-        <div className={'w-2/3'}>
-          <form onSubmit={handlerSave} className={'flex flex-col gap-2'}>
-            <label htmlFor="openai">
-              <span className={'text-sm'}>{t('chatPage.menu.openAPIKey')}：</span>
-              <Input
-                id={'openai'}
-                type={'password'}
-                className={'h-8 text-gray-900 dark:text-gray-50'}
-              />
-            </label>
-            <label htmlFor="baidu">
-              <span className={'text-sm'}>{t('chatPage.menu.baiduAPIKey')}：</span>
-              <Input
-                id={'baidu'}
-                type={'password'}
-                className={'h-8 text-gray-900 dark:text-gray-50'}
-              />
-            </label>
-            <button type={'submit'} className={'mt-2 w-4/5 p-1 rounded-md bg-gray-200 text-gray-900 hover:bg-gray-300 transition-change'}>
-              {t('chatPage.menu.saveAll')}
-            </button>
-          </form>
-        </div>
-
-        <div className={'w-[1px] h-full bg-gray-300'}/>
-
-        {/* Main Right */}
-        <div className={'w-1/3 flex flex-col items-end gap-4'}>
-          <button className={'w-4/5 p-1 rounded-md bg-gray-200 text-gray-900 hover:bg-gray-300 transition-change'}>
-            {t('chatPage.menu.importData')}
-          </button>
-          <button className={'w-4/5 p-1 rounded-md bg-gray-200 text-gray-900 hover:bg-gray-300 transition-change'}>
-            {t('chatPage.menu.exportData')}
-          </button>
-        </div>
+      <div className={'flex-1 p-4 overflow-y-auto custom-scrollbar'}>
+        <Tabs tabs={tabsData}/>
       </div>
 
       {/* Footer */}
-      <div className={'h-1/6 flex justify-center items-center p-2 text-sm rounded-b-md bg-chatpage-menu-hover'}>
+      <div className={'h-20 flex justify-center items-center p-2 text-sm rounded-b-md bg-chatpage-menu-hover'}>
         <p>
           {t('chatPage.menu.footer')} {' '}
           <span className={'underline cursor-pointer'} onClick={() => router.push('/#research')}>
