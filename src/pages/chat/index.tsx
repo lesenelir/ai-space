@@ -8,17 +8,27 @@ import prisma from '@/utils/db.server'
 import Menu from '@/components/chat/Menu'
 import Message from '@/components/chat/Message'
 import type { TChatItem, TModel } from '@/types'
-import { chatItemsAtom, isUserSaveOpenAIKeyAtom, modelsAtom } from '@/atoms'
 import { toCamelArr } from '@/utils/toCamel'
+import {
+  chatItemsAtom,
+  isUserSaveGeminiKeyAtom,
+  isUserSaveOpenAIKeyAtom,
+  modelsAtom,
+  userGeminiKeyAtom,
+  userOpenAIKeyAtom
+} from '@/atoms'
 
 interface IProps {
   chatItems: TChatItem[]
   models: TModel[]
   isUserSaveOpenAIKey: boolean
+  isUserSaveGeminiKey: boolean
+  userOpenAIKey: string
+  userGeminiKey: string
 }
 
 export default function ChatPage(props: IProps) {
-  const { chatItems, models, isUserSaveOpenAIKey } = props
+  const { chatItems, models, isUserSaveOpenAIKey, isUserSaveGeminiKey, userOpenAIKey, userGeminiKey } = props
 
   // setChatItems(chatItems)  // wrong, because setState is the effect of render
   // useEffect + setChatItems(chatItems) // wrong, because it will wait for the first render, wasting ssr advantage
@@ -27,7 +37,10 @@ export default function ChatPage(props: IProps) {
   useHydrateAtoms([
     [chatItemsAtom, chatItems],
     [modelsAtom, models],  // this data will never change.
-    [isUserSaveOpenAIKeyAtom, isUserSaveOpenAIKey]
+    [isUserSaveOpenAIKeyAtom, isUserSaveOpenAIKey],
+    [isUserSaveGeminiKeyAtom, isUserSaveGeminiKey],
+    [userOpenAIKeyAtom, userOpenAIKey],
+    [userGeminiKeyAtom, userGeminiKey]
   ])
 
   return (
@@ -79,10 +92,17 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const models = toCamelArr(await prisma.model.findMany()) // This data will never change.
   // Admin controls model table.
 
-  const isUserSaveKey = await prisma.userAPIKey.findMany({
+  const isUserSaveOpenAIKey = await prisma.userAPIKey.findMany({
     where: {
       user_primary_id: user!.id,
       model_primary_id: 1
+    }
+  })
+
+  const isUserSaveGeminiKey = await prisma.userAPIKey.findMany({
+    where: {
+      user_primary_id: user!.id,
+      model_primary_id: 3
     }
   })
 
@@ -91,7 +111,10 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       ...(await serverSideTranslations(ctx.locale!, ['common'])),
       chatItems,
       models,
-      isUserSaveOpenAIKey: isUserSaveKey.length > 0
+      isUserSaveOpenAIKey: isUserSaveOpenAIKey.length > 0,
+      isUserSaveGeminiKey: isUserSaveGeminiKey.length > 0,
+      userOpenAIKey: isUserSaveOpenAIKey.length > 0 ? isUserSaveOpenAIKey[0].api_key : '',
+      userGeminiKey: isUserSaveGeminiKey.length > 0 ? isUserSaveGeminiKey[0].api_key : '',
     }
   }
 }

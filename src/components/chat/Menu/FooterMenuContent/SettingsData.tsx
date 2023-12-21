@@ -1,5 +1,7 @@
+import { Toaster, toast } from 'sonner'
 import { useRouter } from 'next/router'
 import { useTheme } from 'next-themes'
+import { useAtom, useSetAtom } from 'jotai'
 import { useTranslation } from 'next-i18next'
 import { type ChangeEvent, type FormEvent, useEffect, useRef } from 'react'
 
@@ -7,6 +9,7 @@ import Input from '@/components/ui/Input'
 import Button from '@/components/ui/Button'
 import PuzzleIcon from '@/components/icons/PuzzleIcon'
 import SettingsBoltIcon from '@/components/icons/SettingsBoltIcon'
+import { isUserSaveGeminiKeyAtom, isUserSaveOpenAIKeyAtom, userGeminiKeyAtom, userOpenAIKeyAtom } from '@/atoms'
 
 export const GeneralTab = () => {
   const {t} = useTranslation('common')
@@ -120,45 +123,103 @@ export const GeneralContent = () => {
 
 export const ModelContent = () => {
   const {t} = useTranslation('common')
+  const [userOpenAIKey, setUserOpenAIKey] = useAtom(userOpenAIKeyAtom)
+  const [userGeminiKey, setUserGeminiKey] = useAtom(userGeminiKeyAtom)
+  const setIsUserSaveOpenAIKey = useSetAtom(isUserSaveOpenAIKeyAtom)
+  const setIsUserSaveGeminiKey =  useSetAtom(isUserSaveGeminiKeyAtom)
 
-  const handleSave = (e: FormEvent<HTMLFormElement>) => {
+  const handleSaveOpenAIKey = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    console.log('Todo: Save API Key', e.target)
-    // TODO: save API Key
+
+    const options = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({openAIKey: userOpenAIKey}),
+    }
+
+    try {
+      await fetch('/api/chat/saveOpenAIKey', options)
+      setIsUserSaveOpenAIKey(true)
+      toast.success('Saved OpenAI API Key successfully')
+    } catch (e) {
+      toast.error('Saved OpenAI API Key Unsuccessfully')
+      console.log('save openai key error: ', e)
+    }
+  }
+
+  const handleSaveGeminiKey = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+
+    const options = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({googleGeminiKey: userGeminiKey}),
+    }
+
+    try {
+      await fetch('/api/chat/saveGeminiKey', options)
+      setIsUserSaveGeminiKey(true)
+      toast.success('Saved Gemini API Key successfully')
+    } catch (e) {
+      toast.error('Saved Gemini API Key Unsuccessfully')
+      console.log('save gemini key error: ', e)
+    }
   }
 
   return (
     <>
-      <form onSubmit={handleSave} className={'flex flex-col gap-8'}>
-        <label htmlFor={'openai'}>
-          <p className={'text-sm mb-2'}>{t('chatPage.menu.openAPIKey')}{' '}:</p>
-          <Input
-            type="password"
-            id={'openai'}
-            className={'h-8 text-gray-900 dark:text-gray-50'}
-          />
-        </label>
+      <Toaster richColors position={'top-center'}/>
+      <div className={'flex flex-col gap-8'}>
+        <form onSubmit={handleSaveOpenAIKey} className={'flex flex-col gap-8'}>
+          <label htmlFor={'openai'}>
+            <p className={'text-sm mb-2'}>{t('chatPage.menu.openAPIKey')}{' '}:</p>
+            <div className={'flex items-center gap-4'}>
+              <Input
+                type="password"
+                id={'openai'}
+                required={true}
+                value={userOpenAIKey}
+                onChange={(e) => setUserOpenAIKey(e.target.value)}
+                className={'h-8 text-gray-900 dark:text-gray-50'}
+              />
+              <Button
+                type={'submit'}
+                className={'p-1.5 text-sm border border-gray-500 hover:bg-chatpage-message-background-dark hover-transition-change'}
+              >
+                {t('chatPage.message.save')}
+              </Button>
+            </div>
+          </label>
+        </form>
 
         <div className={'border-b border-gray-500'}/>
 
-        <label htmlFor="google">
-          <p className={'text-sm mb-2'}>{t('chatPage.menu.geminiAPIKey')}{' '}:</p>
-          <Input
-            type="password"
-            id={'google'}
-            className={'h-8 text-gray-900 dark:text-gray-50'}
-          />
-        </label>
-
-        <div className={'border-b border-gray-500'}/>
-
-        <Button
-          type={'submit'}
-          className={'p-2 font-normal border border-input hover:bg-gray-500/20 hover-transition-change'}
-        >
-          {t('chatPage.menu.saveAll')}
-        </Button>
-      </form>
+        <form onSubmit={handleSaveGeminiKey} className={'flex flex-col gap-8'}>
+          <label htmlFor="google">
+            <p className={'text-sm mb-2'}>{t('chatPage.menu.geminiAPIKey')}{' '}:</p>
+            <div className={'flex items-center gap-4'}>
+              <Input
+                type="password"
+                id={'google'}
+                required={true}
+                value={userGeminiKey}
+                onChange={(e) => setUserGeminiKey(e.target.value)}
+                className={'h-8 text-gray-900 dark:text-gray-50'}
+              />
+              <Button
+                type={'submit'}
+                className={'p-1.5 text-sm border border-gray-500 hover:bg-chatpage-message-background-dark hover-transition-change'}
+              >
+                {t('chatPage.message.save')}
+              </Button>
+            </div>
+          </label>
+        </form>
+      </div>
     </>
   )
 }

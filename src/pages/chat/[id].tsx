@@ -9,22 +9,37 @@ import prisma from '@/utils/db.server'
 import Menu from '@/components/chat/Menu'
 import Message from '@/components/chat/Message'
 import type { TChatItem, TModel } from '@/types'
-import { chatItemsAtom, modelsAtom } from '@/atoms'
+import {
+  chatItemsAtom,
+  isUserSaveGeminiKeyAtom,
+  isUserSaveOpenAIKeyAtom,
+  modelsAtom,
+  userGeminiKeyAtom,
+  userOpenAIKeyAtom
+} from '@/atoms'
 import { toCamelArr } from '@/utils/toCamel'
 
 interface IProps {
   chatItems: TChatItem[]
   models: TModel[]
+  isUserSaveOpenAIKey: boolean
+  isUserSaveGeminiKey: boolean
+  userOpenAIKey: string
+  userGeminiKey: string
 }
 
 export default function ChatPage(props: IProps) {
-  const { chatItems, models } = props
+  const { chatItems, models, isUserSaveOpenAIKey, isUserSaveGeminiKey, userOpenAIKey, userGeminiKey } = props
   const router = useRouter()
 
   // hydrate chatItems ==> initialize from the server data
   useHydrateAtoms([
     [chatItemsAtom, chatItems],
-    [modelsAtom, models]
+    [modelsAtom, models],
+    [isUserSaveOpenAIKeyAtom, isUserSaveOpenAIKey],
+    [isUserSaveGeminiKeyAtom, isUserSaveGeminiKey],
+    [userOpenAIKeyAtom, userOpenAIKey],
+    [userGeminiKeyAtom, userGeminiKey]
   ])
 
   const currentChatUUID = router.query.id as string
@@ -61,6 +76,12 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     }
   }
 
+  const user = await prisma.user.findUnique({
+    where: {
+      userId
+    }
+  })
+
   // userId exists, then fetch chat items
   const userWithChatItems = await prisma.user.findUnique({
     where: {
@@ -75,11 +96,29 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
   const models = toCamelArr(await prisma.model.findMany())
 
+  const isUserSaveOpenAIKey = await prisma.userAPIKey.findMany({
+    where: {
+      user_primary_id: user!.id,
+      model_primary_id: 1
+    }
+  })
+
+  const isUserSaveGeminiKey = await prisma.userAPIKey.findMany({
+    where: {
+      user_primary_id: user!.id,
+      model_primary_id: 3
+    }
+  })
+
   return {
     props: {
       ...(await serverSideTranslations(ctx.locale!, ['common'])),
       chatItems,
-      models
+      models,
+      isUserSaveOpenAIKey: isUserSaveOpenAIKey.length > 0,
+      isUserSaveGeminiKey: isUserSaveGeminiKey.length > 0,
+      userOpenAIKey: isUserSaveOpenAIKey.length > 0 ? isUserSaveOpenAIKey[0].api_key : '',
+      userGeminiKey: isUserSaveGeminiKey.length > 0 ? isUserSaveGeminiKey[0].api_key : '',
     }
   }
 }

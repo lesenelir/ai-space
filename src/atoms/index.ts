@@ -12,6 +12,9 @@ export const selectedModelIdAtom = atom<number>(1) // Must: depends model id
 
 // server atoms:
 export const isUserSaveOpenAIKeyAtom = atom<boolean>(false) // maintains the user's openAI key status
+export const isUserSaveGeminiKeyAtom = atom<boolean>(false) // maintains the user's gemini key status
+export const userOpenAIKeyAtom = atom<string>('') // maintains the user's openAI key
+export const userGeminiKeyAtom = atom<string>('') // maintains the user's gemini key
 export const chatItemsAtom = atom<TChatItem[]>([]) // maintains the chat items data
 export const modelsAtom = atom<TModel[]>([]) // maintains the model data. read-only
 
@@ -20,7 +23,8 @@ export const modelsAtom = atom<TModel[]>([]) // maintains the model data. read-o
  *  modelsAtom value:
  *  [
  *   { id: 1, modelName: 'GPT-3.5 Turbo' },
- *   { id: 2, modelName: 'GPT-4 Turbo' }
+ *   { id: 2, modelName: 'GPT-4 Turbo' },
+ *   { id: 3, modelName: 'Gemini Pro' }
  *  ]
  *
  */

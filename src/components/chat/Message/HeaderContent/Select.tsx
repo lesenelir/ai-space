@@ -8,7 +8,7 @@ import useOutsideClick from '@/hooks/useOutsideClick'
 import ChevronUpIcon from '@/components/icons/ChevronUpIcon'
 import ChevronDownIcon from '@/components/icons/ChevronDownIcon'
 import { chatItemsAtom, modelsAtom, selectedModelIdAtom } from '@/atoms'
-import { GPT3, GPT4 } from '@/components/chat/Message/HeaderContent/OptionData'
+import { Gemini, GPT3, GPT4 } from '@/components/chat/Message/HeaderContent/OptionData'
 
 export default function Select() {
   const router = useRouter()
@@ -41,6 +41,8 @@ export default function Select() {
         return <GPT3/>
       case 2:
         return <GPT4/>
+      case 3:
+        return <Gemini/>
       default:
         return null
     }
@@ -97,7 +99,7 @@ export default function Select() {
                       key={item.id}
                       className={`
                         cursor-pointer p-2 rounded-md hover-transition-change text-sm flex gap-2
-                        hover:bg-gray-200/80 dark:hover:bg-gray-500/10 dark:text-gray-50 
+                        hover:bg-gray-200/80 dark:hover:bg-gray-500/10 dark:text-gray-50 items-center
                       `}
                       onClick={() => handleSelect(item)}
                     >
