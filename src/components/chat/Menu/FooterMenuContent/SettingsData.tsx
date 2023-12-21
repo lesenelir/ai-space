@@ -1,5 +1,7 @@
-import { type FormEvent } from 'react'
+import { useRouter } from 'next/router'
+import { useTheme } from 'next-themes'
 import { useTranslation } from 'next-i18next'
+import { type ChangeEvent, type FormEvent, useEffect, useRef } from 'react'
 
 import Input from '@/components/ui/Input'
 import Button from '@/components/ui/Button'
@@ -31,7 +33,27 @@ export const ModelTab = () => {
 // -------------------------------------------------------------------
 
 export const GeneralContent = () => {
+  const { setTheme } = useTheme()
+  const router = useRouter()
+  const currentLocale = router.locale
+  const currentThemeRef = useRef<string>('system')
   const { t } = useTranslation('common')
+
+  const handleLanguageChange = async (e: ChangeEvent<HTMLSelectElement>) => {
+    const newLocale = e.target.value
+    if (e.target.value !== currentLocale) {
+      await router.push(router.pathname, router.asPath, { locale: newLocale })
+    }
+  }
+
+  const handleThemeChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    setTheme(e.target.value)
+    currentThemeRef.current = e.target.value
+  }
+
+  useEffect(() => {
+    currentThemeRef.current = localStorage.getItem('theme') || 'system'
+  }, [])
 
   return (
     <div className={'flex flex-col gap-8'}>
@@ -39,24 +61,32 @@ export const GeneralContent = () => {
       <div className={'flex flex-col gap-8'}>
         <div className={'flex gap-4 items-center'}>
           <p className={'w-28'}>{t('chatPage.menu.language')} {' '}:</p>
-          <select className={'bg-chatpage-message-background-dark cursor-pointer rounded-lg p-2 px-6'}>
-            <option value="s">{t('chatPage.menu.zh')}</option>
-            <option value="s">{t('chatPage.menu.en')}</option>
+          <select
+            value={currentLocale}
+            onChange={handleLanguageChange}
+            className={'bg-chatpage-message-background-dark cursor-pointer rounded-lg p-2 px-6 focus:outline-none '}
+          >
+            <option value="zh">{t('chatPage.menu.zh')}</option>
+            <option value="en">{t('chatPage.menu.en')}</option>
           </select>
         </div>
         <div className={'flex gap-4 items-center'}>
           <p className={'w-28'}>{t('chatPage.menu.theme')} {' '}:</p>
-          <select className={'bg-chatpage-message-background-dark cursor-pointer rounded-lg p-2 px-6'}>
-            <option value="s">{t('chatPage.menu.system')}</option>
-            <option value="s">{t('chatPage.menu.light')}</option>
-            <option value="s">{t('chatPage.menu.dark')}</option>
+          <select
+            value={currentThemeRef.current}
+            onChange={handleThemeChange}
+            className={'bg-chatpage-message-background-dark cursor-pointer rounded-lg p-2 px-6'}
+          >
+            <option value="system">{t('chatPage.menu.system')}</option>
+            <option value="light">{t('chatPage.menu.light')}</option>
+            <option value="dark">{t('chatPage.menu.dark')}</option>
           </select>
         </div>
       </div>
 
       <div className={'border-b border-gray-500'}/>
 
-      {/* asd */}
+      {/* import and export content */}
       <div className={'flex flex-col gap-4'}>
         <div className={'flex gap-4 items-center'}>
           <span>{t('chatPage.menu.importTitle')} {' '}:</span>
