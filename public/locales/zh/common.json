@@ -40,7 +40,8 @@
     "message": {
       "textAreaPlaceholder": "输入消息...",
       "openaiKey": "OpenAI API 密钥",
-      "save": "保存"
+      "save": "保存",
+      "send": "发送信息"
     }
   }
 }

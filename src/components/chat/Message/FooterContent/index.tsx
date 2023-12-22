@@ -1,6 +1,7 @@
 import { useTranslation } from 'next-i18next'
 import { type ChangeEvent, FormEvent, type KeyboardEvent, useRef, useState } from 'react'
 
+import Tooltip from '@/components/ui/Tooltip'
 import TextArea from '@/components/ui/TextArea'
 import ArrowNarrowUpIcon from '@/components/icons/ArrowNarrowUpIcon'
 
@@ -55,21 +56,23 @@ export default function FooterContent() {
           onKeyDown={handleKeyDown}
         />
 
-        <button
-          type={'submit'}
-          disabled={!textValue}
-          className={`
-            absolute bottom-4 right-4 border rounded-lg p-1 
-            hover:bg-gray-200/80 hover-transition-change dark:hover:bg-gray-500/10
-            disabled:opacity-50 disabled:cursor-not-allowed 
-          `}
-        >
-          <ArrowNarrowUpIcon
-            width={20}
-            height={20}
-            className={'dark:text-gray-50/80 dark:text-gray-100'}
-          />
-        </button>
+        <Tooltip title={t('chatPage.message.send')}>
+          <button
+            type={'submit'}
+            disabled={!textValue}
+            className={`
+              absolute bottom-4 right-4 border rounded-lg p-1 
+              hover:bg-gray-200/80 hover-transition-change dark:hover:bg-gray-500/10
+              disabled:opacity-50 disabled:cursor-not-allowed 
+            `}
+          >
+            <ArrowNarrowUpIcon
+              width={20}
+              height={20}
+              className={'dark:text-gray-50/80 dark:text-gray-100'}
+            />
+          </button>
+        </Tooltip>
       </form>
     </div>
   )

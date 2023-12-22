@@ -47,5 +47,8 @@ This changelog provides a detailed record of the updates and improvements made t
   - button
   - input
   - tabs
-
+  - tooltip
+- Add `save openai key api routes` and implement the logic for saving openai key.
+- Add `save gemini key api routes` and implement the logic for saving gemini key.
+- Refactor Settings component.
 

@@ -40,7 +40,8 @@
     "message": {
       "textAreaPlaceholder": "Type a message...",
       "openaiKey": "OpenAI API Key",
-      "save": "Save"
+      "save": "Save",
+      "send": "Send message"
     }
   }
 }
