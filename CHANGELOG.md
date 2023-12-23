@@ -52,3 +52,5 @@ This changelog provides a detailed record of the updates and improvements made t
 - Add `save gemini key api routes` and implement the logic for saving gemini key.
 - Refactor Settings component.
 
+### v0.0.5
+> This version aims to integrate the OpenAI API and Gemini API into the project, and complete the basic implementation of the chat page.
