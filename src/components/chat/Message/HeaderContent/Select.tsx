@@ -38,11 +38,11 @@ export default function Select() {
   const renderModelIcon = (id: number) => {
     switch (id) {
       case 1:
-        return <GPT3/>
+        return <GPT3 width={16} height={16} className={'rounded-md'} />
       case 2:
-        return <GPT4/>
+        return <GPT4 width={16} height={16} className={'rounded-md'} />
       case 3:
-        return <Gemini/>
+        return <Gemini width={16} height={16} className={'rounded-md'} />
       default:
         return null
     }

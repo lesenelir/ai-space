@@ -1,10 +1,16 @@
 import { useRouter } from 'next/router'
+import type { Message } from 'ai/react'
 
 import ChatHome from '@/components/chat/Message/MainContent/ChatHome'
 import ChatContent from '@/components/chat/Message/MainContent/ChatContent'
 
-export default function MainContent() {
+interface IProps {
+  messages: Message[]
+}
+
+export default function MainContent(props: IProps) {
   const router = useRouter()
+  const { messages } = props
 
   if (!router.query.id) {
     return (
@@ -20,7 +26,7 @@ export default function MainContent() {
     <div className={'w-full flex-1 overflow-y-auto custom-message-light-scrollbar'}>
       {/* basic content */}
       <div className={'lg:w-[640px] max-lg:w-full mx-auto p-3 dark:text-gray-50'}>
-        <ChatContent/>
+        <ChatContent messages={messages}/>
       </div>
     </div>
   )

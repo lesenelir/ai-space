@@ -29,6 +29,8 @@ const config: Config = {
           'menu-hover':'#343540',
           'message-background-dark': '#343540',
           'message-background-light': '#f9fafb', /* gray-50 */
+          'message-text-dark': '#D1D5DB', /* gray-300 */
+          'message-text-strong-dark': '#ECECF1',
         },
         openai: {
           'b-0': '#235354',

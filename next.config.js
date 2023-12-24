@@ -4,6 +4,9 @@ const { i18n } = require('./next-i18next.config')
 const nextConfig = {
   reactStrictMode: true,
   i18n,
+  images: {
+    domains: ['img.clerk.com', 'images.clerk.dev'],
+  }
 }
 
 module.exports = nextConfig

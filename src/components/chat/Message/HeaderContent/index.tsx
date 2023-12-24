@@ -16,7 +16,7 @@ export default function HeaderContent() {
       `}
     >
       {/* left icon */}
-      <div className={`${isMenuOpen ? '' : 'ml-12'}`}>
+      <div className={`${isMenuOpen ? '' : 'ml-12'} text-black dark:text-white`}>
         <Select/>
       </div>
 
