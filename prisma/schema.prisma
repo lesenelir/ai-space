@@ -48,7 +48,7 @@ model ChatItem {
 model ChatMessage {
   id              Int      @id @default(autoincrement())
   message_type    String // text, image, video
-  message_content String
+  message_content String   @db.MediumText
   message_role    String // user, robot
   created_at      DateTime @default(now())
 

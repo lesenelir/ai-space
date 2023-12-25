@@ -1,4 +1,7 @@
+import { useRouter } from 'next/router'
+import { useAuth } from '@clerk/nextjs'
 import { useTranslation } from 'next-i18next'
+import type { ChatRequestOptions } from 'ai'
 import { type ChangeEvent, type FormEvent, type KeyboardEvent, useRef } from 'react'
 
 import Tooltip from '@/components/ui/Tooltip'
@@ -8,16 +11,18 @@ import ArrowNarrowUpIcon from '@/components/icons/ArrowNarrowUpIcon'
 interface IProps {
   input: string
   handleInputChange: (e: (ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>)) => void
-  handleSubmit: (e: FormEvent<HTMLFormElement>) => void
+  handleSubmit: (e: FormEvent<HTMLFormElement>, chatRequestOptions?: ChatRequestOptions) => void
 }
 
 export default function FooterContent(props: IProps) {
   const ref = useRef<HTMLTextAreaElement>(null) // change textarea height
   const { t } = useTranslation('common')
   const { input, handleInputChange, handleSubmit } = props
+  const { userId } = useAuth()
+  const router = useRouter()
   const maxHeight = 200
 
-  const handleFormSubmit = (e: FormEvent<HTMLFormElement> | KeyboardEvent<HTMLTextAreaElement>) => {
+  const handleFormSubmit = async (e: FormEvent<HTMLFormElement> | KeyboardEvent<HTMLTextAreaElement>) => {
     e.preventDefault()
 
     if (ref.current) {
@@ -25,7 +30,33 @@ export default function FooterContent(props: IProps) {
       ref.current.style.height = 'auto' // reset height
     }
 
-    handleSubmit(e as any) // call useChat hook
+    // 1. save user input to database
+    try {
+      const options = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          chat_item_uuid: router.query.id,
+          message: input,
+        })
+      }
+
+      await fetch('/api/chat/saveUserInput', options)
+    } catch (e) {
+      console.log('save user input error: ', e)
+    }
+
+    // 2. call useChat hook
+    handleSubmit(e as any, {
+      options: {
+        body: {
+          chat_item_uuid: router.query.id,
+          userId
+        }
+      }
+    })
   }
 
   const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
@@ -33,7 +64,7 @@ export default function FooterContent(props: IProps) {
 
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault()
-      handleFormSubmit(e)
+      handleFormSubmit(e).then(() => {})
     }
   }
 

@@ -13,7 +13,9 @@ import { authMiddleware, redirectToSignIn } from "@clerk/nextjs"
 // Please edit this to allow other routes to be public as needed.
 // See https://clerk.com/docs/references/nextjs/auth-middleware for more information about configuring your Middleware.
 export default authMiddleware({
-  publicRoutes: ['/'],    // Able to prevent Clerk authentication from protecting the api route.
+  // UNSAFE: [IMPORTANT!!!!]: /api/chat/saveRobotMessage is a public route.
+  // It is not protected by Clerk authentication [UNSAFE!!!!!].
+  publicRoutes: ['/', '/api/chat/saveRobotMessage'],    // Able to prevent Clerk authentication from protecting the api route.
   async afterAuth(auth, req) {
     // When you are in Postman to debug api, it will run this code. So you should comment on it.
     if (!auth.userId && !auth.isPublicRoute) {
