@@ -17,3 +17,13 @@ export type TModel = {
 export type TCategorizedChatItems = {
   [key: string]: TChatItem[]
 }
+
+export type TChatMessages = {
+  id: number
+  messageType: string
+  messageContent: string
+  messageRole: string
+  createdAt: string
+  chatItemPrimaryId: number
+  userPrimaryId: number
+}

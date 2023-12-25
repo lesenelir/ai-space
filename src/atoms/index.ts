@@ -1,6 +1,6 @@
 import { atom } from 'jotai'
 import { atomWithStorage } from 'jotai/utils'
-import type { TChatItem, TModel } from '@/types'
+import type { TChatItem, TChatMessages, TModel } from '@/types'
 
 // client atoms:
 export const resizableWidthAtom = atomWithStorage<number>('resizableWidth', 320)
@@ -17,7 +17,7 @@ export const userOpenAIKeyAtom = atom<string>('') // maintains the user's openAI
 export const userGeminiKeyAtom = atom<string>('') // maintains the user's gemini key
 export const chatItemsAtom = atom<TChatItem[]>([]) // maintains the chat items data
 export const modelsAtom = atom<TModel[]>([]) // maintains the model data. read-only
-// export const chatMessagesAtom = atom([]) // maintains the chat content messages data
+export const chatMessagesAtom = atom<TChatMessages[]>([]) // maintains the chat content messages data
 
 /**
  *

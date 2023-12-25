@@ -8,9 +8,9 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import prisma from '@/utils/db.server'
 import Menu from '@/components/chat/Menu'
 import Message from '@/components/chat/Message'
-import type { TChatItem, TModel } from '@/types'
+import type { TChatItem, TChatMessages, TModel } from '@/types'
 import {
-  chatItemsAtom,
+  chatItemsAtom, chatMessagesAtom,
   isUserSaveGeminiKeyAtom,
   isUserSaveOpenAIKeyAtom,
   modelsAtom,
@@ -26,10 +26,19 @@ interface IProps {
   isUserSaveGeminiKey: boolean
   userOpenAIKey: string
   userGeminiKey: string
+  chatMessages: TChatMessages[]
 }
 
 export default function ChatPage(props: IProps) {
-  const { chatItems, models, isUserSaveOpenAIKey, isUserSaveGeminiKey, userOpenAIKey, userGeminiKey } = props
+  const {
+    chatItems,
+    models,
+    isUserSaveOpenAIKey,
+    isUserSaveGeminiKey,
+    userOpenAIKey,
+    userGeminiKey ,
+    chatMessages
+  } = props
   const router = useRouter()
 
   // hydrate chatItems ==> initialize from the server data
@@ -39,13 +48,14 @@ export default function ChatPage(props: IProps) {
     [isUserSaveOpenAIKeyAtom, isUserSaveOpenAIKey],
     [isUserSaveGeminiKeyAtom, isUserSaveGeminiKey],
     [userOpenAIKeyAtom, userOpenAIKey],
-    [userGeminiKeyAtom, userGeminiKey]
+    [userGeminiKeyAtom, userGeminiKey],
+    [chatMessagesAtom, chatMessages]
   ])
 
   const currentChatUUID = router.query.id as string
   const currentChat = chatItems.find(item => item.itemUuid === currentChatUUID) as TChatItem // no need to useMemo,
   // because it will be re-rendered when the currentChatUUID changes.
-  // => must be re-rendered, because the currentChatUUID is from the router.query.id, which is from the url.
+  // => must be re-rendered because the currentChatUUID is from the router.query.id, which is from the url.
   const currentChatName = currentChat?.itemName
 
   return (
@@ -66,6 +76,7 @@ export default function ChatPage(props: IProps) {
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { userId } = getAuth(ctx.req)
+  const currentChatUuid = ctx.query.id as string
 
   if (!userId) {
     return {
@@ -110,6 +121,21 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     }
   })
 
+  const chatItemFromUuid = await prisma.chatItem.findUnique({
+    where: {
+      item_uuid: currentChatUuid
+    }
+  })
+
+  const chatMessagesUnSerialized = await prisma.chatMessage.findMany({
+    where: {
+      user_primary_id: user!.id,
+      chat_item_primary_id: chatItemFromUuid!.id
+    }
+  })
+
+  const chatMessages = JSON.parse(JSON.stringify(toCamelArr(chatMessagesUnSerialized)))
+
   return {
     props: {
       ...(await serverSideTranslations(ctx.locale!, ['common'])),
@@ -119,6 +145,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       isUserSaveGeminiKey: isUserSaveGeminiKey.length > 0,
       userOpenAIKey: isUserSaveOpenAIKey.length > 0 ? isUserSaveOpenAIKey[0].api_key : '',
       userGeminiKey: isUserSaveGeminiKey.length > 0 ? isUserSaveGeminiKey[0].api_key : '',
+      chatMessages
     }
   }
 }
