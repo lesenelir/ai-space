@@ -54,3 +54,8 @@ This changelog provides a detailed record of the updates and improvements made t
 
 ### v0.0.5
 > This version aims to integrate the OpenAI API and Gemini API into the project, and complete the basic implementation of the chat page.
+
+- Add `ai` vercel ai SDK to request openai api and implement the stream response. (might not be a good choice)
+- Add `saveUserInput` api routes and implement the logic for saving user input.
+- Add `saveRobotMessage` api routes and implement the logic for saving the assistant robot message.
+- Fix `delete chatItem api routes` for deleting chatItem related chatMessages data.
