@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import { useMemo } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 import { type Message } from 'ai/react'
 import { useUser } from '@clerk/nextjs'
 import { useRouter } from 'next/router'
@@ -17,6 +17,11 @@ export default function ChatContent(props: IProps) {
   const router = useRouter()
   const models = useAtomValue(modelsAtom)
   const chatItemLists =  useAtomValue(chatItemsAtom)
+  const endOfMessagesRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    endOfMessagesRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' })
+  }, [messages])
 
   const currentChatItem = useMemo(() =>
       chatItemLists.find(item => item.itemUuid === router.query.id),
@@ -43,7 +48,11 @@ export default function ChatContent(props: IProps) {
   return (
     <>
       {messages.map(m => (
-        <div key={m.id} className={`whitespace-pre-wrap text-start flex gap-3 mb-8`}>
+        <div
+          key={m.id}
+          ref={endOfMessagesRef}
+          className={`whitespace-pre-wrap text-start flex gap-3 mb-8`}
+        >
           {/* Image Avatar */}
           <div className={'mb-2'}>
             {
