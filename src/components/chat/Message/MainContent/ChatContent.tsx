@@ -10,10 +10,20 @@ import { Gemini, GPT3, GPT4 } from '@/components/chat/Message/HeaderContent/Opti
 
 interface IProps {
   messages: Message[]
+  setMessages: (messages: Message[]) => void
 }
 
+/**
+ * This file, I maintain the two parameters state: message and chatMessages.
+ *
+ *  Because chatMessages type is TChatMessages[], which is different from the Message type.
+ *  So, we can't setMessage(chatMessages), because the type is different.
+ *  => we need to maintain two parameters state.
+ *  => chatMessages is from the database, and messages are from real time.
+ *
+ */
 export default function ChatContent(props: IProps) {
-  const { messages } = props
+  const { messages, setMessages } = props
   const { user } = useUser()
   const router = useRouter()
   const models = useAtomValue(modelsAtom)
@@ -21,6 +31,7 @@ export default function ChatContent(props: IProps) {
   const [chatMessages, setChatMessages] = useAtom(chatMessagesAtom)
   const endOfMessagesRef = useRef<HTMLDivElement>(null)
 
+  // update scroll to the bottom when the messages change
   useEffect(() => {
     endOfMessagesRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' })
   }, [messages])
@@ -43,6 +54,7 @@ export default function ChatContent(props: IProps) {
         const response = await fetch(`/api/chat/getChatMessages`, options)
         const data = await response.json()
         setChatMessages(data.chatMessages)
+        setMessages([]) // when the router.query.id changes, we need to clear the messages.
       } catch (e) {
         console.error(e)
         toast.error('get chat messages error')
@@ -50,7 +62,7 @@ export default function ChatContent(props: IProps) {
     }
 
     getRequest().then(() => {})
-  }, [router.query.id, setChatMessages])
+  }, [router.query.id, setChatMessages, setMessages])
 
   const currentChatItem = useMemo(() =>
       chatItemLists.find(item => item.itemUuid === router.query.id),
