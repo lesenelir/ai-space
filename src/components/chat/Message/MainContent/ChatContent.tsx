@@ -65,7 +65,7 @@ export default function ChatContent(props: IProps) {
                   className={'rounded-full'}
                 />
               ) : (
-                renderModelIcon(currentChatModel!.id)
+                renderModelIcon(currentChatModel?.id || 1)
               )
             }
           </div>

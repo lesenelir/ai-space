@@ -16,6 +16,27 @@ const handleDeleteChatItem = async (req: NextApiRequest, res: NextApiResponse) =
   }
 
   try {
+    // find user
+    const user = await prisma.user.findUnique({
+      where: {
+        userId
+      }
+    })
+
+    // find chat item
+    const chatItem = await prisma.chatItem.findUnique({
+      where: {
+        item_uuid
+      }
+    })
+
+    await prisma.chatMessage.deleteMany({
+      where: {
+        chat_item_primary_id: chatItem!.id,
+        user_primary_id: user!.id
+      }
+    })
+
     await prisma.chatItem.delete({
       where: {
         item_uuid
