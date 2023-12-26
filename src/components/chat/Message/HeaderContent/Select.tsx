@@ -84,7 +84,7 @@ export default function Select() {
             {
               isDropDownOpen && (
                 <DropDown
-                  className={'absolute left-0 top-10 w-56 rounded-md z-10'}
+                  className={'absolute left-0 top-10 w-72 rounded-md z-10'}
                   motionClassName={`
                     w-full bg-gray-50 border border-gray-200 rounded-md p-2
                     dark:bg-chatpage-message-background-dark dark:border-gray-500
@@ -94,18 +94,46 @@ export default function Select() {
                     animate: {opacity: 1, y: 0},
                   }}
                 >
-                  {models.map((item) => (
-                    <div
-                      key={item.id}
-                      className={`
-                        cursor-pointer p-2 rounded-md hover-transition-change text-sm flex gap-2
-                        hover:bg-gray-200/80 dark:hover:bg-gray-500/10 dark:text-gray-50 items-center
-                      `}
-                      onClick={() => handleSelect(item)}
-                    >
-                      {renderModelIcon(item.id)} {/* Picture icon */}
-                      <span>{item.modelName}</span>
-                    </div>
+                  {/* TODO: When introduce gemini pro, its should be uncomment.  */}
+                  {/*{models.map((item) => (*/}
+                  {/*  <div*/}
+                  {/*    key={item.id}*/}
+                  {/*    className={`*/}
+                  {/*      cursor-pointer p-2 rounded-md hover-transition-change text-sm flex gap-2*/}
+                  {/*      hover:bg-gray-200/80 dark:hover:bg-gray-500/10 dark:text-gray-50 items-center*/}
+                  {/*    `}*/}
+                  {/*    onClick={() => handleSelect(item)}*/}
+                  {/*  >*/}
+                  {/*    {renderModelIcon(item.id)} /!* Picture icon *!/*/}
+                  {/*    <span>{item.modelName}</span>*/}
+                  {/*  </div>*/}
+                  {/*))}*/}
+                  {models.map(item => (
+                    <>
+                      {item.id === 3 ? (
+                        <div
+                          key={item.id}
+                          className={`
+                            cursor-pointer p-2 rounded-md hover-transition-change text-sm flex gap-2
+                          `}
+                        >
+                          {renderModelIcon(item.id)} {/* Picture icon */}
+                          <span>{item.modelName} (not supported yet)</span>
+                        </div>
+                      ) : (
+                        <div
+                          key={item.id}
+                          className={`
+                            cursor-pointer p-2 rounded-md hover-transition-change text-sm flex gap-2
+                            hover:bg-gray-200/80 dark:hover:bg-gray-500/10 dark:text-gray-50 items-center
+                          `}
+                          onClick={() => handleSelect(item)}
+                        >
+                          {renderModelIcon(item.id)} {/* Picture icon */}
+                          <span>{item.modelName}</span>
+                        </div>
+                      )}
+                    </>
                   ))}
                 </DropDown>
               )
