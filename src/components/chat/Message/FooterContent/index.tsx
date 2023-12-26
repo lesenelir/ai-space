@@ -28,10 +28,12 @@ export default function FooterContent(props: IProps) {
   const maxHeight = 200
   const chatItemLists = useAtomValue(chatItemsAtom)
 
+  // get current chatItem
   const currentChatItem = useMemo(() => (
     chatItemLists.find(item => item.itemUuid === router.query.id)
   ), [chatItemLists, router.query.id])
 
+  // get router.query.id -> special model name -> send openAI request as a model name
   const getCurrentChatModelName = useMemo(() => {
     const currentChatModelId = currentChatItem?.modelPrimaryId || 0
 
@@ -45,8 +47,6 @@ export default function FooterContent(props: IProps) {
     }
 
   }, [currentChatItem?.modelPrimaryId])
-
-  console.log(getCurrentChatModelName)
 
   const handleFormSubmit = async (e: FormEvent<HTMLFormElement> | KeyboardEvent<HTMLTextAreaElement>) => {
     e.preventDefault()
