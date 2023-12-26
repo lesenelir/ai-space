@@ -26,6 +26,16 @@ const handleSaveRobotMessage = async (req: NextApiRequest, res: NextApiResponse)
       }
     })
 
+    // update chat item updated_at
+    await prisma.chatItem.update({
+      where: {
+        item_uuid: chat_item_uuid
+      },
+      data: {
+        updated_at: new Date()
+      }
+    })
+
     // create a chat message
     await prisma.chatMessage.create({
       data: {

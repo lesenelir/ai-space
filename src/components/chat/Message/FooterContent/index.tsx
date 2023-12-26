@@ -1,14 +1,14 @@
 import { useRouter } from 'next/router'
 import { useAuth } from '@clerk/nextjs'
+import { type ChatRequestOptions } from 'ai'
 import { useTranslation } from 'next-i18next'
-import type { ChatRequestOptions } from 'ai'
+import { useAtomValue, useSetAtom } from 'jotai'
 import { type ChangeEvent, type FormEvent, type KeyboardEvent, useRef } from 'react'
 
 import Tooltip from '@/components/ui/Tooltip'
 import TextArea from '@/components/ui/TextArea'
 import ArrowNarrowUpIcon from '@/components/icons/ArrowNarrowUpIcon'
-import { useAtomValue } from 'jotai'
-import { maxTokensAtom, temperatureAtom } from '@/atoms'
+import { chatItemsAtom, maxTokensAtom, temperatureAtom } from '@/atoms'
 
 interface IProps {
   input: string
@@ -22,6 +22,7 @@ export default function FooterContent(props: IProps) {
   const { input, handleInputChange, handleSubmit } = props
   const temperature  = useAtomValue(temperatureAtom)
   const maxTokens = useAtomValue(maxTokensAtom)
+  const setChatItems = useSetAtom(chatItemsAtom)
   const { userId } = useAuth()
   const router = useRouter()
   const maxHeight = 200
@@ -47,7 +48,10 @@ export default function FooterContent(props: IProps) {
         })
       }
 
-      await fetch('/api/chat/saveUserInput', options)
+      // To update the chat items list, we need to get saveUserInput response to get the new chat item.
+      const response =  await fetch('/api/chat/saveUserInput', options)
+      const data = await response.json()
+      setChatItems(data.chatItems)
     } catch (e) {
       console.log('save user input error: ', e)
     }

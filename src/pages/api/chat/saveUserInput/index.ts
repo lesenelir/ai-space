@@ -3,6 +3,7 @@ import { getAuth } from '@clerk/nextjs/server'
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 import prisma from '@/utils/db.server'
+import { toCamelArr } from '@/utils'
 
 const router = createRouter<NextApiRequest, NextApiResponse>()
 
@@ -27,7 +28,17 @@ const handleSaveUserInput = async (req: NextApiRequest, res: NextApiResponse) =>
       }
     })
 
-    // create a chat message
+    // update chat item updated_at
+    await prisma.chatItem.update({
+      where: {
+        item_uuid: chat_item_uuid
+      },
+      data: {
+        updated_at: new Date()
+      }
+    })
+
+    // create a chat message (main)
     await prisma.chatMessage.create({
       data: {
         message_type: 'text',
@@ -39,7 +50,19 @@ const handleSaveUserInput = async (req: NextApiRequest, res: NextApiResponse) =>
       }
     })
 
-    return res.status(200).json({ status: 'save user input' })
+    // update chatItemsLists
+    const userWithChatItems = await prisma.user.findUnique({
+      where: {
+        userId
+      },
+      include: {
+        chatItems: true
+      }
+    })
+
+    const chatItems = JSON.parse(JSON.stringify(toCamelArr(userWithChatItems!.chatItems)))
+
+    return res.status(200).json({ status: 'save user input', chatItems })
   } catch (e) {
     return res.status(500).json({ error: e })}
 }
