@@ -8,6 +8,8 @@ export const isMenuOpenAtom = atom<boolean>(true)
 export const isSearchActiveAtom = atom<boolean>(false)
 export const searchQueryNameAtom = atom<string>('')
 export const selectedModelIdAtom = atom<number>(1) // Must: depends model id
+export const maxTokensAtom = atomWithStorage<number>('maxTokens', 1000)
+export const temperatureAtom = atomWithStorage<number>('temperature', 0.5)
 
 
 // server atoms:

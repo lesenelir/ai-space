@@ -59,3 +59,6 @@ This changelog provides a detailed record of the updates and improvements made t
 - Add `saveUserInput` api routes and implement the logic for saving user input.
 - Add `saveRobotMessage` api routes and implement the logic for saving the assistant robot message.
 - Fix `delete chatItem api routes` for deleting chatItem related chatMessages data.
+- UI components added:
+  - slider
+- Add `Chat Settings components` to Tabs components for setting chat parameters.

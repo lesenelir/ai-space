@@ -7,9 +7,18 @@ import { type ChangeEvent, type FormEvent, useEffect, useRef } from 'react'
 
 import Input from '@/components/ui/Input'
 import Button from '@/components/ui/Button'
+import Slider from '@/components/ui/Slider'
+import LeafIcon from '@/components/icons/LeafIcon'
 import PuzzleIcon from '@/components/icons/PuzzleIcon'
 import SettingsBoltIcon from '@/components/icons/SettingsBoltIcon'
-import { isUserSaveGeminiKeyAtom, isUserSaveOpenAIKeyAtom, userGeminiKeyAtom, userOpenAIKeyAtom } from '@/atoms'
+import {
+  isUserSaveGeminiKeyAtom,
+  isUserSaveOpenAIKeyAtom,
+  maxTokensAtom,
+  temperatureAtom,
+  userGeminiKeyAtom,
+  userOpenAIKeyAtom
+} from '@/atoms'
 
 export const GeneralTab = () => {
   const {t} = useTranslation('common')
@@ -29,6 +38,17 @@ export const ModelTab = () => {
     <div className={'flex gap-1 items-center'}>
       <PuzzleIcon width={20} height={20}/>
       {t('chatPage.menu.model')}
+    </div>
+  )
+}
+
+export const ChatSettingsTab = () => {
+  const { t } = useTranslation('common')
+
+  return (
+    <div className={'flex gap-1 items-center'}>
+      <LeafIcon width={20} height={20} />
+      {t('chatPage.menu.chat')}
     </div>
   )
 }
@@ -221,5 +241,67 @@ export const ModelContent = () => {
         </form>
       </div>
     </>
+  )
+}
+
+
+export const ChatSettingsContent = () => {
+  const { t } = useTranslation('common')
+  const [maxTokens, setMaxTokens] = useAtom(maxTokensAtom)
+  const [temperature, setTemperature] = useAtom(temperatureAtom)
+
+  return (
+    <div className={'flex flex-col gap-8'}>
+      {/* max tokens */}
+      <div className={'flex flex-col gap-2'}>
+        {/* words */}
+        <div>
+          <p>{t('chatPage.menu.tokensTitle')}</p>
+          <p className={'text-sm'}>
+            {t('chatPage.menu.tokensP1')} {t('chatPage.menu.tokensP2')}
+          </p>
+        </div>
+
+        <Input
+          type={'number'}
+          step={'1'}
+          min={'1'}
+          max={'4086'}
+          value={maxTokens}
+          onChange={(e) => setMaxTokens(Number(e.target.value))}
+          required={true}
+          className={'h-8 text-gray-900 dark:text-gray-50'}
+        />
+      </div>
+
+      {/* Temperature */}
+      <div className={'flex flex-col gap-2'}>
+        {/* Words */}
+        <div className={'flex flex-col gap-2'}>
+          <p>{t('chatPage.menu.temperature')} {' '} {temperature} </p>
+          <div className={'flex justify-between text-xs w-2/3'}>
+            <span>{t('chatPage.menu.precise')}</span>
+            <span>{t('chatPage.menu.balanced')}</span>
+            <span>{t('chatPage.menu.creative')}</span>
+          </div>
+        </div>
+
+        <Slider
+          min={0}
+          max={1}
+          step={0.1}
+          value={temperature}
+          onChange={(e: ChangeEvent<HTMLInputElement>) => setTemperature(Number(e.target.value))}
+          className={'w-2/3'}
+        />
+
+        {/* explanation */}
+        <div>
+          <p className={'text-sm'}>
+            {t('chatPage.menu.temperatureContent')}
+          </p>
+        </div>
+      </div>
+    </div>
   )
 }

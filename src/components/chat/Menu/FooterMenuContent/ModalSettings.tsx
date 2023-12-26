@@ -7,7 +7,9 @@ import {
   GeneralTab,
   ModelTab,
   GeneralContent,
-  ModelContent
+  ModelContent,
+  ChatSettingsTab,
+  ChatSettingsContent
 } from '@/components/chat/Menu/FooterMenuContent/SettingsData'
 
 interface IProps {
@@ -17,6 +19,7 @@ interface IProps {
 const tabsData = [
   { key: 'tab1', title: <GeneralTab/>, content: <GeneralContent/> },
   { key: 'tab2', title: <ModelTab/>, content: <ModelContent/> },
+  { key: 'tab3', title:  <ChatSettingsTab/>, content: <ChatSettingsContent/>}
 ]
 
 export default function ModalSettings(props: IProps) {
