@@ -3,7 +3,7 @@ import { useAuth } from '@clerk/nextjs'
 import { type ChatRequestOptions } from 'ai'
 import { useTranslation } from 'next-i18next'
 import { useAtomValue, useSetAtom } from 'jotai'
-import { type ChangeEvent, type FormEvent, type KeyboardEvent, useRef } from 'react'
+import { type ChangeEvent, type FormEvent, type KeyboardEvent, useMemo, useRef } from 'react'
 
 import Tooltip from '@/components/ui/Tooltip'
 import TextArea from '@/components/ui/TextArea'
@@ -26,6 +26,27 @@ export default function FooterContent(props: IProps) {
   const { userId } = useAuth()
   const router = useRouter()
   const maxHeight = 200
+  const chatItemLists = useAtomValue(chatItemsAtom)
+
+  const currentChatItem = useMemo(() => (
+    chatItemLists.find(item => item.itemUuid === router.query.id)
+  ), [chatItemLists, router.query.id])
+
+  const getCurrentChatModelName = useMemo(() => {
+    const currentChatModelId = currentChatItem?.modelPrimaryId || 0
+
+    switch (currentChatModelId) {
+      case 1:
+        return 'gpt-3.5-turbo'
+      case 2:
+        return 'gpt-4-1106-preview' // gpt4-turbo
+      case 3:
+        return 'gemini' // TODO: get gemini model name
+    }
+
+  }, [currentChatItem?.modelPrimaryId])
+
+  console.log(getCurrentChatModelName)
 
   const handleFormSubmit = async (e: FormEvent<HTMLFormElement> | KeyboardEvent<HTMLTextAreaElement>) => {
     e.preventDefault()
@@ -63,6 +84,7 @@ export default function FooterContent(props: IProps) {
           maxTokens,
           temperature,
           userId,
+          modelName: getCurrentChatModelName,
           chat_item_uuid: router.query.id
         }
       }
