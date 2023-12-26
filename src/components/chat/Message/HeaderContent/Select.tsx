@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router'
 import { useAtomValue, useSetAtom } from 'jotai'
-import { useMemo, useRef, useState } from 'react'
+import { Fragment, useMemo, useRef, useState } from 'react'
 
 import type { TModel } from '@/types'
 import DropDown from '@/components/ui/DropDown'
@@ -109,10 +109,9 @@ export default function Select() {
                   {/*  </div>*/}
                   {/*))}*/}
                   {models.map(item => (
-                    <>
+                    <Fragment key={item.id}>
                       {item.id === 3 ? (
                         <div
-                          key={item.id}
                           className={`
                             cursor-pointer p-2 rounded-md hover-transition-change text-sm flex gap-2
                           `}
@@ -122,7 +121,6 @@ export default function Select() {
                         </div>
                       ) : (
                         <div
-                          key={item.id}
                           className={`
                             cursor-pointer p-2 rounded-md hover-transition-change text-sm flex gap-2
                             hover:bg-gray-200/80 dark:hover:bg-gray-500/10 dark:text-gray-50 items-center
@@ -133,7 +131,7 @@ export default function Select() {
                           <span>{item.modelName}</span>
                         </div>
                       )}
-                    </>
+                    </Fragment>
                   ))}
                 </DropDown>
               )
