@@ -36,7 +36,7 @@ export default function ModalPlan(props: IProps) {
           <Image
             width={36}
             height={36}
-            src={'/leaf.svg'}
+            src={'/leaf1.svg'}
             alt={'Leaf'}
           />
           <span className={'text-xl'}>{t('chatPage.menu.plus')}</span>
