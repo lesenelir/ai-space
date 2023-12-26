@@ -62,3 +62,4 @@ This changelog provides a detailed record of the updates and improvements made t
 - UI components added:
   - slider
 - Add `Chat Settings components` to Tabs components for setting chat parameters.
+- Integrated `maxTokens and tempeture` parameters for openai backend api.
