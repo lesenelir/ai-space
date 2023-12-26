@@ -11,16 +11,17 @@ const openai = new OpenAI({
 export const runtime = 'edge'
 
 export default async function handler(req: Request) {
-  const { messages, chat_item_uuid, userId } = await req.json()
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL
+  const { messages, maxTokens, temperature, chat_item_uuid, userId } = await req.json()
   let partialCompletion = '' // TODO: handle network connection error, and save the partial completion to the database
 
   try {
     // Ask OpenAI for a streaming chat completion given the prompt
     const response = await openai.chat.completions.create({
       model: 'gpt-3.5-turbo',
+      messages,
       stream: true,
-      messages
+      max_tokens: maxTokens,
+      temperature
     })
 
     // Convert the response into a friendly text-stream
@@ -42,6 +43,7 @@ export default async function handler(req: Request) {
           })
         }
 
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL
         await fetch(`${apiUrl}/api/chat/saveRobotMessage`, options)
       }
     })

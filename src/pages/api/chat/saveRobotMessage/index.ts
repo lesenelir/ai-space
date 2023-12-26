@@ -27,7 +27,7 @@ const handleSaveRobotMessage = async (req: NextApiRequest, res: NextApiResponse)
     })
 
     // create a chat message
-    const ss = await prisma.chatMessage.create({
+    await prisma.chatMessage.create({
       data: {
         message_type: 'text',
         message_content: completion,
@@ -37,7 +37,6 @@ const handleSaveRobotMessage = async (req: NextApiRequest, res: NextApiResponse)
         chat_item_primary_id: chatItem!.id
       }
     })
-    console.log(ss)
 
     return res.status(200).json({ status: 'save user input' })
   } catch (e) {

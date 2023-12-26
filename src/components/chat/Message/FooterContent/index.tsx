@@ -7,6 +7,8 @@ import { type ChangeEvent, type FormEvent, type KeyboardEvent, useRef } from 're
 import Tooltip from '@/components/ui/Tooltip'
 import TextArea from '@/components/ui/TextArea'
 import ArrowNarrowUpIcon from '@/components/icons/ArrowNarrowUpIcon'
+import { useAtomValue } from 'jotai'
+import { maxTokensAtom, temperatureAtom } from '@/atoms'
 
 interface IProps {
   input: string
@@ -18,6 +20,8 @@ export default function FooterContent(props: IProps) {
   const ref = useRef<HTMLTextAreaElement>(null) // change textarea height
   const { t } = useTranslation('common')
   const { input, handleInputChange, handleSubmit } = props
+  const temperature  = useAtomValue(temperatureAtom)
+  const maxTokens = useAtomValue(maxTokensAtom)
   const { userId } = useAuth()
   const router = useRouter()
   const maxHeight = 200
@@ -52,8 +56,10 @@ export default function FooterContent(props: IProps) {
     handleSubmit(e as any, {
       options: {
         body: {
-          chat_item_uuid: router.query.id,
-          userId
+          maxTokens,
+          temperature,
+          userId,
+          chat_item_uuid: router.query.id
         }
       }
     })
