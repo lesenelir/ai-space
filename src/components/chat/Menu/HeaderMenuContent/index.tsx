@@ -69,7 +69,7 @@ export default function HeaderMenuContent() {
         {/* new chat */}
         <div
           className={`
-            min-w-[90px] w-5/6 font-light menu-first-content-item 
+            min-w-[100px] w-5/6 font-light menu-first-content-item 
             transition-change cursor-pointer hover:bg-gray-500/10
           `}
           onClick={handleNewChat}
