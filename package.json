@@ -21,6 +21,7 @@
   "dependencies": {
     "@clerk/nextjs": "^4.27.2",
     "@prisma/client": "5.7.0",
+    "@stackblitz/sdk": "^1.9.0",
     "ai": "^2.2.30",
     "date-fns": "^2.30.0",
     "framer-motion": "^10.16.14",
