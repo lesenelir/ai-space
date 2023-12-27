@@ -48,7 +48,7 @@ export default function MarkdownRender(props: IProps) {
                       onClick={() => handleCopyClick(String(children).replace(/\n$/, ''))}
                     >
                       <CopyIcon width={16} height={16}/>
-                      <span>Copy code</span>
+                      <span>Copy</span>
                     </button>
                   )
                 }

@@ -8,10 +8,6 @@ import { useAtom, useAtomValue } from 'jotai'
 import { useEffect, useMemo, useRef } from 'react'
 import { chatItemsAtom, chatMessagesAtom, modelsAtom } from '@/atoms'
 import { Gemini, GPT3, GPT4 } from '@/components/chat/Message/HeaderContent/OptionData'
-import remarkGfm from 'remark-gfm'
-import rehypeRaw from 'rehype-raw'
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
-import { dracula } from 'react-syntax-highlighter/dist/cjs/styles/prism'
 import MarkdownRender from '@/components/chat/Message/MainContent/MarkdownRender'
 
 interface IProps {
