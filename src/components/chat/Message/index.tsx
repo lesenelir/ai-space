@@ -12,7 +12,7 @@ export default function Message() {
   })
 
   return (
-    <div className={'flex-1 flex flex-col bg-gray-50 dark:bg-chatpage-message-background-dark dark:text-chatpage-message-text-dark'}>
+    <div className={'flex-1 w-full flex flex-col bg-gray-50 dark:bg-chatpage-message-background-dark dark:text-chatpage-message-text-dark'}>
       <HeaderContent/>
       <MainContent messages={messages} setMessages={setMessages}/>
       { router.query.id && <FooterContent input={input} handleInputChange={handleInputChange} handleSubmit={handleSubmit}/> }

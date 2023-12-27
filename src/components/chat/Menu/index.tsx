@@ -17,7 +17,7 @@ export default function Menu() {
       {
         isMenuOpen ? (
           <ResizableDiv
-            minWidth={280}
+            minWidth={300}
             maxWidth={520}
             className={`
               w-full h-full p-3 text-chatpage-menu-text bg-chatpage-menu-background

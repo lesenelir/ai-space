@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import Markdown from 'react-markdown'
 import { type Message } from 'ai/react'
 import { useUser } from '@clerk/nextjs'
 import { useRouter } from 'next/router'
@@ -98,94 +99,92 @@ export default function ChatContent(props: IProps) {
     <>
       <Toaster richColors position={'top-center'}  />
 
-      {/* first render to load data from the database */}
-      {chatMessages.map(m => (
-        <div
-          key={m.id}
-          ref={endOfMessagesRef}
-          className={`whitespace-pre-wrap text-start flex gap-3 mb-8`}
-        >
-          {/* Image Avatar */}
-          <div className={'mb-2'}>
-            {
-              m.messageRole === 'user' ? (
-                <Image
-                  width={30}
-                  height={30}
-                  src={user?.imageUrl || '/user.svg'}
-                  alt='avatar'
-                  className={'rounded-full'}
-                />
-              ) : (
-                renderModelIcon(currentChatModel?.id || 1)
-              )
-            }
-          </div>
-
-          {/* Name + Content */}
-          <div className={'flex-1 flex flex-col gap-2'}>
-            <p className={'font-medium dark:text-chatpage-message-text-strong-dark'}>
+      {/*first render to load data from the database*/}
+      {
+        chatMessages.map(m => (
+          <div
+            key={m.id}
+            ref={endOfMessagesRef}
+            className={`
+              flex flex-col gap-3 mb-8 p-2 rounded-lg 
+              bg-gray-200/90 dark:bg-chatpage-message-robot-content-dark
+              text-gray-600 dark:text-chatpage-message-text-dark 
+            `}
+          >
+            {/* avatar + name */}
+            <div className={'flex gap-2'}>
               {
-                m.messageRole === 'user' ? 'You' : currentChatModel?.modelName
+                m.messageRole === 'user' ? (
+                  <Image
+                    width={30}
+                    height={30}
+                    src={user?.imageUrl || '/user.svg'}
+                    alt='avatar'
+                    className={'rounded-full'}
+                  />
+                ) : (
+                  renderModelIcon(currentChatModel?.id || 1)
+                )
               }
-            </p>
-            <p
-              className={`
-                dark:text-chatpage-message-text-dark rounded-lg
-                ${m.messageRole === 'user' 
-                  ? 'text-[#0F0F0F] dark:text-chatpage-message-text-strong-dark' 
-                  : 'p-2 text-gray-700 bg-gray-200/60 dark:bg-chatpage-message-robot-content-dark'
+              <p className={'flex items-center font-medium text-gray-900/90 dark:text-chatpage-message-text-strong-dark'}>
+                {
+                  m.messageRole === 'user' ? 'You' : currentChatModel?.modelName
                 }
-              `}
-            >
-              {m.messageContent}
-            </p>
+              </p>
+            </div>
+            {/* content */}
+            <div className={'text-sm break-words whitespace-pre-wrap overflow-x-auto custom-message-light-scrollbar'}>
+              <Markdown>
+                {m.messageContent}
+              </Markdown>
+            </div>
           </div>
-        </div>
-      ))}
+        ))
+      }
+
 
       {/* Real time  */}
-      {messages.map(m => (
-        <div
-          key={m.id}
-          ref={endOfMessagesRef}
-          className={`whitespace-pre-wrap text-start flex gap-3 mb-8`}
-        >
-          {/* Image Avatar */}
-          <div className={'mb-2'}>
-            {
-              m.role === 'user' ? (
-                <Image
-                  width={30}
-                  height={30}
-                  src={user?.imageUrl || '/user.svg'}
-                  alt='avatar'
-                  className={'rounded-full'}
-                />
-              ) : (
-                renderModelIcon(currentChatModel?.id || 1)
-              )
-            }
-          </div>
-
-          {/* Name + Content */}
-          <div className={'flex-1 flex flex-col gap-2'}>
-            <p className={'font-medium dark:text-chatpage-message-text-strong-dark'}>
+      {
+        messages.map(m => (
+          <div
+            key={m.id}
+            ref={endOfMessagesRef}
+            className={`
+              flex flex-col gap-3 mb-8 p-2 rounded-lg 
+              bg-gray-200/90 dark:bg-chatpage-message-robot-content-dark
+              text-gray-600 dark:text-chatpage-message-text-dark 
+            `}
+          >
+            {/* avatar + name */}
+            <div className={'flex gap-2'}>
               {
-                m.role === 'user' ? 'You' : currentChatModel?.modelName
+                m.role === 'user' ? (
+                  <Image
+                    width={30}
+                    height={30}
+                    src={user?.imageUrl || '/user.svg'}
+                    alt='avatar'
+                    className={'rounded-full'}
+                  />
+                ) : (
+                  renderModelIcon(currentChatModel?.id || 1)
+                )
               }
-            </p>
-            <p
-              className={`
-                dark:text-chatpage-message-text-dark 
-                ${m.role === 'user' ? 'text-[#0F0F0F] dark:text-chatpage-message-text-strong-dark' : 'text-gray-700'}
-              `}
-            >
-              {m.content}
-            </p>
+              <p className={'flex items-center font-medium text-gray-900/90 dark:text-chatpage-message-text-strong-dark'}>
+                {
+                  m.role === 'user' ? 'You' : currentChatModel?.modelName
+                }
+              </p>
+            </div>
+            {/* content */}
+            <div className={'text-sm break-words whitespace-pre-wrap overflow-x-auto custom-message-light-scrollbar'}>
+              <Markdown>
+                {m.content}
+              </Markdown>
+            </div>
           </div>
-        </div>
-      ))}
+        ))
+      }
     </>
   )
 }

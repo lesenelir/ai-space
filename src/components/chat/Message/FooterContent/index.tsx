@@ -109,14 +109,14 @@ export default function FooterContent(props: IProps) {
 
   return (
     <div className={'w-full flex justify-center items-center p-3'}>
-      <form onSubmit={handleFormSubmit} className={'relative max-lg:w-full'}>
+      <form onSubmit={handleFormSubmit} className={'relative max-md:w-full'}>
         <TextArea
           ref={ref}
           required={true}
           value={input}
           placeholder={t('chatPage.message.textAreaPlaceholder')}
           className={`
-            lg:w-[640px] lg:-ml-6 resize-none rounded-xl drop-shadow custom-message-light-scrollbar
+            md:w-[640px] md:-ml-6 resize-none rounded-xl drop-shadow custom-message-light-scrollbar
             dark:bg-chatpage-message-background-dark 
           `}
           onChange={handleChange}
