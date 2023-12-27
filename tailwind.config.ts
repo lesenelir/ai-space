@@ -48,8 +48,38 @@ const config: Config = {
           't-5': '#235354',
         }
       },
+      typography: {
+       DEFAULT: {
+         css: {
+           p: {
+             margin: '0',
+           },
+           ol: {
+             margin: '0',
+           },
+           ul: {
+             margin: '0',
+           },
+           li: {
+             '> p': {
+               margin: '0',
+             },
+             margin: '0',
+           },
+           pre: {
+             margin: '0',
+             backgroundColor: 'transparent',
+           },
+           code: {
+             margin: '0',
+           },
+         }
+       }
+      }
     },
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/typography'),
+  ],
 }
 export default config
