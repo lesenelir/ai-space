@@ -63,3 +63,7 @@ This changelog provides a detailed record of the updates and improvements made t
   - slider
 - Add `Chat Settings components` to Tabs components for setting chat parameters.
 - Integrated `maxTokens and tempeture` parameters for openai backend api.
+- Integrated `react-markdown` for markdown to html.
+- Integrated `typography` for typography styles.
+- Integrated `react-syntax-highlighter` for code syntax highlighting.
+- Add `copy code` feature.
