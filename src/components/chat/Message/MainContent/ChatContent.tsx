@@ -86,6 +86,14 @@ export default function ChatContent(props: IProps) {
     }
   }
 
+  if (chatMessages.length === 0 && messages.length === 0) {
+    return (
+      <div className={'flex-1 flex flex-col justify-center items-center'}>
+        <p className={'text-gray-700 dark:text-chatpage-message-text-dark text-sm'}>No messages yet</p>
+      </div>
+    )
+  }
+
   return (
     <>
       <Toaster richColors position={'top-center'}  />
