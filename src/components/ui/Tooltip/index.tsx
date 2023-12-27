@@ -33,8 +33,7 @@ const Tooltip = forwardRef<HTMLDivElement, IProps>((
             },
           }}
           className={`
-            absolute right-0 border bottom-full mb-1 px-3 py-1 text-sm rounded drop-shadow-md
-            text-gray-900 bg-gray-100 dark:border-gray-500 dark:bg-gray-500/10 dark:text-gray-50/80
+            absolute right-0 bottom-full mb-2 px-2 py-1 bg-black text-white text-xs rounded-md shadow-md z-50
           `}
         >
           {title}
