@@ -131,8 +131,11 @@ export default function ChatContent(props: IProps) {
             </p>
             <p
               className={`
-                dark:text-chatpage-message-text-dark 
-                ${m.messageRole === 'user' ? 'text-[#0F0F0F] dark:text-chatpage-message-text-strong-dark' : 'text-gray-700'}
+                dark:text-chatpage-message-text-dark rounded-lg
+                ${m.messageRole === 'user' 
+                  ? 'text-[#0F0F0F] dark:text-chatpage-message-text-strong-dark' 
+                  : 'p-2 text-gray-700 bg-gray-200/60 dark:bg-chatpage-message-robot-content-dark'
+                }
               `}
             >
               {m.messageContent}

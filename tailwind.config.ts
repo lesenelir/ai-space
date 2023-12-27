@@ -31,6 +31,7 @@ const config: Config = {
           'message-background-light': '#f9fafb', /* gray-50 */
           'message-text-dark': '#D1D5DB', /* gray-300 */
           'message-text-strong-dark': '#ECECF1',
+          'message-robot-content-dark': '#444652',
         },
         openai: {
           'b-0': '#235354',
