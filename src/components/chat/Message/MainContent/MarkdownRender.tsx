@@ -61,7 +61,7 @@ export default function MarkdownRender(props: IProps) {
     "react-dom": "17.0.1",
     "@babel/runtime": "7.12.5"
   }
-}`
+}`      // To ensure correct formatting in StackBlitz, the code here needs to be written as follows.
         }
       },
       {

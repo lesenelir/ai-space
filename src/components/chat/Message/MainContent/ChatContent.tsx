@@ -4,11 +4,13 @@ import { useUser } from '@clerk/nextjs'
 import { useRouter } from 'next/router'
 import { Toaster, toast } from 'sonner'
 import { useAtom, useAtomValue } from 'jotai'
-import { useEffect, useMemo, useRef } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 
 import { chatItemsAtom, chatMessagesAtom, modelsAtom } from '@/atoms'
 import { Gemini, GPT3, GPT4 } from '@/components/chat/Message/HeaderContent/OptionData'
 import MarkdownRender from '@/components/chat/Message/MainContent/MarkdownRender'
+import CopyIcon from '@/components/icons/CopyIcon'
+import CheckIcon from '@/components/icons/CheckIcon'
 
 interface IProps {
   messages: Message[]
@@ -32,6 +34,8 @@ export default function ChatContent(props: IProps) {
   const chatItemLists =  useAtomValue(chatItemsAtom)
   const [chatMessages, setChatMessages] = useAtom(chatMessagesAtom)
   const endOfMessagesRef = useRef<HTMLDivElement>(null)
+  // To control many copy icons, the copy state is an object.
+  const [copy, setCopy] = useState<{[key: string]: boolean}>({}) // key: message id, value: boolean
 
   // update scroll to the bottom when the messages change
   useEffect(() => {
@@ -88,6 +92,15 @@ export default function ChatContent(props: IProps) {
     }
   }
 
+  const handleCopyClick = (code: string, id: string) => {
+    console.log(code, id, copy)
+    navigator.clipboard.writeText(code).then(() => {})
+    setCopy(prev => ({...prev, [id]: true}))
+    setTimeout(() => {
+      setCopy(prev => ({...prev, [id]: false}))
+    }, 1500)
+  }
+
   if (chatMessages.length === 0 && messages.length === 0) {
     return (
       <div className={'flex-1 flex flex-col justify-center items-center'}>
@@ -103,40 +116,62 @@ export default function ChatContent(props: IProps) {
       {/*first render to load data from the database*/}
       {
         chatMessages.map(m => (
-          <div
-            key={m.id}
-            ref={endOfMessagesRef}
-            className={`
-              flex flex-col gap-3 mb-8 p-2 rounded-lg 
+          <div key={m.id} className={'group'}>
+            <div
+              ref={endOfMessagesRef}
+              className={`
+              flex flex-col gap-3 p-2 rounded-lg 
               bg-gray-200/90 dark:bg-chatpage-message-robot-content-dark
               text-[#374151] dark:text-chatpage-message-text-dark 
             `}
-          >
-            {/* avatar + name */}
-            <div className={'flex gap-2'}>
-              {
-                m.messageRole === 'user' ? (
-                  <Image
-                    width={30}
-                    height={30}
-                    src={user?.imageUrl || '/user.svg'}
-                    alt='avatar'
-                    className={'rounded-full'}
-                  />
-                ) : (
-                  renderModelIcon(currentChatModel?.id || 1)
-                )
-              }
-              <p className={'flex items-center font-semibold text-gray-900/90 dark:text-white'}>
+            >
+              {/* avatar + name */}
+              <div className={'flex gap-2'}>
                 {
-                  m.messageRole === 'user' ? 'You' : currentChatModel?.modelName
+                  m.messageRole === 'user' ? (
+                    <Image
+                      width={30}
+                      height={30}
+                      src={user?.imageUrl || '/user.svg'}
+                      alt='avatar'
+                      className={'rounded-full'}
+                    />
+                  ) : (
+                    renderModelIcon(currentChatModel?.id || 1)
+                  )
                 }
-              </p>
+                <p className={'flex items-center font-semibold text-gray-900/90 dark:text-white'}>
+                  {
+                    m.messageRole === 'user' ? 'You' : currentChatModel?.modelName
+                  }
+                </p>
+              </div>
+              {/* content */}
+              <article
+                className={'prose dark:prose-invert break-words whitespace-pre-wrap overflow-x-auto custom-message-light-scrollbar'}>
+                <MarkdownRender markdown={m.messageContent}/>
+              </article>
             </div>
-            {/* content */}
-            <article className={'prose dark:prose-invert break-words whitespace-pre-wrap overflow-x-auto custom-message-light-scrollbar'}>
-              <MarkdownRender markdown={m.messageContent}/>
-            </article>
+
+            {/* Footer content */}
+            <div className={'mb-5 mt-1 w-full h-[16px]'}>
+              <div className={'hidden group-hover:flex'}>
+                {copy[m.id] ? (
+                  <CheckIcon width={16} height={16} className={'text-green-600'}/>
+                ) : (
+                  <CopyIcon width={16} height={16} className={'hover:cursor-pointer'} onClick={() => handleCopyClick(m.messageContent, String(m.id))}/>
+                )}
+
+                {/* addition  */}
+                {
+                  m.messageRole !== 'user' && (
+                    <>
+                    {/*  TODO */}
+                    </>
+                  )
+                }
+              </div>
+            </div>
           </div>
         ))
       }
@@ -145,40 +180,62 @@ export default function ChatContent(props: IProps) {
       {/* Real time  */}
       {
         messages.map(m => (
-          <div
-            key={m.id}
-            ref={endOfMessagesRef}
-            className={`
-              flex flex-col gap-3 mb-8 p-2 rounded-lg 
+          <div key={m.id} className={'group'}>
+            <div
+              ref={endOfMessagesRef}
+              className={`
+              flex flex-col gap-3 p-2 rounded-lg 
               bg-gray-200/90 dark:bg-chatpage-message-robot-content-dark
               text-[#374151] dark:text-chatpage-message-text-dark 
             `}
-          >
-            {/* avatar + name */}
-            <div className={'flex gap-2'}>
-              {
-                m.role === 'user' ? (
-                  <Image
-                    width={30}
-                    height={30}
-                    src={user?.imageUrl || '/user.svg'}
-                    alt='avatar'
-                    className={'rounded-full'}
-                  />
-                ) : (
-                  renderModelIcon(currentChatModel?.id || 1)
-                )
-              }
-              <p className={'flex items-center font-semibold text-gray-900/90 dark:text-white'}>
+            >
+              {/* avatar + name */}
+              <div className={'flex gap-2'}>
                 {
-                  m.role === 'user' ? 'You' : currentChatModel?.modelName
+                  m.role === 'user' ? (
+                    <Image
+                      width={30}
+                      height={30}
+                      src={user?.imageUrl || '/user.svg'}
+                      alt='avatar'
+                      className={'rounded-full'}
+                    />
+                  ) : (
+                    renderModelIcon(currentChatModel?.id || 1)
+                  )
                 }
-              </p>
+                <p className={'flex items-center font-semibold text-gray-900/90 dark:text-white'}>
+                  {
+                    m.role === 'user' ? 'You' : currentChatModel?.modelName
+                  }
+                </p>
+              </div>
+              {/* content */}
+              <article
+                className={'prose dark:prose-invert break-words whitespace-pre-wrap overflow-x-auto custom-message-light-scrollbar'}>
+                <MarkdownRender markdown={m.content}/>
+              </article>
             </div>
-            {/* content */}
-            <article className={'prose dark:prose-invert break-words whitespace-pre-wrap overflow-x-auto custom-message-light-scrollbar'}>
-              <MarkdownRender markdown={m.content}/>
-            </article>
+
+            {/* Footer content */}
+            <div className={'mb-5 mt-1 w-full h-[16px]'}>
+              <div className={'hidden group-hover:flex'}>
+                {copy[m.id] ? (
+                  <CheckIcon width={16} height={16} className={'text-green-600'}/>
+                ) : (
+                  <CopyIcon width={16} height={16} className={'hover:cursor-pointer'} onClick={() => handleCopyClick(m.content, m.id)}/>
+                )}
+
+                {/* addition  */}
+                {
+                  m.role !== 'user' && (
+                    <>
+                      {/*  TODO */}
+                    </>
+                  )
+                }
+              </div>
+            </div>
           </div>
         ))
       }
