@@ -1,11 +1,11 @@
 import Image from 'next/image'
-import Markdown from 'react-markdown'
 import { type Message } from 'ai/react'
 import { useUser } from '@clerk/nextjs'
 import { useRouter } from 'next/router'
 import { Toaster, toast } from 'sonner'
 import { useAtom, useAtomValue } from 'jotai'
 import { useEffect, useMemo, useRef } from 'react'
+
 import { chatItemsAtom, chatMessagesAtom, modelsAtom } from '@/atoms'
 import { Gemini, GPT3, GPT4 } from '@/components/chat/Message/HeaderContent/OptionData'
 import MarkdownRender from '@/components/chat/Message/MainContent/MarkdownRender'
@@ -151,7 +151,7 @@ export default function ChatContent(props: IProps) {
             className={`
               flex flex-col gap-3 mb-8 p-2 rounded-lg 
               bg-gray-200/90 dark:bg-chatpage-message-robot-content-dark
-              text-gray-600 dark:text-chatpage-message-text-dark 
+              text-[#374151] dark:text-chatpage-message-text-dark 
             `}
           >
             {/* avatar + name */}
@@ -169,18 +169,16 @@ export default function ChatContent(props: IProps) {
                   renderModelIcon(currentChatModel?.id || 1)
                 )
               }
-              <p className={'flex items-center font-medium text-gray-900/90 dark:text-chatpage-message-text-strong-dark'}>
+              <p className={'flex items-center font-semibold text-gray-900/90 dark:text-white'}>
                 {
                   m.role === 'user' ? 'You' : currentChatModel?.modelName
                 }
               </p>
             </div>
             {/* content */}
-            <div className={'text-sm break-words whitespace-pre-wrap overflow-x-auto custom-message-light-scrollbar'}>
-              <Markdown>
-                {m.content}
-              </Markdown>
-            </div>
+            <article className={'prose dark:prose-invert break-words whitespace-pre-wrap overflow-x-auto custom-message-light-scrollbar'}>
+              <MarkdownRender markdown={m.content}/>
+            </article>
           </div>
         ))
       }
