@@ -12,14 +12,15 @@ import { chatItemsAtom, maxTokensAtom, temperatureAtom } from '@/atoms'
 
 interface IProps {
   input: string
+  isLoading: boolean
   handleInputChange: (e: (ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>)) => void
   handleSubmit: (e: FormEvent<HTMLFormElement>, chatRequestOptions?: ChatRequestOptions) => void
 }
 
 export default function FooterContent(props: IProps) {
+  const { input, isLoading, handleInputChange, handleSubmit } = props
   const ref = useRef<HTMLTextAreaElement>(null) // change textarea height
   const { t } = useTranslation('common')
-  const { input, handleInputChange, handleSubmit } = props
   const temperature  = useAtomValue(temperatureAtom)
   const maxTokens = useAtomValue(maxTokensAtom)
   const setChatItems = useSetAtom(chatItemsAtom)
@@ -27,6 +28,8 @@ export default function FooterContent(props: IProps) {
   const router = useRouter()
   const maxHeight = 200
   const chatItemLists = useAtomValue(chatItemsAtom)
+
+  console.log(isLoading)
 
   // get current chatItem
   const currentChatItem = useMemo(() => (

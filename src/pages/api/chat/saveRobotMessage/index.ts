@@ -2,12 +2,14 @@ import { createRouter } from 'next-connect'
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 import prisma from '@/utils/db.server'
+import { getAuth } from '@clerk/nextjs/server'
 
 const router = createRouter<NextApiRequest, NextApiResponse>()
 
 const handleSaveRobotMessage = async (req: NextApiRequest, res: NextApiResponse) => {
   // unprotected route [unsafe!], this route is for the edge runtime call only.
-  const { completion, chat_item_uuid, userId } = req.body
+  const { userId } = getAuth(req)
+  const { completion, chat_item_uuid } = req.body
 
   if (!userId) {
     return res.status(400).json({ status: 'User not found' })

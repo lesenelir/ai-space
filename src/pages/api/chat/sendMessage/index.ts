@@ -31,20 +31,20 @@ export default async function handler(req: Request) {
       },
       onCompletion: async (completion: string) => {
         // Completion to the database. In edge, this will be sent to the origin server.
-        const options = {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            completion,
-            chat_item_uuid,
-            userId
-          })
-        }
-
-        const apiUrl = process.env.NEXT_PUBLIC_API_URL
-        await fetch(`${apiUrl}/api/chat/saveRobotMessage`, options)
+        // const options = {
+        //   method: 'POST',
+        //   headers: {
+        //     'Content-Type': 'application/json'
+        //   },
+        //   body: JSON.stringify({
+        //     completion,
+        //     chat_item_uuid,
+        //     userId
+        //   })
+        // }
+        //
+        // const apiUrl = process.env.NEXT_PUBLIC_API_URL
+        // await fetch(`${apiUrl}/api/chat/saveRobotMessage`, options)
       }
     })
 
