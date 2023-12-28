@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import sdk from '@stackblitz/sdk'
 import remarkGfm from 'remark-gfm'
 import rehypeRaw from 'rehype-raw'
 import Markdown from 'react-markdown'
@@ -25,6 +26,51 @@ export default function MarkdownRender(props: IProps) {
     }, 1500)
   }
 
+  const handlePreviewClick = (code: string, language: string) => {
+    const openFileFn = (language: string) => {
+      switch (language) {
+        case 'javascript':
+          return 'index.js'
+        case 'html':
+          return 'index.html'
+        case 'css':
+          return 'index.css'
+        case 'typescript':
+          return 'index.ts'
+      }
+    }
+
+    sdk.openProject(
+      {
+        title: 'Chat App',
+        description: 'preview code',
+        template: 'node',
+        files: {
+          'index.js': language === 'javascript' ? code : `console.log('hello world')`,
+          'index.html': language === 'html' ? code : `<html lang="en"><body><h1>hello world</h1></body></html>`,
+          'index.css': language === 'css' ? code : `h1 { color: red; }`,
+          'index.ts': language === 'typescript' ? code : `console.log('hello world')`,
+          'index.jsx': language === 'jsx' ? code : `function App() { return <h1>hello world</h1> }`,
+'package.json': `{
+  "name": "my-project",
+  "scripts": { 
+    "dev": "node index.js" 
+  },
+  "dependencies": {
+    "react": "17.0.1",
+    "react-dom": "17.0.1",
+    "@babel/runtime": "7.12.5"
+  }
+}`
+        }
+      },
+      {
+        openFile: openFileFn(language)
+      }
+    )
+  }
+
+
   return (
     <Markdown
       remarkPlugins={[remarkGfm]}
@@ -33,6 +79,7 @@ export default function MarkdownRender(props: IProps) {
         code({ node, inline, className, children, ...props }: any) {
           const match = /language-(\w+)/.exec(className || '')
           const language = className?.split('-')[1] || ''
+          const code =  String(children).replace(/\n$/, '')
 
           return !inline && match ? (
             <>
@@ -42,9 +89,10 @@ export default function MarkdownRender(props: IProps) {
                 <div>
                   <button
                     className={'p-2 inline-flex items-center gap-1 text-sm'}
+                    onClick={() => handlePreviewClick(code, language)}
                   >
                     <EyeIcon width={16} height={16}/>
-                    <span>Preview</span>
+                    <span>preview</span>
                   </button>
 
                   {
