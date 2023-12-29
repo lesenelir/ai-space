@@ -7,6 +7,7 @@ import { type ChangeEvent, type FormEvent, type KeyboardEvent, useMemo, useRef }
 
 import Tooltip from '@/components/ui/Tooltip'
 import TextArea from '@/components/ui/TextArea'
+import LoadingDots from '@/components/ui/LoadingDots'
 import ArrowNarrowUpIcon from '@/components/icons/ArrowNarrowUpIcon'
 import { chatItemsAtom, maxTokensAtom, temperatureAtom } from '@/atoms'
 
@@ -53,6 +54,7 @@ export default function FooterContent(props: IProps) {
 
   const handleFormSubmit = async (e: FormEvent<HTMLFormElement> | KeyboardEvent<HTMLTextAreaElement>) => {
     e.preventDefault()
+    if (isLoading) return // prevent user from sending multiple requests
 
     if (ref.current) {
       ref.current.value = '' // sync textValue [Must Important!]
@@ -126,23 +128,37 @@ export default function FooterContent(props: IProps) {
           onKeyDown={handleKeyDown}
         />
 
-        <Tooltip title={t('chatPage.message.send')}>
-          <button
-            type={'submit'}
-            disabled={!input}
-            className={`
-              absolute bottom-4 right-4 border rounded-lg p-1 
-              hover:bg-gray-200/80 hover-transition-change dark:hover:bg-gray-500/10
-              disabled:opacity-50 disabled:cursor-not-allowed 
-            `}
-          >
-            <ArrowNarrowUpIcon
-              width={20}
-              height={20}
-              className={'dark:text-gray-50/80 dark:text-gray-100'}
-            />
-          </button>
-        </Tooltip>
+        {
+          isLoading ? (
+            <>
+              <button
+                disabled={true}
+                className={'absolute bottom-4 right-4 border rounded-lg p-1'}
+              >
+                <LoadingDots/>
+                {/*<StopIcon width={20} height={20} className={'text-gray-600 dark:text-gray-50'}/>*/}
+              </button>
+            </>
+          ) : (
+            <Tooltip title={t('chatPage.message.send')}>
+              <button
+                type={'submit'}
+                disabled={!input}
+                className={`
+                  absolute bottom-4 right-4 border rounded-lg p-1 
+                  hover:bg-gray-200/80 hover-transition-change dark:hover:bg-gray-500/10
+                  disabled:opacity-50 disabled:cursor-not-allowed 
+                `}
+              >
+                <ArrowNarrowUpIcon
+                  width={20}
+                  height={20}
+                  className={'dark:text-gray-50/80 dark:text-gray-100'}
+                />
+              </button>
+            </Tooltip>
+          )
+        }
       </form>
     </div>
   )

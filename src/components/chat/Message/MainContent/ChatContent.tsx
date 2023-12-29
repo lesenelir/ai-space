@@ -23,7 +23,7 @@ interface IProps {
  *  Because chatMessages type is TChatMessages[], which is different from the Message type.
  *  So, we can't setMessage(chatMessages), because the type is different.
  *  => we need to maintain two parameters state.
- *  => chatMessages is from the database, and messages are from real time.
+ *  => chatMessages are from the database, and messages are from real time.
  *
  */
 export default function ChatContent(props: IProps) {
@@ -93,7 +93,6 @@ export default function ChatContent(props: IProps) {
   }
 
   const handleCopyClick = (code: string, id: string) => {
-    console.log(code, id, copy)
     navigator.clipboard.writeText(code).then(() => {})
     setCopy(prev => ({...prev, [id]: true}))
     setTimeout(() => {

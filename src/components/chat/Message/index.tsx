@@ -40,7 +40,14 @@ export default function Message() {
     <div className={'flex-1 w-full flex flex-col bg-gray-50 dark:bg-chatpage-message-background-dark dark:text-chatpage-message-text-dark'}>
       <HeaderContent/>
       <MainContent messages={messages} setMessages={setMessages}/>
-      {router.query.id && <FooterContent isLoading={isLoading} input={input} handleInputChange={handleInputChange} handleSubmit={handleSubmit}/> }
+      {router.query.id &&
+        <FooterContent
+          isLoading={isLoading}
+          input={input}
+          handleInputChange={handleInputChange}
+          handleSubmit={handleSubmit}
+        />
+      }
     </div>
   )
 }
