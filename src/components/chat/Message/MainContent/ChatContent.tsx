@@ -1,19 +1,19 @@
 import Image from 'next/image'
+import { useAtom } from 'jotai'
 import { type Message } from 'ai/react'
 import { useUser } from '@clerk/nextjs'
 import { useRouter } from 'next/router'
 import { Toaster, toast } from 'sonner'
-import { useAtom, useAtomValue } from 'jotai'
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
-import { chatItemsAtom, chatMessagesAtom, modelsAtom } from '@/atoms'
+import { chatMessagesAtom } from '@/atoms'
+import { encodingForModel } from 'js-tiktoken'
 import { Gemini, GPT3, GPT4 } from '@/components/chat/Message/HeaderContent/OptionData'
-import MarkdownRender from '@/components/chat/Message/MainContent/MarkdownRender'
 import CopyIcon from '@/components/icons/CopyIcon'
 import CheckIcon from '@/components/icons/CheckIcon'
 import SpeedIcon from '@/components/icons/SpeedIcon'
-import { encodingForModel } from 'js-tiktoken'
-
+import useGetChatInformation from '@/hooks/useGetChatInformation'
+import MarkdownRender from '@/components/chat/Message/MainContent/MarkdownRender'
 
 interface IProps {
   messages: Message[]
@@ -33,8 +33,7 @@ export default function ChatContent(props: IProps) {
   const { messages, setMessages } = props
   const { user } = useUser()
   const router = useRouter()
-  const models = useAtomValue(modelsAtom)
-  const chatItemLists =  useAtomValue(chatItemsAtom)
+  const { modelName, currentChatModel } = useGetChatInformation(router.query.id as string)
   const [chatMessages, setChatMessages] = useAtom(chatMessagesAtom)
   const endOfMessagesRef = useRef<HTMLDivElement>(null)
   // To control many copy icons, the copy state is an object.
@@ -73,30 +72,6 @@ export default function ChatContent(props: IProps) {
     getRequest().then(() => {})
   }, [router.query.id, setChatMessages, setMessages])
 
-  const currentChatItem = useMemo(() =>
-      chatItemLists.find(item => item.itemUuid === router.query.id),
-    [chatItemLists, router.query.id]
-  )
-  const currentChatModel = useMemo(() =>
-      models.find(model => model.id === currentChatItem?.modelPrimaryId),
-    [models, currentChatItem?.modelPrimaryId]
-  )
-
-  // get router.query.id -> special model name -> send openAI request as a model name
-  const getCurrentChatModelName = useMemo(() => {
-    const currentChatModelId = currentChatItem?.modelPrimaryId || 0
-
-    switch (currentChatModelId) {
-      case 1:
-        return 'gpt-3.5-turbo'
-      case 2:
-        return 'gpt-4-1106-preview' // gpt4-turbo
-      case 3:
-        return 'gemini' // TODO: get gemini model name
-    }
-
-  }, [currentChatItem?.modelPrimaryId])
-
   const renderModelIcon = (id: number) => {
     switch (id) {
       case 1:
@@ -118,8 +93,8 @@ export default function ChatContent(props: IProps) {
     }, 1500)
   }
 
-  const compulateTokensInFrontEnd = (content: string) => {
-    const enc = encodingForModel(getCurrentChatModelName as 'gpt-3.5-turbo' | 'gpt-4-1106-preview')
+  const computeTokensInFrontEnd = (content: string) => {
+    const enc = encodingForModel(modelName as 'gpt-3.5-turbo' | 'gpt-4-1106-preview')
     return enc.encode(content).length
   }
 
@@ -257,7 +232,7 @@ export default function ChatContent(props: IProps) {
 
                 <div className={'flex gap-1 p-1 rounded-md hover:bg-gray-200 dark:hover:bg-chatpage-message-robot-content-dark'}>
                   <SpeedIcon width={16} height={16}/>
-                  <span className={'text-xs'}>{compulateTokensInFrontEnd(m.content)} tokens</span>
+                  <span className={'text-xs'}>{computeTokensInFrontEnd(m.content)} tokens</span>
                 </div>
 
               </div>

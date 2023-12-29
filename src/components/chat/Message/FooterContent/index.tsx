@@ -4,12 +4,13 @@ import { type ChatRequestOptions } from 'ai'
 import { useTranslation } from 'next-i18next'
 import { encodingForModel } from 'js-tiktoken'
 import { useAtomValue, useSetAtom } from 'jotai'
-import { type ChangeEvent, type FormEvent, type KeyboardEvent, useMemo, useRef } from 'react'
+import { type ChangeEvent, type FormEvent, type KeyboardEvent, useRef } from 'react'
 
 import Tooltip from '@/components/ui/Tooltip'
 import TextArea from '@/components/ui/TextArea'
 import LoadingDots from '@/components/ui/LoadingDots'
 import ArrowNarrowUpIcon from '@/components/icons/ArrowNarrowUpIcon'
+import useGetChatInformation from '@/hooks/useGetChatInformation'
 import { chatItemsAtom, maxTokensAtom, temperatureAtom } from '@/atoms'
 
 interface IProps {
@@ -21,35 +22,15 @@ interface IProps {
 
 export default function FooterContent(props: IProps) {
   const { input, isLoading, handleInputChange, handleSubmit } = props
+  const router = useRouter()
+  const { userId } = useAuth()
   const ref = useRef<HTMLTextAreaElement>(null) // change textarea height
   const { t } = useTranslation('common')
   const temperature  = useAtomValue(temperatureAtom)
   const maxTokens = useAtomValue(maxTokensAtom)
   const setChatItems = useSetAtom(chatItemsAtom)
-  const { userId } = useAuth()
-  const router = useRouter()
+  const { modelName } = useGetChatInformation(router.query.id as string)
   const maxHeight = 200
-  const chatItemLists = useAtomValue(chatItemsAtom)
-
-  // get current chatItem
-  const currentChatItem = useMemo(() => (
-    chatItemLists.find(item => item.itemUuid === router.query.id)
-  ), [chatItemLists, router.query.id])
-
-  // get router.query.id -> special model name -> send openAI request as a model name
-  const getCurrentChatModelName = useMemo(() => {
-    const currentChatModelId = currentChatItem?.modelPrimaryId || 0
-
-    switch (currentChatModelId) {
-      case 1:
-        return 'gpt-3.5-turbo'
-      case 2:
-        return 'gpt-4-1106-preview' // gpt4-turbo
-      case 3:
-        return 'gemini' // TODO: get gemini model name
-    }
-
-  }, [currentChatItem?.modelPrimaryId])
 
   const handleFormSubmit = async (e: FormEvent<HTMLFormElement> | KeyboardEvent<HTMLTextAreaElement>) => {
     e.preventDefault()
@@ -62,7 +43,7 @@ export default function FooterContent(props: IProps) {
 
     // 1. save user input to database
     try {
-      const enc = encodingForModel(getCurrentChatModelName as 'gpt-3.5-turbo' | 'gpt-4-1106-preview')
+      const enc = encodingForModel(modelName as 'gpt-3.5-turbo' | 'gpt-4-1106-preview')
       const costTokens = enc.encode(input).length
 
       const options = {
@@ -92,7 +73,7 @@ export default function FooterContent(props: IProps) {
           maxTokens,
           temperature,
           userId,
-          modelName: getCurrentChatModelName,
+          modelName: modelName,
           chat_item_uuid: router.query.id
         }
       }
