@@ -3,7 +3,7 @@ import { useAtomValue } from 'jotai'
 
 import { chatItemsAtom, modelsAtom } from '@/atoms'
 
-export default function useGetChatInformation(urlUuid: string) {
+export default function useGetChatInformation(urlUuid: string, selectId?:number) {
   const chatItemLists =  useAtomValue(chatItemsAtom)
   const models = useAtomValue(modelsAtom)
 
@@ -18,7 +18,8 @@ export default function useGetChatInformation(urlUuid: string) {
 
   // To satisfy openAi api modelName
   const modelName = useMemo(() => {
-    const currentChatModelId = currentChatItem?.modelPrimaryId || 0
+    const currentChatModelId = selectId || currentChatItem?.modelPrimaryId || 0 // first consider selectId
+    // (when in chat home page the selectId is defined)
 
     switch (currentChatModelId) {
       case 1:
@@ -29,7 +30,7 @@ export default function useGetChatInformation(urlUuid: string) {
         return 'gemini' // TODO: get gemini model name
     }
 
-  }, [currentChatItem?.modelPrimaryId])
+  }, [currentChatItem?.modelPrimaryId, selectId])
 
   return {
     currentChatModel,

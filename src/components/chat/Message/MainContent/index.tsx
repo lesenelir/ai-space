@@ -7,6 +7,7 @@ import ChatContent from '@/components/chat/Message/MainContent/ChatContent'
 
 interface IProps {
   messages: Message[]
+  isLoading: boolean
   setMessages: (messages: Message[]) => void
 }
 
@@ -24,9 +25,9 @@ export default function MainContent(props: IProps) {
 
   if (!router.query.id) {
     return (
-      <div className={'w-full flex-1 flex items-center'}>
-        <div className={'md:w-[640px] max-md:w-full mx-auto p-3 dark:text-gray-50'}>
-          <ChatHome/>
+      <div className={'w-full flex-1 overflow-y-auto custom-message-light-scrollbar'}>
+        <div className={'md:w-[640px] max-md:w-full mx-auto p-3 dark:text-gray-50 min-h-full relative'}>
+          <ChatHome messages={messages}/>
         </div>
       </div>
     )
