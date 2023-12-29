@@ -5,7 +5,11 @@ const nextConfig = {
   reactStrictMode: true,
   i18n,
   images: {
-    domains: ['img.clerk.com', 'images.clerk.dev'],
+    // domains: ['img.clerk.com', 'images.clerk.dev'],
+    remotePatterns: [
+      { protocol: 'https', hostname: 'img.clerk.com' },
+      { protocol: 'https', hostname: 'images.clerk.dev' },
+    ]
   }
 }
 
