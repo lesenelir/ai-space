@@ -17,11 +17,11 @@ model User {
   isPremium Boolean @default(false)
 
   // Relations
-  chatItems      ChatItem[] // user -> chatItems (1 : n) : 1 user can have many chatItems
-  chatMessages   ChatMessage[] // user -> chatMessages (1 : n) : 1 user can have many chatMessages
-  userAPIKeys    UserAPIKey[] // user -> userAPIKey (1 : n) : 1 user can have many userAPIKey
-  apiRequestLogs APIRequestLog[] // user -> apiRequestLogs (1 : n) : 1 user can have many apiRequestLogs
+  chatItems    ChatItem[] // user -> chatItems (1 : n) : 1 user can have many chatItems
+  chatMessages ChatMessage[] // user -> chatMessages (1 : n) : 1 user can have many chatMessages
+  userAPIKeys  UserAPIKey[] // user -> userAPIKey (1 : n) : 1 user can have many userAPIKey
 
+  // apiRequestLogs APIRequestLog[] // user -> apiRequestLogs (1 : n) : 1 user can have many apiRequestLogs
   @@map("user")
 }
 
@@ -51,6 +51,7 @@ model ChatMessage {
   message_content String   @db.MediumText
   message_role    String // user, robot
   created_at      DateTime @default(now())
+  cost_tokens     Int
 
   chat_item_primary_id Int // foreign key -> identify which chatItem has this chatMessage
   chatItem             ChatItem @relation(fields: [chat_item_primary_id], references: [id])
@@ -58,8 +59,7 @@ model ChatMessage {
   user                 User     @relation(fields: [user_primary_id], references: [id])
 
   // Relations
-  apiRequestLogs APIRequestLog[] // chatMessage -> apiRequestLogs (1 : n) : 1 chatMessage can have many apiRequestLogs (especially for robot message)
-
+  // apiRequestLogs APIRequestLog[] // chatMessage -> apiRequestLogs (1 : n) : 1 chatMessage can have many apiRequestLogs (especially for robot message)
   @@map("chatMessage")
 }
 
@@ -87,15 +87,15 @@ model UserAPIKey {
   @@map("userApiKey")
 }
 
-model APIRequestLog {
-  id         Int      @id @default(autoincrement())
-  cost       Decimal
-  created_at DateTime @default(now())
-
-  chat_message_primary_id Int // foreign key
-  chatMessage             ChatMessage @relation(fields: [chat_message_primary_id], references: [id])
-  user_primary_id         Int
-  user                    User        @relation(fields: [user_primary_id], references: [id])
-
-  @@map("apiRequestLog")
-}
+// model APIRequestLog {
+//   id         Int      @id @default(autoincrement())
+//   cost       Decimal
+//   created_at DateTime @default(now())
+//
+//   chat_message_primary_id Int // foreign key
+//   chatMessage             ChatMessage @relation(fields: [chat_message_primary_id], references: [id])
+//   user_primary_id         Int
+//   user                    User        @relation(fields: [user_primary_id], references: [id])
+//
+//   @@map("apiRequestLog")
+// }
