@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router'
-import { useAtomValue, useSetAtom } from 'jotai'
-import { Fragment, useMemo, useRef, useState } from 'react'
+import { useAtom, useAtomValue } from 'jotai'
+import { Fragment, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import type { TModel } from '@/types'
 import DropDown from '@/components/ui/DropDown'
@@ -14,15 +14,23 @@ export default function Select() {
   const router = useRouter()
   const models = useAtomValue(modelsAtom)
   const chatItemLists =  useAtomValue(chatItemsAtom)
-  const setSelectedModelIdAtom = useSetAtom(selectedModelIdAtom)
+  const [selectedModelId, setSelectedModelId] = useAtom(selectedModelIdAtom)
   const [isDropDownOpen, setIsDropDownOpen] = useState<boolean>(false)
   const [selectedOption, setSelectedOption] = useState<string>(models[0].modelName)
   const wrapperRef = useRef<HTMLDivElement>(null)
   useOutsideClick(wrapperRef, () => setIsDropDownOpen(false))
 
+  useEffect(() => {
+    // When selectedModelId changes, update selectedOption (model name)
+    const selectedModel = models.find(model => model.id === selectedModelId)
+    if (selectedModel) {
+      setSelectedOption(selectedModel.modelName)
+    }
+  }, [selectedModelId, models])
+
   const handleSelect = (model: TModel) => {
-    setSelectedOption(model.modelName)
-    setSelectedModelIdAtom(model.id) // change global state, --> Modal Table id
+    // setSelectedOption(model.modelName) // this is not necessary, because selectedOption is updated by useEffect
+    setSelectedModelId(model.id) // change global state, --> Model Table id
     setIsDropDownOpen(false)
   }
 
@@ -35,7 +43,7 @@ export default function Select() {
     [models, currentChatItem?.modelPrimaryId]
   )
 
-  const renderModelIcon = (id: number) => {
+  const renderModelIcon = useCallback((id: number) => {
     switch (id) {
       case 1:
         return <GPT3 width={16} height={16} className={'rounded-md'} />
@@ -46,7 +54,7 @@ export default function Select() {
       default:
         return null
     }
-  }
+  }, [])
 
   return (
     <>
