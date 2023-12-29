@@ -24,6 +24,7 @@ export type TChatMessages = {
   messageContent: string
   messageRole: string
   createdAt: string
+  costTokens: number
   chatItemPrimaryId: number
   userPrimaryId: number
 }

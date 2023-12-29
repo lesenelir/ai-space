@@ -11,6 +11,9 @@ import { Gemini, GPT3, GPT4 } from '@/components/chat/Message/HeaderContent/Opti
 import MarkdownRender from '@/components/chat/Message/MainContent/MarkdownRender'
 import CopyIcon from '@/components/icons/CopyIcon'
 import CheckIcon from '@/components/icons/CheckIcon'
+import SpeedIcon from '@/components/icons/SpeedIcon'
+import { encodingForModel } from 'js-tiktoken'
+
 
 interface IProps {
   messages: Message[]
@@ -79,6 +82,21 @@ export default function ChatContent(props: IProps) {
     [models, currentChatItem?.modelPrimaryId]
   )
 
+  // get router.query.id -> special model name -> send openAI request as a model name
+  const getCurrentChatModelName = useMemo(() => {
+    const currentChatModelId = currentChatItem?.modelPrimaryId || 0
+
+    switch (currentChatModelId) {
+      case 1:
+        return 'gpt-3.5-turbo'
+      case 2:
+        return 'gpt-4-1106-preview' // gpt4-turbo
+      case 3:
+        return 'gemini' // TODO: get gemini model name
+    }
+
+  }, [currentChatItem?.modelPrimaryId])
+
   const renderModelIcon = (id: number) => {
     switch (id) {
       case 1:
@@ -98,6 +116,11 @@ export default function ChatContent(props: IProps) {
     setTimeout(() => {
       setCopy(prev => ({...prev, [id]: false}))
     }, 1500)
+  }
+
+  const compulateTokensInFrontEnd = (content: string) => {
+    const enc = encodingForModel(getCurrentChatModelName as 'gpt-3.5-turbo' | 'gpt-4-1106-preview')
+    return enc.encode(content).length
   }
 
   if (chatMessages.length === 0 && messages.length === 0) {
@@ -154,21 +177,23 @@ export default function ChatContent(props: IProps) {
 
             {/* Footer content */}
             <div className={'mb-5 mt-1 w-full h-[16px]'}>
-              <div className={'hidden group-hover:flex'}>
+              <div className={'hidden group-hover:flex gap-1'}>
                 {copy[m.id] ? (
-                  <CheckIcon width={16} height={16} className={'text-green-600'}/>
+                  <CheckIcon width={16} height={16} className={'text-green-600 p-1'}/>
                 ) : (
-                  <CopyIcon width={16} height={16} className={'hover:cursor-pointer'} onClick={() => handleCopyClick(m.messageContent, String(m.id))}/>
+                  <CopyIcon
+                    width={16}
+                    height={16}
+                    className={'rounded-md p-1 hover:cursor-pointer hover:bg-gray-200 dark:hover:bg-chatpage-message-robot-content-dark'}
+                    onClick={() => handleCopyClick(m.messageContent, String(m.id))}
+                  />
                 )}
 
-                {/* addition  */}
-                {
-                  m.messageRole !== 'user' && (
-                    <>
-                    {/*  TODO */}
-                    </>
-                  )
-                }
+                <div className={'flex gap-1 p-1 rounded-md hover:bg-gray-200 dark:hover:bg-chatpage-message-robot-content-dark'}>
+                  <SpeedIcon width={16} height={16}/>
+                  <span className={'text-xs'}>{m.costTokens} tokens</span>
+                </div>
+
               </div>
             </div>
           </div>
@@ -218,21 +243,23 @@ export default function ChatContent(props: IProps) {
 
             {/* Footer content */}
             <div className={'mb-5 mt-1 w-full h-[16px]'}>
-              <div className={'hidden group-hover:flex'}>
+              <div className={'hidden group-hover:flex gap-1'}>
                 {copy[m.id] ? (
-                  <CheckIcon width={16} height={16} className={'text-green-600'}/>
+                  <CheckIcon width={16} height={16} className={'text-green-600 p-1'}/>
                 ) : (
-                  <CopyIcon width={16} height={16} className={'hover:cursor-pointer'} onClick={() => handleCopyClick(m.content, m.id)}/>
+                  <CopyIcon
+                    width={16}
+                    height={16}
+                    className={'rounded-md p-1 hover:cursor-pointer hover:bg-gray-200 dark:hover:bg-chatpage-message-robot-content-dark'}
+                    onClick={() => handleCopyClick(m.content, String(m.id))}
+                  />
                 )}
 
-                {/* addition  */}
-                {
-                  m.role !== 'user' && (
-                    <>
-                      {/*  TODO */}
-                    </>
-                  )
-                }
+                <div className={'flex gap-1 p-1 rounded-md hover:bg-gray-200 dark:hover:bg-chatpage-message-robot-content-dark'}>
+                  <SpeedIcon width={16} height={16}/>
+                  <span className={'text-xs'}>{compulateTokensInFrontEnd(m.content)} tokens</span>
+                </div>
+
               </div>
             </div>
           </div>
