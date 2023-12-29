@@ -2,6 +2,7 @@ import { useRouter } from 'next/router'
 import { useAuth } from '@clerk/nextjs'
 import { type ChatRequestOptions } from 'ai'
 import { useTranslation } from 'next-i18next'
+import { encodingForModel } from 'js-tiktoken'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { type ChangeEvent, type FormEvent, type KeyboardEvent, useMemo, useRef } from 'react'
 
@@ -29,8 +30,6 @@ export default function FooterContent(props: IProps) {
   const router = useRouter()
   const maxHeight = 200
   const chatItemLists = useAtomValue(chatItemsAtom)
-
-  console.log(isLoading)
 
   // get current chatItem
   const currentChatItem = useMemo(() => (
@@ -63,6 +62,9 @@ export default function FooterContent(props: IProps) {
 
     // 1. save user input to database
     try {
+      const enc = encodingForModel(getCurrentChatModelName as 'gpt-3.5-turbo' | 'gpt-4-1106-preview')
+      const costTokens = enc.encode(input).length
+
       const options = {
         method: 'POST',
         headers: {
@@ -71,6 +73,7 @@ export default function FooterContent(props: IProps) {
         body: JSON.stringify({
           chat_item_uuid: router.query.id,
           message: input,
+          costTokens
         })
       }
 

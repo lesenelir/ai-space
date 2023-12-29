@@ -1,5 +1,6 @@
 import OpenAI from 'openai'
 import { NextResponse } from 'next/server'
+import { encodingForModel } from 'js-tiktoken'
 import { OpenAIStream, StreamingTextResponse } from 'ai'
 
 // Create an OpenAI API client (that's edge-friendly!)
@@ -12,7 +13,9 @@ export const runtime = 'edge'
 
 export default async function handler(req: Request) {
   const { messages, maxTokens, temperature, modelName, chat_item_uuid, userId } = await req.json()
+  const enc = encodingForModel(modelName)
   let partialCompletion = '' // TODO: handle network connection error, and save the partial completion to the database
+  let completionTokens = 0
 
   try {
     // Ask OpenAI for a streaming chat completion given the prompt
@@ -28,23 +31,24 @@ export default async function handler(req: Request) {
     const stream = OpenAIStream(response, {
       onToken: async (token: string) => {
         partialCompletion += token
+        completionTokens += enc.encode(token).length
       },
-      onCompletion: async (completion: string) => {
-        // Completion to the database. In edge, this will be sent to the origin server.
-        // const options = {
-        //   method: 'POST',
-        //   headers: {
-        //     'Content-Type': 'application/json'
-        //   },
-        //   body: JSON.stringify({
-        //     completion,
-        //     chat_item_uuid,
-        //     userId
-        //   })
-        // }
-        //
-        // const apiUrl = process.env.NEXT_PUBLIC_API_URL
-        // await fetch(`${apiUrl}/api/chat/saveRobotMessage`, options)
+      onFinal: async (completion: string) => {
+        const options = {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            completion,
+            chat_item_uuid,
+            cost_tokens: completionTokens,
+            userId
+          })
+        }
+
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL
+        await fetch(`${apiUrl}/api/chat/saveRobotMessage`, options)
       }
     })
 

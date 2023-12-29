@@ -16,24 +16,24 @@ export default function Message() {
     handleSubmit
   } = useChat({
     api: '/api/chat/sendMessage',
-    onFinish: async (message) => {
-      const options = {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          completion: message.content,
-          chat_item_uuid: router.query.id,
-        })
-      }
-
-      try {
-        await fetch(`/api/chat/saveRobotMessage`, options)
-      } catch (e) {
-        console.log(e)
-      }
-    }
+    // onFinish: async (message) => {
+    //   const options = {
+    //     method: 'POST',
+    //     headers: {
+    //       'Content-Type': 'application/json'
+    //     },
+    //     body: JSON.stringify({
+    //       completion: message.content,
+    //       chat_item_uuid: router.query.id,
+    //     })
+    //   }
+    //
+    //   try {
+    //     await fetch(`/api/chat/saveRobotMessage`, options)
+    //   } catch (e) {
+    //     console.log(e)
+    //   }
+    // }
   })
 
   return (

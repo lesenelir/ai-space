@@ -26,6 +26,7 @@
     "date-fns": "^2.30.0",
     "framer-motion": "^10.16.14",
     "jotai": "^2.6.0",
+    "js-tiktoken": "^1.0.8",
     "next": "14.0.3",
     "next-connect": "^1.0.0",
     "next-i18next": "^15.1.1",
