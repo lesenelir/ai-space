@@ -6,12 +6,12 @@ import { useAtomValue, useSetAtom } from 'jotai'
 import { type Message, type CreateMessage } from 'ai/react'
 import {
   type ChangeEvent,
-  type Dispatch,
   type FormEvent,
   type KeyboardEvent,
-  type SetStateAction,
+  type CompositionEvent,
   useEffect,
-  useRef
+  useRef,
+  useState
 } from 'react'
 
 import Tooltip from '@/components/ui/Tooltip'
@@ -22,16 +22,12 @@ import useGetChatInformation from '@/hooks/useGetChatInformation'
 import { chatItemsAtom, maxTokensAtom, selectedModelIdAtom, temperatureAtom } from '@/atoms'
 
 interface IProps {
-  input: string
   isLoading: boolean
-  setInput: Dispatch<SetStateAction<string>>
   append: (message: Message | CreateMessage, chatRequestOptions?: ChatRequestOptions) => Promise<string | null | undefined>
-  handleInputChange: (e: (ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>)) => void
-  handleSubmit: (e: FormEvent<HTMLFormElement>, chatRequestOptions?: ChatRequestOptions) => void
 }
 
 export default function FooterContent(props: IProps) {
-  const { input, isLoading, handleInputChange, handleSubmit, append, setInput } = props
+  const { isLoading, append } = props
   const { t } = useTranslation('common')
   const { userId } = useAuth()
   const router = useRouter()
@@ -40,22 +36,30 @@ export default function FooterContent(props: IProps) {
   const maxTokens = useAtomValue(maxTokensAtom)
   const selectedModelId = useAtomValue(selectedModelIdAtom)
   const setChatItems = useSetAtom(chatItemsAtom)
+  const [isComposing, setIsComposing] = useState<boolean>(false)
   const { modelName } = useGetChatInformation(router.query.id ? router.query.id as string : '', selectedModelId)
   const maxHeight = 200
 
   useEffect(() => {
-    setInput('')
-    ref.current?.focus()
-  }, [router.query.id, setInput])
+    if (ref.current) {
+      ref.current.value = ''
+      ref.current?.focus()
+    }
+  }, [router.query.id])
+
+  const handleComposition = (e: CompositionEvent) => {
+    if (e.type === 'compositionstart') {
+      // compositionstart
+      setIsComposing(true)
+    } else {
+      // compositionend
+      setIsComposing(false)
+    }
+  }
 
   const handleFormSubmit = async (e: FormEvent<HTMLFormElement> | KeyboardEvent<HTMLTextAreaElement>) => {
     e.preventDefault()
     if (isLoading) return // prevent user from sending multiple requests
-
-    if (ref.current) {
-      ref.current.value = '' // sync textValue [Must Important!]
-      ref.current.style.height = 'auto' // reset height
-    }
 
     // In an existing chat, send the request to openai directly.
     if (router.query.id) {
@@ -69,7 +73,7 @@ export default function FooterContent(props: IProps) {
           },
           body: JSON.stringify({
             chat_item_uuid: router.query.id,
-            message: input,
+            message: ref.current?.value,
           })
         }
 
@@ -79,7 +83,16 @@ export default function FooterContent(props: IProps) {
         setChatItems(data.chatItems)
 
         // 2. call useChat hook
-        handleSubmit(e as any, {
+        const message = ref.current?.value!
+        if (ref.current) {
+          ref.current.value = '' // sync textValue [Must Important!]
+          ref.current.style.height = 'auto' // reset height
+        }
+        await append({
+          id: String(new Date().getTime()),
+          content: message,
+          role: 'user'
+        }, {
           options: {
             body: {
               maxTokens,
@@ -103,7 +116,7 @@ export default function FooterContent(props: IProps) {
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-            message: input,
+            message: ref.current?.value,
             model_primary_id: selectedModelId,
           })
         }
@@ -113,10 +126,14 @@ export default function FooterContent(props: IProps) {
         setChatItems(data.chatItems)
 
         // 2. trigger api call
-        setInput('')
+        const message = ref.current?.value!
+        if (ref.current) {
+          ref.current.value = '' // sync textValue [Must Important!]
+          ref.current.style.height = 'auto' // reset height
+        }
         await append({
           id: 'start',
-          content: input,
+          content: message,
           role: 'user'
         }, {
           options: {
@@ -139,9 +156,9 @@ export default function FooterContent(props: IProps) {
   }
 
   const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === 'Enter' && !input) return
+    if (e.key === 'Enter' && e.shiftKey) return
 
-    if (e.key === 'Enter' && !e.shiftKey) {
+    if (e.key === 'Enter' && !e.shiftKey && !isComposing) {
       e.preventDefault()
       handleFormSubmit(e).then(() => {})
     }
@@ -151,7 +168,6 @@ export default function FooterContent(props: IProps) {
     const textarea = e.target
     textarea.style.height = 'auto'
     textarea.style.height = Math.min(textarea.scrollHeight, maxHeight) + 'px'
-    handleInputChange(e) // call useChat hook
   }
 
   return (
@@ -160,7 +176,6 @@ export default function FooterContent(props: IProps) {
         <TextArea
           ref={ref}
           required={true}
-          value={input}
           placeholder={t('chatPage.message.textAreaPlaceholder')}
           className={`
             md:w-[640px] md:-ml-6 resize-none rounded-xl drop-shadow custom-message-light-scrollbar
@@ -168,6 +183,8 @@ export default function FooterContent(props: IProps) {
           `}
           onChange={handleChange}
           onKeyDown={handleKeyDown}
+          onCompositionStart={handleComposition}
+          onCompositionEnd={handleComposition}
         />
 
         {
@@ -178,14 +195,13 @@ export default function FooterContent(props: IProps) {
                 className={'absolute bottom-4 right-4 border rounded-lg p-1'}
               >
                 <LoadingDots/>
-                {/*<StopIcon width={20} height={20} className={'text-gray-600 dark:text-gray-50'}/>*/}
               </button>
             </>
           ) : (
             <Tooltip title={t('chatPage.message.send')}>
               <button
                 type={'submit'}
-                disabled={!input}
+                disabled={ref.current?.value === ''}
                 className={`
                   absolute bottom-4 right-4 border rounded-lg p-1 
                   hover:bg-gray-200/80 hover-transition-change dark:hover:bg-gray-500/10

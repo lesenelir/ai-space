@@ -8,12 +8,8 @@ export default function Message() {
   const {
     messages,
     setMessages,
-    setInput,
     append,
     isLoading,
-    input,
-    handleInputChange,
-    handleSubmit
   } = useChat({
     api: '/api/chat/sendMessage',
     // onFinish: async (message) => {
@@ -40,14 +36,7 @@ export default function Message() {
     <div className={'flex-1 w-full flex flex-col bg-gray-50 dark:bg-chatpage-message-background-dark dark:text-chatpage-message-text-dark'}>
       <HeaderContent/>
       <MainContent isLoading={isLoading} messages={messages} setMessages={setMessages}/>
-      <FooterContent
-        isLoading={isLoading}
-        input={input}
-        setInput={setInput}
-        append={append}
-        handleInputChange={handleInputChange}
-        handleSubmit={handleSubmit}
-      />
+      <FooterContent isLoading={isLoading} append={append}/>
     </div>
   )
 }
