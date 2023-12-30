@@ -1,15 +1,17 @@
 import { createRouter } from 'next-connect'
 import { getAuth } from '@clerk/nextjs/server'
+import { encodingForModel } from 'js-tiktoken'
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 import prisma from '@/utils/db.server'
 import { toCamelArr } from '@/utils'
+import { getModelName } from '@/utils/modelName'
 
 const router = createRouter<NextApiRequest, NextApiResponse>()
 
 const handleSaveUserInput = async (req: NextApiRequest, res: NextApiResponse) => {
   const { userId } = getAuth(req)
-  const { message, chat_item_uuid, costTokens } = req.body
+  const { message, chat_item_uuid } = req.body
 
   if (!userId) {
     return res.status(400).json({ status: 'User not found' })
@@ -27,6 +29,10 @@ const handleSaveUserInput = async (req: NextApiRequest, res: NextApiResponse) =>
         item_uuid: chat_item_uuid
       }
     })
+
+    const modelName = getModelName(chatItem!.model_primary_id)
+    const enc = encodingForModel(modelName as any)
+    const costTokens = enc.encode(message).length
 
     // update chat item updated_at
     await prisma.chatItem.update({

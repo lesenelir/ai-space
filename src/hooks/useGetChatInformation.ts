@@ -2,6 +2,7 @@ import { useMemo } from 'react'
 import { useAtomValue } from 'jotai'
 
 import { chatItemsAtom, modelsAtom } from '@/atoms'
+import { getModelName } from '@/utils/modelName'
 
 export default function useGetChatInformation(urlUuid: string, selectId?:number) {
   const chatItemLists =  useAtomValue(chatItemsAtom)
@@ -20,16 +21,7 @@ export default function useGetChatInformation(urlUuid: string, selectId?:number)
   const modelName = useMemo(() => {
     const currentChatModelId = selectId || currentChatItem?.modelPrimaryId || 0 // first consider selectId
     // (when in chat home page the selectId is defined)
-
-    switch (currentChatModelId) {
-      case 1:
-        return 'gpt-3.5-turbo'
-      case 2:
-        return 'gpt-4-1106-preview' // gpt4-turbo
-      case 3:
-        return 'gemini' // TODO: get gemini model name
-    }
-
+    return getModelName(currentChatModelId)
   }, [currentChatItem?.modelPrimaryId, selectId])
 
   return {

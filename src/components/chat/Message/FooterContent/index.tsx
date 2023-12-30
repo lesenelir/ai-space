@@ -2,7 +2,6 @@ import { useRouter } from 'next/router'
 import { useAuth } from '@clerk/nextjs'
 import { type ChatRequestOptions } from 'ai'
 import { useTranslation } from 'next-i18next'
-import { encodingForModel } from 'js-tiktoken'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { type Message, type CreateMessage } from 'ai/react'
 import {
@@ -58,9 +57,6 @@ export default function FooterContent(props: IProps) {
       ref.current.style.height = 'auto' // reset height
     }
 
-    const enc = encodingForModel(modelName as 'gpt-3.5-turbo' | 'gpt-4-1106-preview')
-    const costTokens = enc.encode(input).length
-
     // In an existing chat, send the request to openai directly.
     if (router.query.id) {
       // when router.query.id exists, it means that the chat is already created.
@@ -74,7 +70,6 @@ export default function FooterContent(props: IProps) {
           body: JSON.stringify({
             chat_item_uuid: router.query.id,
             message: input,
-            costTokens
           })
         }
 
@@ -110,7 +105,6 @@ export default function FooterContent(props: IProps) {
           body: JSON.stringify({
             message: input,
             model_primary_id: selectedModelId,
-            costTokens
           })
         }
 
