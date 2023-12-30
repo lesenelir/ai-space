@@ -15,8 +15,9 @@ import {
 } from 'react'
 
 import Tooltip from '@/components/ui/Tooltip'
-import TextArea from '@/components/ui/TextArea'
+import DotsIcon from '@/components/icons/DotsIcon'
 import LoadingDots from '@/components/ui/LoadingDots'
+import MicrophoneIcon from '@/components/icons/MicrophoneIcon'
 import ArrowNarrowUpIcon from '@/components/icons/ArrowNarrowUpIcon'
 import useGetChatInformation from '@/hooks/useGetChatInformation'
 import { chatItemsAtom, maxTokensAtom, selectedModelIdAtom, temperatureAtom } from '@/atoms'
@@ -107,7 +108,7 @@ export default function FooterContent(props: IProps) {
         console.log('save user input error: ', e)
       }
     } else {
-      // router.query.id is undefined, it means that the chat is not created yet. The user is in the chat home page.
+      // router.query.id is undefined, it means that the chat is not created yet. The user is on the chat home page.
       try {
         // 1. create a new chat and save user input to the database.
         const options = {
@@ -171,53 +172,119 @@ export default function FooterContent(props: IProps) {
   }
 
   return (
-    <div className={'w-full flex justify-center items-center p-3'}>
-      <form onSubmit={handleFormSubmit} className={'relative max-md:w-full'}>
-        <TextArea
-          ref={ref}
-          required={true}
-          placeholder={t('chatPage.message.textAreaPlaceholder')}
-          className={`
-            md:w-[640px] md:-ml-6 resize-none rounded-xl drop-shadow custom-message-light-scrollbar
-            dark:bg-chatpage-message-background-dark 
-          `}
-          onChange={handleChange}
-          onKeyDown={handleKeyDown}
-          onCompositionStart={handleComposition}
-          onCompositionEnd={handleComposition}
+    <div className={'w-full flex flex-col items-center border-t dark:border-t-gray-500'}>
+      {/* icons */}
+      <div className={'md:w-[640px] max-md:w-full p-1 flex'}>
+        <MicrophoneIcon
+          width={16}
+          height={16}
+          className={'p-2 rounded-md cursor-pointer hover:bg-gray-200 dark:hover:bg-chatpage-message-robot-content-dark'}
         />
+        <DotsIcon
+          width={16}
+          height={16}
+          className={'p-2 rounded-md cursor-pointer hover:bg-gray-200 dark:hover:bg-chatpage-message-robot-content-dark'}
+        />
+      </div>
 
-        {
-          isLoading ? (
-            <>
-              <button
-                disabled={true}
-                className={'absolute bottom-4 right-4 border rounded-lg p-1'}
-              >
-                <LoadingDots/>
-              </button>
-            </>
-          ) : (
-            <Tooltip title={t('chatPage.message.send')}>
-              <button
-                type={'submit'}
-                disabled={ref.current?.value === ''}
-                className={`
-                  absolute bottom-4 right-4 border rounded-lg p-1 
-                  hover:bg-gray-200/80 hover-transition-change dark:hover:bg-gray-500/10
-                  disabled:opacity-50 disabled:cursor-not-allowed 
-                `}
-              >
-                <ArrowNarrowUpIcon
-                  width={20}
-                  height={20}
-                  className={'dark:text-gray-50/80 dark:text-gray-100'}
-                />
-              </button>
-            </Tooltip>
-          )
-        }
-      </form>
+      {/* textarea */}
+      <div className={'md:w-[640px] max-md:w-full'}>
+        <form onSubmit={handleFormSubmit} className={'relative'}>
+          <textarea
+            ref={ref}
+            required={true}
+            placeholder={t('chatPage.message.textAreaPlaceholder')}
+            className={`
+              resize-none w-full py-1 pl-3 pr-11 text-sm custom-message-light-scrollbar bg-transparent rounded-xl
+              dark:bg-chatpage-message-background-dark focus:outline-none dark:border-gray-500
+            `}
+            onChange={handleChange}
+            onKeyDown={handleKeyDown}
+            onCompositionStart={handleComposition}
+            onCompositionEnd={handleComposition}
+          />
+          {
+            isLoading ? (
+              <>
+                <button
+                  disabled={true}
+                  className={'absolute bottom-5 right-3 border rounded-lg p-1'}
+                >
+                  <LoadingDots/>
+                </button>
+              </>
+            ) : (
+              <Tooltip title={t('chatPage.message.send')}>
+                <button
+                  type={'submit'}
+                  disabled={!ref.current || ref.current?.value === ''}
+                  className={`
+                    absolute bottom-5 right-3 border rounded-lg p-1
+                    hover:bg-gray-200/80 hover-transition-change dark:hover:bg-gray-500/10
+                    disabled:opacity-50 disabled:cursor-not-allowed
+                  `}
+                >
+                  <ArrowNarrowUpIcon
+                    width={20}
+                    height={20}
+                    className={'dark:text-gray-50/80 dark:text-gray-100'}
+                  />
+                </button>
+              </Tooltip>
+            )
+          }
+        </form>
+      </div>
+
     </div>
+    // <div className={'w-full flex justify-center items-center p-3'}>
+    //   <form onSubmit={handleFormSubmit} className={'relative max-md:w-full'}>
+    //     <TextArea
+    //       ref={ref}
+    //       required={true}
+    //       placeholder={t('chatPage.message.textAreaPlaceholder')}
+    //       className={`
+    //         md:w-[640px] md:-ml-6 resize-none rounded-xl drop-shadow custom-message-light-scrollbar
+    //         dark:bg-chatpage-message-background-dark
+    //       `}
+    //       onChange={handleChange}
+    //       onKeyDown={handleKeyDown}
+    //       onCompositionStart={handleComposition}
+    //       onCompositionEnd={handleComposition}
+    //     />
+    //
+    //     {
+    //       isLoading ?
+    //       (
+    //         <>
+    //           <button
+    //             disabled={true}
+    //             className={'absolute bottom-4 right-4 border rounded-lg p-1'}
+    //           >
+    //             <LoadingDots/>
+    //           </button>
+    //         </>
+    //       ) : (
+    //         <Tooltip title={t('chatPage.message.send')}>
+    //           <button
+    //             type={'submit'}
+    //             disabled={ref.current?.value === ''}
+    //             className={`
+    //               absolute bottom-4 right-4 border rounded-lg p-1
+    //               hover:bg-gray-200/80 hover-transition-change dark:hover:bg-gray-500/10
+    //               disabled:opacity-50 disabled:cursor-not-allowed
+    //             `}
+    //           >
+    //             <ArrowNarrowUpIcon
+    //               width={20}
+    //               height={20}
+    //               className={'dark:text-gray-50/80 dark:text-gray-100'}
+    //             />
+    //           </button>
+    //         </Tooltip>
+    //       )
+    //     }
+    //   </form>
+    // </div>
   )
 }
