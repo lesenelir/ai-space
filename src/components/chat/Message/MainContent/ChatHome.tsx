@@ -1,6 +1,5 @@
 import Image from 'next/image'
 import { useUser } from '@clerk/nextjs'
-import { useRouter } from 'next/router'
 import type { Message } from 'ai/react'
 import { Toaster, toast } from 'sonner'
 import { useAtom, useAtomValue } from 'jotai'
@@ -13,7 +12,6 @@ import Button from '@/components/ui/Button'
 import CheckIcon from '@/components/icons/CheckIcon'
 import CopyIcon from '@/components/icons/CopyIcon'
 import SpeedIcon from '@/components/icons/SpeedIcon'
-import useGetChatInformation from '@/hooks/useGetChatInformation'
 import MarkdownRender from '@/components/chat/Message/MainContent/MarkdownRender'
 import { Gemini, GPT3, GPT4 } from '@/components/chat/Message/HeaderContent/OptionData'
 import { isUserSaveOpenAIKeyAtom, modelsAtom, selectedModelIdAtom, userOpenAIKeyAtom } from '@/atoms'
@@ -22,17 +20,17 @@ interface IProps {
   messages: Message[]
 }
 
+const enc = encodingForModel('gpt-4-1106-preview') // NOT dynamic, but could not put it in a React component.
+
 export default function ChatHome(props: IProps) {
   const { messages } = props
   const { t } = useTranslation('common')
   const { user } = useUser()
-  const router = useRouter()
   const [isUserSaveOpenAIKey, setIsUserSaveOpenAIKey] = useAtom(isUserSaveOpenAIKeyAtom)
   const [userOpenAIKey, setUserOpenAIKey] = useAtom(userOpenAIKeyAtom)
   const endOfMessagesRef = useRef<HTMLDivElement>(null)
   const selectedModelId = useAtomValue(selectedModelIdAtom)
   const models = useAtomValue(modelsAtom)
-  const { modelName } = useGetChatInformation(router.query.id ? router.query.id as string : '', selectedModelId)
   const [copy, setCopy] = useState<{[key: string]: boolean}>({}) // key: message id, value: boolean
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -76,12 +74,7 @@ export default function ChatHome(props: IProps) {
     }, 1500)
   }
 
-  const computeTokensInFrontEnd = (content: string) => {
-    const enc = encodingForModel(modelName as 'gpt-3.5-turbo' | 'gpt-4-1106-preview')
-    return enc.encode(content).length
-  }
-
-  const getName = () => {
+  const getModelName = () => {
     return models.find(model => model.id === selectedModelId)?.modelName
   }
 
@@ -116,7 +109,7 @@ export default function ChatHome(props: IProps) {
                   }
                   <p className={'flex items-center font-semibold text-gray-900/90 dark:text-white'}>
                     {
-                      m.role === 'user' ? 'You' : getName()
+                      m.role === 'user' ? 'You' : getModelName()
                     }
                   </p>
                 </div>
@@ -143,9 +136,8 @@ export default function ChatHome(props: IProps) {
 
                   <div className={'flex gap-1 p-1 rounded-md hover:bg-gray-200 dark:hover:bg-chatpage-message-robot-content-dark'}>
                     <SpeedIcon width={16} height={16}/>
-                    <span className={'text-xs'}>{computeTokensInFrontEnd(m.content)} tokens</span>
+                    <span className={'text-xs'}>{enc.encode(m.content).length} tokens</span>
                   </div>
-
                 </div>
               </div>
             </div>

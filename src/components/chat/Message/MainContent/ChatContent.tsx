@@ -20,6 +20,8 @@ interface IProps {
   setMessages: (messages: Message[]) => void
 }
 
+const enc = encodingForModel('gpt-4-1106-preview') // NOT dynamic, but could not put it in a React component.
+
 /**
  * This file, I maintain the two parameters state: message and chatMessages.
  *
@@ -33,7 +35,7 @@ export default function ChatContent(props: IProps) {
   const { messages, setMessages } = props
   const { user } = useUser()
   const router = useRouter()
-  const { modelName, currentChatModel } = useGetChatInformation(router.query.id as string)
+  const { currentChatModel } = useGetChatInformation(router.query.id as string)
   const [chatMessages, setChatMessages] = useAtom(chatMessagesAtom)
   const endOfMessagesRef = useRef<HTMLDivElement>(null)
   // To control many copy icons, the copy state is an object.
@@ -91,11 +93,6 @@ export default function ChatContent(props: IProps) {
     setTimeout(() => {
       setCopy(prev => ({...prev, [id]: false}))
     }, 1500)
-  }
-
-  const computeTokensInFrontEnd = (content: string) => {
-    const enc = encodingForModel(modelName as 'gpt-3.5-turbo' | 'gpt-4-1106-preview')
-    return enc.encode(content).length
   }
 
   if (chatMessages.length === 0 && messages.length === 0) {
@@ -232,9 +229,8 @@ export default function ChatContent(props: IProps) {
 
                 <div className={'flex gap-1 p-1 rounded-md hover:bg-gray-200 dark:hover:bg-chatpage-message-robot-content-dark'}>
                   <SpeedIcon width={16} height={16}/>
-                  <span className={'text-xs'}>{computeTokensInFrontEnd(m.content)} tokens</span>
+                  <span className={'text-xs'}>{enc.encode(m.content).length} tokens</span>
                 </div>
-
               </div>
             </div>
           </div>
