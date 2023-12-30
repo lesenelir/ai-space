@@ -11,6 +11,13 @@ import MarkdownRender from '@/components/chat/Message/MainContent/MarkdownRender
 import { Gemini, GPT3, GPT4 } from '@/components/chat/Message/HeaderContent/OptionData'
 import useGetChatInformation from '@/hooks/useGetChatInformation'
 
+/**
+ * In the frontend, the calculation of tokens is only for estimation purposes,
+ * just to ensure there is content for display.
+ * The tokens stored in the backend are the results of actual calculations.
+ *
+ * Because, placing the enc declaration within the component content could potentially lead to performance issues.
+ */
 const enc = encodingForModel('gpt-3.5-turbo')
 
 interface IProps {
