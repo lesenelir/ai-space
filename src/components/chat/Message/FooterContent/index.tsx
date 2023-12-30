@@ -5,7 +5,15 @@ import { useTranslation } from 'next-i18next'
 import { encodingForModel } from 'js-tiktoken'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { type Message, type CreateMessage } from 'ai/react'
-import { type ChangeEvent, type Dispatch, type FormEvent, type KeyboardEvent, type SetStateAction, useRef } from 'react'
+import {
+  type ChangeEvent,
+  type Dispatch,
+  type FormEvent,
+  type KeyboardEvent,
+  type SetStateAction,
+  useEffect,
+  useRef
+} from 'react'
 
 import Tooltip from '@/components/ui/Tooltip'
 import TextArea from '@/components/ui/TextArea'
@@ -35,6 +43,11 @@ export default function FooterContent(props: IProps) {
   const setChatItems = useSetAtom(chatItemsAtom)
   const { modelName } = useGetChatInformation(router.query.id ? router.query.id as string : '', selectedModelId)
   const maxHeight = 200
+
+  useEffect(() => {
+    setInput('')
+    ref.current?.focus()
+  }, [router.query.id, setInput])
 
   const handleFormSubmit = async (e: FormEvent<HTMLFormElement> | KeyboardEvent<HTMLTextAreaElement>) => {
     e.preventDefault()
