@@ -1,12 +1,11 @@
 import { useAtom } from 'jotai'
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { type Message } from 'ai/react'
 import { useRouter } from 'next/router'
 import { Toaster, toast } from 'sonner'
 
 import { chatMessagesAtom } from '@/atoms'
-import DataFromDatabase from '@/components/chat/Message/MainContent/DataFromDatabase'
-import DataFromRealTime from '@/components/chat/Message/MainContent/DataFromRealTime'
+import DataItem from '@/components/chat/Message/MainContent/DataItem'
 
 interface IProps {
   messages: Message[]
@@ -26,6 +25,12 @@ export default function ChatContent(props: IProps) {
   const { messages, setMessages } = props
   const router = useRouter()
   const [chatMessages, setChatMessages] = useAtom(chatMessagesAtom)
+  const endOfMessagesRef = useRef<HTMLDivElement>(null)
+
+  // update scroll to the bottom when the messages change
+  useEffect(() => {
+    endOfMessagesRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' })
+  }, [messages, chatMessages])
 
   // fetch chat messages from the database => only fetch when the router.query.id changes
   // router.push means the content changes based on the client side, it doesn't fetch from the server.
@@ -68,10 +73,35 @@ export default function ChatContent(props: IProps) {
       <Toaster richColors position={'top-center'}  />
 
       {/*first render to load data from the database*/}
-      <DataFromDatabase/>
+      {
+        chatMessages.map(m => (
+          <DataItem
+            key={m.id}
+            ref={endOfMessagesRef}
+            data={{
+              id: m.id,
+              role: m.messageRole,
+              content: m.messageContent,
+              costTokens: m.costTokens
+            }}
+          />
+        ))
+      }
 
       {/* Real time  */}
-      <DataFromRealTime messages={messages}/>
+      {
+        messages.map(m => (
+          <DataItem
+            key={m.id}
+            ref={endOfMessagesRef}
+            data={{
+              id: Number(m.id),
+              role: m.role,
+              content: m.content
+            }}
+          />
+        ))
+      }
     </>
   )
 }
