@@ -7,6 +7,7 @@ import {encodingForModel} from 'js-tiktoken'
 import CheckIcon from '@/components/icons/CheckIcon'
 import CopyIcon from '@/components/icons/CopyIcon'
 import SpeedIcon from '@/components/icons/SpeedIcon'
+import VolumeIcon from '@/components/icons/VolumeIcon'
 import MarkdownRender from '@/components/chat/Message/MainContent/MarkdownRender'
 import { Gemini, GPT3, GPT4 } from '@/components/chat/Message/HeaderContent/OptionData'
 import useGetChatInformation from '@/hooks/useGetChatInformation'
@@ -111,8 +112,13 @@ const DataItem =  forwardRef<HTMLDivElement, IProps>((props, ref) => {
               />
             )}
 
-            <div
-              className={'flex gap-1 p-1 rounded-md hover:bg-gray-200 dark:hover:bg-chatpage-message-robot-content-dark'}>
+            <VolumeIcon
+              width={16}
+              height={16}
+              className={'cursor-pointer p-1 rounded-md hover:bg-gray-200 dark:hover:bg-chatpage-message-robot-content-dark'}
+            />
+
+            <div className={'flex gap-1 p-1 rounded-md hover:bg-gray-200 dark:hover:bg-chatpage-message-robot-content-dark'}>
               <SpeedIcon width={16} height={16}/>
               {/* If the data costTokens is null, it means that this is the messages array render.  */}
               <span className={'text-xs'}>{data.costTokens || enc.encode(data.content).length} tokens</span>
