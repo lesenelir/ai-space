@@ -67,11 +67,10 @@ This changelog provides a detailed record of the updates and improvements made t
 - Integrated `typography` for typography styles.
 - Integrated `react-syntax-highlighter` for code syntax highlighting.
 - Add `copy code` feature.
-- Integrated `stackblitz` for previewing code.、
+- Integrated `stackblitz` for previewing code.
 - When you are waiting AI response, you could not send a message again. -> Loading tsx
 - Remove `API_RequestLog` table and add `cost_tokens` field to `ChatMessage` table.
 - Integrated display `token consumption` in chat page.
 - Extract `useGetChatInformation hook` for getting chat information.
-- Add copy code feature.
 - Integrated `SpeechSynthesisUtterance api` for speech synthesis.
 - Integrated `react-speech-recognition` for speech recognition.
