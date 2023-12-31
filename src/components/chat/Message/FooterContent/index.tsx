@@ -235,56 +235,6 @@ export default function FooterContent(props: IProps) {
           }
         </form>
       </div>
-
     </div>
-    // <div className={'w-full flex justify-center items-center p-3'}>
-    //   <form onSubmit={handleFormSubmit} className={'relative max-md:w-full'}>
-    //     <TextArea
-    //       ref={ref}
-    //       required={true}
-    //       placeholder={t('chatPage.message.textAreaPlaceholder')}
-    //       className={`
-    //         md:w-[640px] md:-ml-6 resize-none rounded-xl drop-shadow custom-message-light-scrollbar
-    //         dark:bg-chatpage-message-background-dark
-    //       `}
-    //       onChange={handleChange}
-    //       onKeyDown={handleKeyDown}
-    //       onCompositionStart={handleComposition}
-    //       onCompositionEnd={handleComposition}
-    //     />
-    //
-    //     {
-    //       isLoading ?
-    //       (
-    //         <>
-    //           <button
-    //             disabled={true}
-    //             className={'absolute bottom-4 right-4 border rounded-lg p-1'}
-    //           >
-    //             <LoadingDots/>
-    //           </button>
-    //         </>
-    //       ) : (
-    //         <Tooltip title={t('chatPage.message.send')}>
-    //           <button
-    //             type={'submit'}
-    //             disabled={ref.current?.value === ''}
-    //             className={`
-    //               absolute bottom-4 right-4 border rounded-lg p-1
-    //               hover:bg-gray-200/80 hover-transition-change dark:hover:bg-gray-500/10
-    //               disabled:opacity-50 disabled:cursor-not-allowed
-    //             `}
-    //           >
-    //             <ArrowNarrowUpIcon
-    //               width={20}
-    //               height={20}
-    //               className={'dark:text-gray-50/80 dark:text-gray-100'}
-    //             />
-    //           </button>
-    //         </Tooltip>
-    //       )
-    //     }
-    //   </form>
-    // </div>
   )
 }
