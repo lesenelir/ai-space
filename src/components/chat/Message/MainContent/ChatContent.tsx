@@ -2,7 +2,7 @@ import { useAtom } from 'jotai'
 import { type Message } from 'ai/react'
 import { useRouter } from 'next/router'
 import { Toaster, toast } from 'sonner'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 
 import { chatMessagesAtom } from '@/atoms'
 import DataItem from '@/components/chat/Message/MainContent/DataItem'
@@ -101,7 +101,7 @@ export default function ChatContent(props: IProps) {
             key={m.id}
             ref={endOfMessagesRef}
             data={{
-              id: Number(m.id),
+              id: Number(new Date().getTime()),
               role: m.role,
               content: m.content
             }}

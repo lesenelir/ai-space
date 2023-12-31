@@ -1,9 +1,12 @@
 import Image from 'next/image'
+import { useAtomValue } from 'jotai'
 import { useUser } from '@clerk/nextjs'
 import { useRouter } from 'next/router'
 import { encodingForModel } from 'js-tiktoken'
 import { forwardRef, useCallback, useState } from 'react'
 
+import { selectedModelIdAtom } from '@/atoms'
+import { Gemini, GPT3, GPT4 } from '@/components/chat/Message/HeaderContent/OptionData'
 import CheckIcon from '@/components/icons/CheckIcon'
 import CopyIcon from '@/components/icons/CopyIcon'
 import SpeedIcon from '@/components/icons/SpeedIcon'
@@ -12,7 +15,6 @@ import PlayerPauseIcon from '@/components/icons/PlayerPauseIcon'
 import PlayerStationIcon from '@/components/icons/PlayerStationIcon'
 import useGetChatInformation from '@/hooks/useGetChatInformation'
 import MarkdownRender from '@/components/chat/Message/MainContent/MarkdownRender'
-import { Gemini, GPT3, GPT4 } from '@/components/chat/Message/HeaderContent/OptionData'
 
 /**
  * In the frontend, the calculation of tokens is only for estimation purposes,
@@ -40,6 +42,7 @@ const DataItem =  forwardRef<HTMLDivElement, IProps>((props, ref) => {
   const { user } = useUser()
   const router = useRouter()
   const [rateId, setRateId] = useState<number>(1)
+  const selectedModelId =  useAtomValue(selectedModelIdAtom)
   const [copy, setCopy] = useState<{[key: string]: boolean}>({}) // key: message id, value: boolean
   const { currentChatModel } = useGetChatInformation(router.query.id as string)
 
@@ -109,7 +112,7 @@ const DataItem =  forwardRef<HTMLDivElement, IProps>((props, ref) => {
                   className={'rounded-full'}
                 />
               ) : (
-                renderModelIcon(currentChatModel?.id || 1)
+                renderModelIcon(currentChatModel?.id || selectedModelId)
               )
             }
             <p className={'flex items-center font-semibold text-gray-900/90 dark:text-white'}>

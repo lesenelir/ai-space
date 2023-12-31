@@ -51,7 +51,7 @@ export default function ChatHome(props: IProps) {
             key={m.id}
             ref={endOfMessagesRef}
             data={{
-              id: Number(m.id),
+              id: Number(new Date().getTime()),
               role: m.role,
               content: m.content
             }}
