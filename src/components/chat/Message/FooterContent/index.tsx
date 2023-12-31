@@ -1,9 +1,11 @@
 import { useRouter } from 'next/router'
 import { useAuth } from '@clerk/nextjs'
+import { toast, Toaster } from 'sonner'
 import { type ChatRequestOptions } from 'ai'
 import { useTranslation } from 'next-i18next'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { type Message, type CreateMessage } from 'ai/react'
+import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition'
 import {
   type ChangeEvent,
   type FormEvent,
@@ -18,6 +20,7 @@ import Tooltip from '@/components/ui/Tooltip'
 import DotsIcon from '@/components/icons/DotsIcon'
 import LoadingDots from '@/components/ui/LoadingDots'
 import MicrophoneIcon from '@/components/icons/MicrophoneIcon'
+import PlayerRecordIcon from '@/components/icons/PlayerRecord'
 import ArrowNarrowUpIcon from '@/components/icons/ArrowNarrowUpIcon'
 import useGetChatInformation from '@/hooks/useGetChatInformation'
 import { chatItemsAtom, maxTokensAtom, selectedModelIdAtom, temperatureAtom } from '@/atoms'
@@ -40,13 +43,47 @@ export default function FooterContent(props: IProps) {
   const [isComposing, setIsComposing] = useState<boolean>(false)
   const { modelName } = useGetChatInformation(router.query.id ? router.query.id as string : '', selectedModelId)
   const maxHeight = 200
+  const {
+    transcript,
+    listening,
+    resetTranscript,
+    browserSupportsSpeechRecognition
+  } = useSpeechRecognition()
 
+  // when the router.query.id changes, reset the textarea value and focus on it.
   useEffect(() => {
     if (ref.current) {
       ref.current.value = ''
       ref.current?.focus()
     }
   }, [router.query.id])
+
+  // when the transcript changes, set the value of the textarea.
+  useEffect(() => {
+    if (listening && ref.current) {
+      ref.current.value = transcript
+    }
+  }, [transcript, listening])
+
+  const handleSpeechRecognition = () => {
+    if (!browserSupportsSpeechRecognition) {
+      toast.error('Your browser does not support speech recognition.')
+      return
+    }
+
+    if (listening) {
+      // stop listening
+      SpeechRecognition.stopListening().then(() => {
+        resetTranscript()
+      })
+      return
+    } else {
+      SpeechRecognition.startListening({
+        continuous: true,
+        language: 'zh-CN',  // not general...
+      }).then(() => {})
+    }
+  }
 
   const handleComposition = (e: CompositionEvent) => {
     if (e.type === 'compositionstart') {
@@ -61,6 +98,11 @@ export default function FooterContent(props: IProps) {
   const handleFormSubmit = async (e: FormEvent<HTMLFormElement> | KeyboardEvent<HTMLTextAreaElement>) => {
     e.preventDefault()
     if (isLoading) return // prevent user from sending multiple requests
+    if (listening) {
+      SpeechRecognition.stopListening().then(() => {
+        resetTranscript()
+      })
+    }
 
     // In an existing chat, send the request to openai directly.
     if (router.query.id) {
@@ -173,13 +215,24 @@ export default function FooterContent(props: IProps) {
 
   return (
     <div className={'w-full flex flex-col items-center border-t dark:border-t-gray-500'}>
+      <Toaster richColors position={'top-center'}/>
       {/* icons */}
       <div className={'md:w-[640px] max-md:w-full p-1 flex'}>
-        <MicrophoneIcon
-          width={16}
-          height={16}
+        {/* microphone */}
+        <div
           className={'p-2 rounded-md cursor-pointer hover:bg-gray-200 dark:hover:bg-chatpage-message-robot-content-dark'}
-        />
+          onClick={handleSpeechRecognition}
+        >
+          {
+            listening ? (
+              <PlayerRecordIcon width={16} height={16} className={''}/>
+            ) : (
+              <MicrophoneIcon width={16} height={16}/>
+            )
+          }
+        </div>
+
+        {/* more */}
         <DotsIcon
           width={16}
           height={16}
