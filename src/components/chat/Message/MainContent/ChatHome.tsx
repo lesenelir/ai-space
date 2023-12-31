@@ -11,10 +11,13 @@ import DataItem from '@/components/chat/Message/MainContent/DataItem'
 
 interface IProps {
   messages: Message[]
+  speakingId: number | null
+  startSpeaking: (id: number, content: string, rate: number) => void
+  stopSpeaking: () => void
 }
 
 export default function ChatHome(props: IProps) {
-  const { messages } = props
+  const { messages, speakingId, startSpeaking, stopSpeaking } = props
   const { t } = useTranslation('common')
   const endOfMessagesRef = useRef<HTMLDivElement>(null)
   const [userOpenAIKey, setUserOpenAIKey] = useAtom(userOpenAIKeyAtom)
@@ -52,6 +55,9 @@ export default function ChatHome(props: IProps) {
               role: m.role,
               content: m.content
             }}
+            speakingId={speakingId}
+            startSpeaking={startSpeaking}
+            stopSpeaking={stopSpeaking}
           />
         ))}
       </div>

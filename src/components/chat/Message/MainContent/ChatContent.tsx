@@ -1,8 +1,8 @@
 import { useAtom } from 'jotai'
-import { useEffect, useRef } from 'react'
 import { type Message } from 'ai/react'
 import { useRouter } from 'next/router'
 import { Toaster, toast } from 'sonner'
+import { useEffect, useRef, useState } from 'react'
 
 import { chatMessagesAtom } from '@/atoms'
 import DataItem from '@/components/chat/Message/MainContent/DataItem'
@@ -10,6 +10,9 @@ import DataItem from '@/components/chat/Message/MainContent/DataItem'
 interface IProps {
   messages: Message[]
   setMessages: (messages: Message[]) => void
+  speakingId: number | null
+  startSpeaking: (id: number, content: string, rate: number) => void
+  stopSpeaking: () => void
 }
 
 /**
@@ -22,10 +25,10 @@ interface IProps {
  *
  */
 export default function ChatContent(props: IProps) {
-  const { messages, setMessages } = props
+  const { messages, setMessages, speakingId, startSpeaking, stopSpeaking } = props
   const router = useRouter()
-  const [chatMessages, setChatMessages] = useAtom(chatMessagesAtom)
   const endOfMessagesRef = useRef<HTMLDivElement>(null)
+  const [chatMessages, setChatMessages] = useAtom(chatMessagesAtom)
 
   // update scroll to the bottom when the messages change
   useEffect(() => {
@@ -84,6 +87,9 @@ export default function ChatContent(props: IProps) {
               content: m.messageContent,
               costTokens: m.costTokens
             }}
+            speakingId={speakingId}
+            startSpeaking={startSpeaking}
+            stopSpeaking={stopSpeaking}
           />
         ))
       }
@@ -99,6 +105,9 @@ export default function ChatContent(props: IProps) {
               role: m.role,
               content: m.content
             }}
+            speakingId={speakingId}
+            startSpeaking={startSpeaking}
+            stopSpeaking={stopSpeaking}
           />
         ))
       }

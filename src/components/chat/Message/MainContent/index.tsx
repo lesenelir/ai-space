@@ -1,6 +1,7 @@
+import { franc } from 'franc-min'
 import { useRouter } from 'next/router'
 import type { Message } from 'ai/react'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import ChatHome from '@/components/chat/Message/MainContent/ChatHome'
 import ChatContent from '@/components/chat/Message/MainContent/ChatContent'
@@ -15,6 +16,7 @@ export default function MainContent(props: IProps) {
   const router = useRouter()
   const { messages, setMessages } = props
   const containerRef = useRef<HTMLDivElement>(null)
+  const [speakingId, setSpeakingId] = useState<number | null>(null)
 
   useEffect(() => {
     if (containerRef.current) {
@@ -22,12 +24,50 @@ export default function MainContent(props: IProps) {
     }
   }, [router.query.id])
 
+  const startSpeaking = (id: number, content: string, rate: number) => {
+    const languageMap : {[key: string]: string} = {
+      'eng': 'en-US',
+      'cmn': 'zh-CN',
+      'jpn': 'ja-JP',
+      'fra': 'fr-FR',
+      'und': 'zh-CN', // und means undefined
+    }
+    const languageCode = franc(content)
+    const voices = speechSynthesis.getVoices()
+    const voice = voices.find(v => v.lang === languageMap[languageCode]) || voices.find(v => v.default)
+
+    const utterance = new SpeechSynthesisUtterance(content)
+    utterance.voice = voice!
+    utterance.rate = rate
+    utterance.onend = () => setSpeakingId(null) // when the speaking ends, set the speakingId to null
+
+    if (speakingId) { // exist speaking id, cancel it.
+      speechSynthesis.cancel() // Async work. It needs a little time to cancel the speaking.
+
+      // If you try to start a new reading before it completes, the new reading may not be executed.
+      // So, we need to wait a little time to start a new reading.
+      setTimeout(() => {
+        setSpeakingId(id)
+        speechSynthesis.speak(utterance)
+      }, 100)
+    } else {
+      setSpeakingId(id)
+      speechSynthesis.speak(utterance)
+    }
+  }
+
+  const stopSpeaking = () => {
+    if (speakingId) {
+      speechSynthesis.cancel()
+      setSpeakingId(null)
+    }
+  }
 
   if (!router.query.id) {
     return (
       <div className={'w-full flex-1 overflow-y-auto custom-message-light-scrollbar'}>
         <div className={'md:w-[640px] max-md:w-full mx-auto p-3 dark:text-gray-50 min-h-full relative'}>
-          <ChatHome messages={messages}/>
+          <ChatHome speakingId={speakingId} startSpeaking={startSpeaking} stopSpeaking={stopSpeaking} messages={messages}/>
         </div>
       </div>
     )
@@ -37,7 +77,7 @@ export default function MainContent(props: IProps) {
     <div ref={containerRef} className={'w-full flex-1 overflow-y-auto custom-message-light-scrollbar'}>
       {/* basic content */}
       <div className={'md:w-[640px] max-md:w-full mx-auto p-3 dark:text-gray-50'}>
-        <ChatContent messages={messages} setMessages={setMessages}/>
+        <ChatContent speakingId={speakingId} startSpeaking={startSpeaking} stopSpeaking={stopSpeaking} messages={messages} setMessages={setMessages}/>
       </div>
     </div>
   )

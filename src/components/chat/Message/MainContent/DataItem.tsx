@@ -1,16 +1,18 @@
 import Image from 'next/image'
 import { useUser } from '@clerk/nextjs'
 import { useRouter } from 'next/router'
-import { forwardRef, useState } from 'react'
-import {encodingForModel} from 'js-tiktoken'
+import { encodingForModel } from 'js-tiktoken'
+import { forwardRef, useCallback, useState } from 'react'
 
 import CheckIcon from '@/components/icons/CheckIcon'
 import CopyIcon from '@/components/icons/CopyIcon'
 import SpeedIcon from '@/components/icons/SpeedIcon'
 import VolumeIcon from '@/components/icons/VolumeIcon'
+import PlayerPauseIcon from '@/components/icons/PlayerPauseIcon'
+import PlayerStationIcon from '@/components/icons/PlayerStationIcon'
+import useGetChatInformation from '@/hooks/useGetChatInformation'
 import MarkdownRender from '@/components/chat/Message/MainContent/MarkdownRender'
 import { Gemini, GPT3, GPT4 } from '@/components/chat/Message/HeaderContent/OptionData'
-import useGetChatInformation from '@/hooks/useGetChatInformation'
 
 /**
  * In the frontend, the calculation of tokens is only for estimation purposes,
@@ -28,16 +30,20 @@ interface IProps {
     content: string
     costTokens?: number
   }
+  speakingId: number | null
+  startSpeaking: (id: number, content: string, rate: number) => void
+  stopSpeaking: () => void
 }
 
 const DataItem =  forwardRef<HTMLDivElement, IProps>((props, ref) => {
-  const { data } = props
+  const { data, speakingId, startSpeaking, stopSpeaking } = props
   const { user } = useUser()
   const router = useRouter()
+  const [rateId, setRateId] = useState<number>(1)
   const [copy, setCopy] = useState<{[key: string]: boolean}>({}) // key: message id, value: boolean
   const { currentChatModel } = useGetChatInformation(router.query.id as string)
 
-  const renderModelIcon = (id: number) => {
+  const renderModelIcon = useCallback((id: number) => {
     switch (id) {
       case 1:
         return <GPT3 width={22} height={22} className={'rounded-full'} />
@@ -48,7 +54,7 @@ const DataItem =  forwardRef<HTMLDivElement, IProps>((props, ref) => {
       default:
         return null
     }
-  }
+  }, [])
 
   const handleCopyClick = (code: string, id: string) => {
     navigator.clipboard.writeText(code).then(() => {})
@@ -56,6 +62,29 @@ const DataItem =  forwardRef<HTMLDivElement, IProps>((props, ref) => {
     setTimeout(() => {
       setCopy(prev => ({...prev, [id]: false}))
     }, 1500)
+  }
+
+  const handleChangeRate = () => {
+    if (speakingId) stopSpeaking()
+
+    let newRateId
+    switch (rateId) {
+      case 1:
+        newRateId = 1.5
+        break
+      case 1.5:
+        newRateId = 2
+        break
+      case 2:
+        newRateId = 0.5
+        break
+      default:
+        newRateId = 1
+        break
+    }
+    setRateId(newRateId)
+
+    startSpeaking(data.id, data.content, newRateId)
   }
 
   return (
@@ -112,13 +141,35 @@ const DataItem =  forwardRef<HTMLDivElement, IProps>((props, ref) => {
               />
             )}
 
-            <VolumeIcon
-              width={16}
-              height={16}
-              className={'cursor-pointer p-1 rounded-md hover:bg-gray-200 dark:hover:bg-chatpage-message-robot-content-dark'}
-            />
+            <div className={'cursor-pointer p-1 rounded-md hover:bg-gray-200 dark:hover:bg-chatpage-message-robot-content-dark'}>
+              {
+                speakingId === data.id ? (
+                  <PlayerPauseIcon
+                    width={16}
+                    height={16}
+                    onClick={stopSpeaking}
+                  />
+                ) : (
+                  <VolumeIcon
+                    width={16}
+                    height={16}
+                    onClick={() => startSpeaking(data.id, data.content, rateId)}
+                  />
+                )
+              }
+            </div>
 
-            <div className={'flex gap-1 p-1 rounded-md hover:bg-gray-200 dark:hover:bg-chatpage-message-robot-content-dark'}>
+            <div
+              className={'flex gap-1 cursor-pointer p-1 rounded-md hover:bg-gray-200 dark:hover:bg-chatpage-message-robot-content-dark'}
+              onClick={handleChangeRate}
+            >
+              <PlayerStationIcon width={16} height={16}/>
+              <span className={'text-xs'}>{rateId}x</span>
+            </div>
+
+            <div
+              className={'flex gap-1 p-1 rounded-md hover:bg-gray-200 dark:hover:bg-chatpage-message-robot-content-dark'}
+            >
               <SpeedIcon width={16} height={16}/>
               {/* If the data costTokens is null, it means that this is the messages array render.  */}
               <span className={'text-xs'}>{data.costTokens || enc.encode(data.content).length} tokens</span>
