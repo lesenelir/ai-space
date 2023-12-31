@@ -41,7 +41,7 @@ export default function FooterContent(props: IProps) {
   const selectedModelId = useAtomValue(selectedModelIdAtom)
   const setChatItems = useSetAtom(chatItemsAtom)
   const [isComposing, setIsComposing] = useState<boolean>(false)
-  const { modelName } = useGetChatInformation(router.query.id ? router.query.id as string : '', selectedModelId)
+  const { modelName } = useGetChatInformation(router.query.id as string | undefined, selectedModelId)
   const maxHeight = 200
   const {
     transcript,

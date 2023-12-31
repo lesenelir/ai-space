@@ -4,25 +4,29 @@ import { useAtomValue } from 'jotai'
 import { chatItemsAtom, modelsAtom } from '@/atoms'
 import { getModelName } from '@/utils/modelName'
 
-export default function useGetChatInformation(urlUuid: string, selectId?:number) {
+export default function useGetChatInformation(urlUuid: string | undefined, selectId:number) {
   const chatItemLists =  useAtomValue(chatItemsAtom)
   const models = useAtomValue(modelsAtom)
 
-  const currentChatItem = useMemo(() => (
+  const currentChatItem = useMemo(() => (  // when urlUuid is undefined, return undefined
     chatItemLists.find(item => item.itemUuid === urlUuid)
   ), [chatItemLists, urlUuid])
 
-  // Getting model to match data from the database
-  const currentChatModel = useMemo(() => (
-    models.find(model => model.id === currentChatItem?.modelPrimaryId)
-  ), [currentChatItem?.modelPrimaryId, models])
+  // get currentChatModel from the models' table
+  const currentChatModel = useMemo(() => {
+    if (!urlUuid) {
+      return models.find(model => model.id === selectId)
+    } else {
+      return models.find(model => model.id === currentChatItem?.modelPrimaryId)
+    }
+  }, [currentChatItem?.modelPrimaryId, models, selectId, urlUuid])
 
   // To satisfy openAi api modelName
   const modelName = useMemo(() => {
-    const currentChatModelId = selectId || currentChatItem?.modelPrimaryId || 0 // first consider selectId
+    const currentChatModelId = currentChatModel?.id!
     // (when in chat home page the selectId is defined)
     return getModelName(currentChatModelId)
-  }, [currentChatItem?.modelPrimaryId, selectId])
+  }, [currentChatModel?.id])
 
   return {
     currentChatModel,

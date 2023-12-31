@@ -41,10 +41,10 @@ const DataItem =  forwardRef<HTMLDivElement, IProps>((props, ref) => {
   const { data, speakingId, startSpeaking, stopSpeaking } = props
   const { user } = useUser()
   const router = useRouter()
-  const [rateId, setRateId] = useState<number>(1)
   const selectedModelId =  useAtomValue(selectedModelIdAtom)
+  const [rateId, setRateId] = useState<number>(1)
   const [copy, setCopy] = useState<{[key: string]: boolean}>({}) // key: message id, value: boolean
-  const { currentChatModel } = useGetChatInformation(router.query.id as string)
+  const { currentChatModel } = useGetChatInformation(router.query.id as string | undefined, selectedModelId)
 
   const renderModelIcon = useCallback((id: number) => {
     switch (id) {
@@ -112,7 +112,7 @@ const DataItem =  forwardRef<HTMLDivElement, IProps>((props, ref) => {
                   className={'rounded-full'}
                 />
               ) : (
-                renderModelIcon(currentChatModel?.id || selectedModelId)
+                renderModelIcon(currentChatModel?.id!)
               )
             }
             <p className={'flex items-center font-semibold text-gray-900/90 dark:text-white'}>
