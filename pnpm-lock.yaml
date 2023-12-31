@@ -79,9 +79,6 @@ dependencies:
     version: 9.0.1
 
 devDependencies:
-  '@iconify/tailwind':
-    specifier: ^0.1.4
-    version: 0.1.4
   '@tailwindcss/typography':
     specifier: ^0.5.10
     version: 0.5.10(tailwindcss@3.3.5)
@@ -725,16 +722,6 @@ packages:
 
   /@humanwhocodes/object-schema@2.0.1:
     resolution: {integrity: sha512-dvuCeX5fC9dXgJn9t+X5atfmgQAzUOWqS1254Gh0m6i8wKd10ebXkfNKiRK+1GWi/yTvvLDHpoxLr0xxxeslWw==}
-    dev: true
-
-  /@iconify/tailwind@0.1.4:
-    resolution: {integrity: sha512-U7RzcU2fkwOfMDsGQ3mtpLIaApSnqb+vgcJJknPPbg8/NF5s7tI1o5otEMfcpnLGk4PbYB8bxmKTz7IJVUlU2Q==}
-    dependencies:
-      '@iconify/types': 2.0.0
-    dev: true
-
-  /@iconify/types@2.0.0:
-    resolution: {integrity: sha512-+wluvCrRhXrhyOmRDJ3q8mux9JkKy5SJ/v8ol2tu4FVjyYvtEzkc/3pK15ET6RKg4b4w4BmTk1+gsCUhf21Ykg==}
     dev: true
 
   /@istanbuljs/schema@0.1.3:
