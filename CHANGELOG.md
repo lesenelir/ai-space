@@ -5,6 +5,7 @@ This changelog provides a detailed record of the updates and improvements made t
 ## Beta
 
 ### v0.0.1
+> This version aims to complete the basic project setup and integrate the basic dependencies.
 
 - Initialized project setup.
 - Integrated `clerk` for authentication (login/logout).
@@ -12,11 +13,14 @@ This changelog provides a detailed record of the updates and improvements made t
 
 
 ### v0.0.2
+> This version aims to complete the basic UI design and code of the home page.
 
 - Integrated `typewriter-effect` for home page animation.
 - Completed homepage design and code.
 
+
 ### v0.0.3
+> This version aims to complete the basic UI design and some basic logic of the chat page.
 
 - Integrated `framer-motion` for enhanced UI animations.
 - Implemented resizable UI for menu customization.
@@ -32,6 +36,8 @@ This changelog provides a detailed record of the updates and improvements made t
 
 
 ### v0.0.4
+> Integrated Mysql database and completed the basic implementation of the chatItem list component.
+
 - Complete the frontend logic for MainMenuContent and ChatItemCard components.
 - Implement pre-rendering of chatItem list data using ssr when accessing the chat page.
 - Add `new chat api routes` and implement the logic for creating new chat.
@@ -52,10 +58,11 @@ This changelog provides a detailed record of the updates and improvements made t
 - Add `save gemini key api routes` and implement the logic for saving gemini key.
 - Refactor Settings component.
 
+
 ### v0.0.5
 > This version aims to integrate the OpenAI API and Gemini API into the project, and complete the basic implementation of the chat page.
 
-- Add `ai` vercel ai SDK to request openai api and implement the stream response. (might not be a good choice)
+- Add `ai` vercel AI SDK to request openai api and implement the stream response. (might not be a good choice)
 - Add `saveUserInput` api routes and implement the logic for saving user input.
 - Add `saveRobotMessage` api routes and implement the logic for saving the assistant robot message.
 - Fix `delete chatItem api routes` for deleting chatItem related chatMessages data.
@@ -74,3 +81,8 @@ This changelog provides a detailed record of the updates and improvements made t
 - Extract `useGetChatInformation hook` for getting chat information.
 - Integrated `SpeechSynthesisUtterance api` for speech synthesis.
 - Integrated `react-speech-recognition` for speech recognition.
+
+
+### v0.0.6
+
+
