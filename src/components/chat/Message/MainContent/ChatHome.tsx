@@ -11,8 +11,8 @@ import DataItem from '@/components/chat/Message/MainContent/DataItem'
 
 interface IProps {
   messages: Message[]
-  speakingId: number | null
-  startSpeaking: (id: number, content: string, rate: number) => void
+  speakingId: string | null
+  startSpeaking: (id: string, content: string, rate: number) => void
   stopSpeaking: () => void
 }
 
@@ -51,7 +51,7 @@ export default function ChatHome(props: IProps) {
             key={m.id}
             ref={endOfMessagesRef}
             data={{
-              id: Number(new Date().getTime()),
+              id: String(m.id),
               role: m.role,
               content: m.content
             }}

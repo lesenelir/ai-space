@@ -27,13 +27,13 @@ const enc = encodingForModel('gpt-3.5-turbo')
 
 interface IProps {
   data: {
-    id: number
+    id: string
     role: string
     content: string
     costTokens?: number
   }
-  speakingId: number | null
-  startSpeaking: (id: number, content: string, rate: number) => void
+  speakingId: string | null
+  startSpeaking: (id: string, content: string, rate: number) => void
   stopSpeaking: () => void
 }
 

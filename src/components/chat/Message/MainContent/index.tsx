@@ -16,7 +16,7 @@ export default function MainContent(props: IProps) {
   const router = useRouter()
   const { messages, setMessages } = props
   const containerRef = useRef<HTMLDivElement>(null)
-  const [speakingId, setSpeakingId] = useState<number | null>(null)
+  const [speakingId, setSpeakingId] = useState<string | null>(null)
 
   useEffect(() => {
     if (containerRef.current) {
@@ -24,7 +24,7 @@ export default function MainContent(props: IProps) {
     }
   }, [router.query.id])
 
-  const startSpeaking = (id: number, content: string, rate: number) => {
+  const startSpeaking = (id: string, content: string, rate: number) => {
     const languageMap : {[key: string]: string} = {
       'eng': 'en-US',
       'cmn': 'zh-CN',
