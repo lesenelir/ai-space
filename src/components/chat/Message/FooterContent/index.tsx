@@ -225,7 +225,7 @@ export default function FooterContent(props: IProps) {
         >
           {
             listening ? (
-              <PlayerRecordIcon width={16} height={16} className={''}/>
+              <PlayerRecordIcon width={16} height={16} className={'animate-record text-rose-700 dark:text-rose-400'}/>
             ) : (
               <MicrophoneIcon width={16} height={16}/>
             )

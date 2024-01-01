@@ -20,10 +20,16 @@ const config: Config = {
         blink: {
           '0%, 100%': { opacity: '0.2' },
           '20%': { opacity: '1' },
+        },
+        record: {
+          '0%': { opacity: '1' },
+          '50%': { opacity: '0' },
+          '100%': { opacity: '1' },
         }
       },
       animation: {
-        blink: 'blink 1.4s infinite both'
+        blink: 'blink 1.4s infinite both',
+        record: 'record 1.5s infinite both',
       },
       colors: {
         homepage: {
