@@ -3,6 +3,7 @@ import sdk from '@stackblitz/sdk'
 import remarkGfm from 'remark-gfm'
 import rehypeRaw from 'rehype-raw'
 import Markdown from 'react-markdown'
+import { useTranslation } from 'next-i18next'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { nord } from 'react-syntax-highlighter/dist/cjs/styles/prism'
 
@@ -17,6 +18,7 @@ interface IProps {
 export default function MarkdownRender(props: IProps) {
   const { markdown } = props
   const [copy, setCopy] = useState<boolean>(false)
+  const { t } = useTranslation('common')
 
   const handleCopyClick = (code: string) => {
     navigator.clipboard.writeText(code).then(() => {})
@@ -92,14 +94,14 @@ export default function MarkdownRender(props: IProps) {
                     onClick={() => handlePreviewClick(code, language)}
                   >
                     <EyeIcon width={16} height={16}/>
-                    <span>preview</span>
+                    <span>{t('chatPage.message.preview')}</span>
                   </button>
 
                   {
                     copy ? (
                       <button className={'p-2 inline-flex items-center gap-1 text-sm'}>
                         <CheckIcon width={16} height={16}/>
-                        <span>Copied!</span>
+                        <span>{t('chatPage.message.copied')}!</span>
                       </button>
                     ): (
                       <button
@@ -107,7 +109,7 @@ export default function MarkdownRender(props: IProps) {
                         onClick={() => handleCopyClick(String(children).replace(/\n$/, ''))}
                       >
                         <CopyIcon width={16} height={16}/>
-                        <span>Copy</span>
+                        <span>{t('chatPage.message.copy')}</span>
                       </button>
                     )
                   }

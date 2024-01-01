@@ -50,7 +50,10 @@
       "textAreaPlaceholder": "Type a message...",
       "openaiKey": "OpenAI API Key",
       "save": "Save",
-      "send": "Send message"
+      "send": "Send message",
+      "preview": "preview",
+      "copy": "copy",
+      "copied": "copied"
     }
   }
 }

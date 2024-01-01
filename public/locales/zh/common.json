@@ -50,7 +50,10 @@
       "textAreaPlaceholder": "输入消息...",
       "openaiKey": "OpenAI API 密钥",
       "save": "保存",
-      "send": "发送信息"
+      "send": "发送信息",
+      "preview": "预览",
+      "copy": "复制",
+      "copied": "已复制"
     }
   }
 }
