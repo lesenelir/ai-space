@@ -4,12 +4,14 @@ import { forwardRef, ReactNode, useState } from 'react'
 interface IProps {
   children: ReactNode
   title: string
+  className?: string
 }
 
 const Tooltip = forwardRef<HTMLDivElement, IProps>((
   {
     children,
-    title
+    title,
+    className
   },
   ref
 ) => {
@@ -33,7 +35,10 @@ const Tooltip = forwardRef<HTMLDivElement, IProps>((
             },
           }}
           className={`
-            absolute right-0 bottom-full mb-2 px-2 py-1 bg-black text-white text-xs rounded-md shadow-md z-50
+            absolute bottom-full mb-2 px-2 py-1  text-xs rounded-md shadow-sm z-50
+            bg-gray-200/90 border dark:border-gray-500
+            dark:bg-chatpage-message-robot-content-dark dark:text-white 
+            ${className}
           `}
         >
           {title}

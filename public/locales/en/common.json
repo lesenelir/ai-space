@@ -53,7 +53,8 @@
       "send": "Send message",
       "preview": "preview",
       "copy": "copy",
-      "copied": "copied"
+      "copied": "copied",
+      "voiceInput": "voice input"
     }
   }
 }

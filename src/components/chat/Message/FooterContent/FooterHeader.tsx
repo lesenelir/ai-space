@@ -1,6 +1,8 @@
 import { toast, Toaster } from 'sonner'
+import { useTranslation } from 'next-i18next'
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition'
 
+import Tooltip from '@/components/ui/Tooltip'
 import DotsIcon from '@/components/icons/DotsIcon'
 import PlayerRecordIcon from '@/components/icons/PlayerRecord'
 import MicrophoneIcon from '@/components/icons/MicrophoneIcon'
@@ -12,6 +14,7 @@ interface IProps {
 
 export default function FooterHeader(props: IProps) {
   const { listening, resetTranscript } = props
+  const { t } = useTranslation('common')
   const { browserSupportsSpeechRecognition } = useSpeechRecognition()
 
   const handleSpeechRecognition = () => {
@@ -41,14 +44,16 @@ export default function FooterHeader(props: IProps) {
       <div className={'md:w-[640px] max-md:w-full p-1 flex'}>
         {/* microphone */}
         <div
-          className={'p-2 rounded-md cursor-pointer hover:bg-gray-200 dark:hover:bg-chatpage-message-robot-content-dark'}
+          className={'relative p-2 rounded-md cursor-pointer hover:bg-gray-200 dark:hover:bg-chatpage-message-robot-content-dark'}
           onClick={handleSpeechRecognition}
         >
           {
             listening ? (
               <PlayerRecordIcon width={16} height={16} className={'animate-record text-rose-700 dark:text-rose-400'}/>
             ) : (
-              <MicrophoneIcon width={16} height={16}/>
+              <Tooltip title={t('chatPage.message.voiceInput')} className={'w-24 left-0 flex justify-center'}>
+                <MicrophoneIcon width={16} height={16}/>
+              </Tooltip>
             )
           }
         </div>

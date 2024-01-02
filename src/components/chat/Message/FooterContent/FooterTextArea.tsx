@@ -224,7 +224,7 @@ const FooterTextArea = forwardRef<HTMLTextAreaElement, IProps>((props, ref) => {
                 </button>
               </>
             ) : (
-              <Tooltip title={t('chatPage.message.send')}>
+              <Tooltip title={t('chatPage.message.send')} className={'right-0'}>
                 <button
                   type={'submit'}
                   // disabled={!textAreaRef.current || textAreaRef.current?.value === ''}

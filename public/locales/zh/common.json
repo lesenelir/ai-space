@@ -53,7 +53,8 @@
       "send": "发送信息",
       "preview": "预览",
       "copy": "复制",
-      "copied": "已复制"
+      "copied": "已复制",
+      "voiceInput": "语音输入"
     }
   }
 }
