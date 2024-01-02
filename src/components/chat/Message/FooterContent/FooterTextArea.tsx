@@ -12,7 +12,8 @@ import {
   type KeyboardEvent,
   forwardRef,
   useState,
-  useEffect, useRef,
+  useEffect,
+  useRef,
 } from 'react'
 
 import Tooltip from '@/components/ui/Tooltip'
@@ -55,12 +56,16 @@ const FooterTextArea = forwardRef<HTMLTextAreaElement, IProps>((props, ref) => {
 
   // when the router.query.id changes, reset the textarea value and focus on it.
   useEffect(() => {
+    SpeechRecognition.stopListening().then(() => {
+      resetTranscript()
+    })
+
     if (textAreaRef.current) {
       textAreaRef.current.value = ''
       textAreaRef.current?.focus()
       setIsDisabled(!textAreaRef.current.value.trim()) // set disabled true
     }
-  }, [router.query.id])
+  }, [resetTranscript, router.query.id])
 
   const handleComposition = (e: CompositionEvent) => {
     if (e.type === 'compositionstart') {

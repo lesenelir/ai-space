@@ -15,14 +15,6 @@ export default function FooterContent(props: IProps) {
   const { transcript, listening, resetTranscript } = useSpeechRecognition()
   // const ref = useRef<HTMLTextAreaElement>(null) // or this way: create ref in FooterTextArea.tsx
 
-  // useEffect(() => {
-  //   if (listening) {
-  //     SpeechRecognition.stopListening().then(() => {
-  //       resetTranscript()
-  //     })
-  //   }
-  // }, [router.query.id])
-
   return (
     <div className={'w-full flex flex-col items-center border-t dark:border-t-gray-500'}>
       {/* icons */}
