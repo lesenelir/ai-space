@@ -10,10 +10,9 @@ import {
   type CompositionEvent,
   type FormEvent,
   type KeyboardEvent,
-  type MutableRefObject,
   forwardRef,
   useState,
-  useEffect,
+  useEffect, useRef,
 } from 'react'
 
 import Tooltip from '@/components/ui/Tooltip'
@@ -43,7 +42,8 @@ const FooterTextArea = forwardRef<HTMLTextAreaElement, IProps>((props, ref) => {
   const [isDisabled, setIsDisabled] = useState<boolean>(true)
   const [isComposing, setIsComposing] = useState<boolean>(false)
   const { modelName } = useGetChatInformation(router.query.id as string | undefined, selectedModelId)
-  const textAreaRef = ref as MutableRefObject<HTMLTextAreaElement>
+  const textAreaRef = useRef<HTMLTextAreaElement>(null)
+  // const textAreaRef = ref as MutableRefObject<HTMLTextAreaElement>
 
   // when the transcript changes, set the value of the textarea.
   useEffect(() => {
@@ -52,6 +52,15 @@ const FooterTextArea = forwardRef<HTMLTextAreaElement, IProps>((props, ref) => {
       setIsDisabled(!transcript.trim())
     }
   }, [transcript, listening, textAreaRef])
+
+  // when the router.query.id changes, reset the textarea value and focus on it.
+  useEffect(() => {
+    if (textAreaRef.current) {
+      textAreaRef.current.value = ''
+      textAreaRef.current?.focus()
+      setIsDisabled(!textAreaRef.current.value.trim()) // set disabled true
+    }
+  }, [router.query.id])
 
   const handleComposition = (e: CompositionEvent) => {
     if (e.type === 'compositionstart') {

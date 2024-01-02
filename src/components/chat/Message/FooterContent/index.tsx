@@ -1,5 +1,3 @@
-import { useRouter } from 'next/router'
-import { useEffect, useRef } from 'react'
 import { type ChatRequestOptions } from 'ai'
 import { type Message, type CreateMessage } from 'ai/react'
 import { useSpeechRecognition } from 'react-speech-recognition'
@@ -14,17 +12,16 @@ interface IProps {
 
 export default function FooterContent(props: IProps) {
   const { isLoading, append } = props
-  const router = useRouter()
-  const ref = useRef<HTMLTextAreaElement>(null) // or this way: create ref in FooterTextArea.tsx
   const { transcript, listening, resetTranscript } = useSpeechRecognition()
+  // const ref = useRef<HTMLTextAreaElement>(null) // or this way: create ref in FooterTextArea.tsx
 
-  // when the router.query.id changes, reset the textarea value and focus on it.
-  useEffect(() => {
-    if (ref.current) {
-      ref.current.value = ''
-      ref.current?.focus()
-    }
-  }, [router.query.id])
+  // useEffect(() => {
+  //   if (listening) {
+  //     SpeechRecognition.stopListening().then(() => {
+  //       resetTranscript()
+  //     })
+  //   }
+  // }, [router.query.id])
 
   return (
     <div className={'w-full flex flex-col items-center border-t dark:border-t-gray-500'}>
@@ -32,8 +29,8 @@ export default function FooterContent(props: IProps) {
       <FooterHeader listening={listening} resetTranscript={resetTranscript} />
 
       {/* footer main content area: textarea */}
+      {/* ref={ref}; does not forward ref */}
       <FooterTextArea
-        ref={ref}
         isLoading={isLoading}
         append={append}
         listening={listening}
