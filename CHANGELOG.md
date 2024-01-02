@@ -85,4 +85,6 @@ This changelog provides a detailed record of the updates and improvements made t
 
 ### v0.0.6
 
+- Refactor `Footer` component.
+- Add `more icons and relevant dropdown components` to the `FooterHeader` component.
 
