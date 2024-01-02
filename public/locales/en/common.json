@@ -54,7 +54,9 @@
       "preview": "preview",
       "copy": "copy",
       "copied": "copied",
-      "voiceInput": "voice input"
+      "voiceInput": "voice input",
+      "ignoreMessages": "Ignore Messages",
+      "deleteMessages": "Delete Messages"
     }
   }
 }
