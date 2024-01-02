@@ -15,7 +15,7 @@ interface IProps {
 export default function FooterContent(props: IProps) {
   const { isLoading, append } = props
   const router = useRouter()
-  const ref = useRef<HTMLTextAreaElement>(null)
+  const ref = useRef<HTMLTextAreaElement>(null) // or this way: create ref in FooterTextArea.tsx
   const { transcript, listening, resetTranscript } = useSpeechRecognition()
 
   // when the router.query.id changes, reset the textarea value and focus on it.
@@ -25,13 +25,6 @@ export default function FooterContent(props: IProps) {
       ref.current?.focus()
     }
   }, [router.query.id])
-
-  // when the transcript changes, set the value of the textarea.
-  useEffect(() => {
-    if (listening && ref.current) {
-      ref.current.value = transcript
-    }
-  }, [transcript, listening])
 
   return (
     <div className={'w-full flex flex-col items-center border-t dark:border-t-gray-500'}>
@@ -44,6 +37,7 @@ export default function FooterContent(props: IProps) {
         isLoading={isLoading}
         append={append}
         listening={listening}
+        transcript={transcript}
         resetTranscript={resetTranscript}
       />
     </div>

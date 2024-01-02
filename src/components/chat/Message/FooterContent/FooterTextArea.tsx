@@ -13,6 +13,7 @@ import {
   type MutableRefObject,
   forwardRef,
   useState,
+  useEffect,
 } from 'react'
 
 import Tooltip from '@/components/ui/Tooltip'
@@ -23,13 +24,14 @@ import { chatItemsAtom, maxTokensAtom, selectedModelIdAtom, temperatureAtom } fr
 
 interface IProps {
   isLoading: boolean
-  append: (message: Message | CreateMessage, chatRequestOptions?: ChatRequestOptions) => Promise<string | null | undefined>
   listening: boolean
+  transcript: string
   resetTranscript: () => void
+  append: (message: Message | CreateMessage, chatRequestOptions?: ChatRequestOptions) => Promise<string | null | undefined>
 }
 
 const FooterTextArea = forwardRef<HTMLTextAreaElement, IProps>((props, ref) => {
-  const { isLoading, append, listening, resetTranscript } = props
+  const { isLoading, append, transcript, listening, resetTranscript } = props
   const maxHeight = 200
   const router = useRouter()
   const { userId } = useAuth()
@@ -38,9 +40,18 @@ const FooterTextArea = forwardRef<HTMLTextAreaElement, IProps>((props, ref) => {
   const maxTokens = useAtomValue(maxTokensAtom)
   const selectedModelId = useAtomValue(selectedModelIdAtom)
   const setChatItems = useSetAtom(chatItemsAtom)
+  const [isDisabled, setIsDisabled] = useState<boolean>(true)
   const [isComposing, setIsComposing] = useState<boolean>(false)
   const { modelName } = useGetChatInformation(router.query.id as string | undefined, selectedModelId)
   const textAreaRef = ref as MutableRefObject<HTMLTextAreaElement>
+
+  // when the transcript changes, set the value of the textarea.
+  useEffect(() => {
+    if (listening && textAreaRef.current) {
+      textAreaRef.current.value = transcript
+      setIsDisabled(!transcript.trim())
+    }
+  }, [transcript, listening, textAreaRef])
 
   const handleComposition = (e: CompositionEvent) => {
     if (e.type === 'compositionstart') {
@@ -168,6 +179,7 @@ const FooterTextArea = forwardRef<HTMLTextAreaElement, IProps>((props, ref) => {
     const textarea = e.target
     textarea.style.height = 'auto'
     textarea.style.height = Math.min(textarea.scrollHeight, maxHeight) + 'px'
+    setIsDisabled(!textarea.value.trim())
   }
 
   return (
@@ -201,7 +213,8 @@ const FooterTextArea = forwardRef<HTMLTextAreaElement, IProps>((props, ref) => {
               <Tooltip title={t('chatPage.message.send')}>
                 <button
                   type={'submit'}
-                  disabled={!textAreaRef.current || textAreaRef.current?.value === ''}
+                  // disabled={!textAreaRef.current || textAreaRef.current?.value === ''}
+                  disabled={isDisabled}
                   className={`
                     absolute bottom-5 right-3 border rounded-lg p-1
                     hover:bg-gray-200/80 hover-transition-change dark:hover:bg-gray-500/10
