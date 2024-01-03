@@ -1,9 +1,12 @@
+import { useAtomValue } from 'jotai'
 import { toast, Toaster } from 'sonner'
 import { useRouter } from 'next/router'
-import { useRef, useState } from 'react'
+import type { Message } from 'ai/react'
+import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'next-i18next'
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition'
 
+import { chatMessagesAtom } from '@/atoms'
 import Tooltip from '@/components/ui/Tooltip'
 import DropDown from '@/components/ui/DropDown'
 import DotsIcon from '@/components/icons/DotsIcon'
@@ -14,17 +17,28 @@ import FooterMoreIconsData from '@/components/chat/Message/FooterContent/FooterM
 
 interface IProps {
   listening: boolean
+  messages: Message[]
   resetTranscript: () => void
 }
 
 export default function FooterHeader(props: IProps) {
-  const { listening, resetTranscript } = props
+  const { listening, resetTranscript, messages } = props
   const router = useRouter()
   const { t } = useTranslation('common')
   const { browserSupportsSpeechRecognition } = useSpeechRecognition()
+  const chatMessages = useAtomValue(chatMessagesAtom)
   const [isDropDownOpen, setIsDropDownOpen] = useState<boolean>(false)
+  const [disabled, setDisabled] = useState<boolean>(true)
   const dropDownDivRef = useRef<HTMLDivElement>(null)
   const triggerDivRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (!chatMessages.length && !messages.length) {
+      setDisabled(true)
+    } else {
+      setDisabled(false)
+    }
+  }, [chatMessages.length, messages.length])
 
   useOutsideClick(dropDownDivRef, (event) => {
     if (!triggerDivRef.current?.contains(event!.target as Node)) setIsDropDownOpen(false)
@@ -83,17 +97,17 @@ export default function FooterHeader(props: IProps) {
                 isDropDownOpen && (
                   <DropDown
                     ref={dropDownDivRef}
-                    className={'w-48 bottom-7 left-0'}
+                    className={`w-48 bottom-7 left-0 ${disabled && 'pointer-events-none'}`}
                     motionClassName={`
-                  bg-gray-50 border
-                  dark:bg-chatpage-message-background-dark dark:border-gray-500 dark:text-chatpage-message-text-dark
-                `}
+                      bg-gray-50 border
+                      dark:bg-chatpage-message-background-dark dark:border-gray-500 dark:text-chatpage-message-text-dark
+                    `}
                     motionAnimation={{
                       initial: {opacity: 0, y: '20%'},
                       animate: {opacity: 1, y: 0},
                     }}
                   >
-                    <FooterMoreIconsData/>
+                    <FooterMoreIconsData disabled={disabled}/>
                   </DropDown>
                 )
               }
