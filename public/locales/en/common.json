@@ -49,6 +49,7 @@
     "message": {
       "textAreaPlaceholder": "Type a message...",
       "openaiKey": "OpenAI API Key",
+      "noMessages": "No messages yet",
       "save": "Save",
       "send": "Send message",
       "preview": "preview",

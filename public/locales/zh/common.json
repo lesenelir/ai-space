@@ -49,6 +49,7 @@
     "message": {
       "textAreaPlaceholder": "输入消息...",
       "openaiKey": "OpenAI API 密钥",
+      "noMessages": "没有历史消息",
       "save": "保存",
       "send": "发送信息",
       "preview": "预览",

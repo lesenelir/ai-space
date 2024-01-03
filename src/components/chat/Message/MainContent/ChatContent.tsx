@@ -3,6 +3,7 @@ import { type Message } from 'ai/react'
 import { useRouter } from 'next/router'
 import { Toaster, toast } from 'sonner'
 import { useEffect, useRef } from 'react'
+import { useTranslation } from 'next-i18next'
 
 import { chatMessagesAtom } from '@/atoms'
 import DataItem from '@/components/chat/Message/MainContent/DataItem'
@@ -26,6 +27,7 @@ interface IProps {
  */
 export default function ChatContent(props: IProps) {
   const { messages, setMessages, speakingId, startSpeaking, stopSpeaking } = props
+  const { t } = useTranslation('common')
   const router = useRouter()
   const endOfMessagesRef = useRef<HTMLDivElement>(null)
   const [chatMessages, setChatMessages] = useAtom(chatMessagesAtom)
@@ -66,7 +68,7 @@ export default function ChatContent(props: IProps) {
   if (chatMessages.length === 0 && messages.length === 0) {
     return (
       <div className={'flex-1 flex flex-col justify-center items-center'}>
-        <p className={'text-gray-700 dark:text-chatpage-message-text-dark text-sm'}>No messages yet</p>
+        <p className={'text-gray-700 dark:text-chatpage-message-text-dark text-sm'}>{t('chatPage.message.noMessages')}</p>
       </div>
     )
   }
