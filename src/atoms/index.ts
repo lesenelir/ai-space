@@ -10,6 +10,9 @@ export const searchQueryNameAtom = atom<string>('')
 export const selectedModelIdAtom = atom<number>(1) // Must: depends model id
 export const maxTokensAtom = atomWithStorage<number>('maxTokens', 1000)
 export const temperatureAtom = atomWithStorage<number>('temperature', 0.5)
+// get ignoreLine from localStorage => value: array of the object.
+// object: {key: string, value: string[]} => key: router.query.id uuid, value: [id1, id2, id3 ...]
+export const ignoreLineAtom = atomWithStorage<{key: string, value: string[]}[]>('ignoreLine', [])
 
 
 // server atoms:

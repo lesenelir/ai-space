@@ -107,7 +107,7 @@ export default function FooterHeader(props: IProps) {
                       animate: {opacity: 1, y: 0},
                     }}
                   >
-                    <FooterMoreIconsData disabled={disabled}/>
+                    <FooterMoreIconsData disabled={disabled} messages={messages}/>
                   </DropDown>
                 )
               }

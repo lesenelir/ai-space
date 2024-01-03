@@ -57,7 +57,9 @@
       "copied": "copied",
       "voiceInput": "voice input",
       "ignoreMessages": "Ignore Messages",
-      "deleteMessages": "Delete Messages"
+      "deleteMessages": "Delete Messages",
+      "ignoreMessagesContent": "Ignored above messages",
+      "deleteMessagesContent": "Deleted this line"
     }
   }
 }

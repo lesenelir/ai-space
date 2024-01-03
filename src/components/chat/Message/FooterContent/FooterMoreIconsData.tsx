@@ -1,15 +1,49 @@
+import { useRouter } from 'next/router'
+import { type Message } from 'ai/react'
 import { useTranslation } from 'next-i18next'
+import { useAtom, useAtomValue } from 'jotai'
 
+import { chatMessagesAtom, ignoreLineAtom } from '@/atoms'
 import SeparatorIcon from '@/components/icons/SeparatorIcon'
 import MessageClearIcon from '@/components/icons/MessageClearIcon'
 
 interface IProps {
   disabled: boolean
+  messages: Message[]
 }
 
 export default function FooterMoreIconsData(props: IProps) {
-  const { disabled } = props
+  const { disabled, messages } = props
+  const router = useRouter()
   const { t } = useTranslation('common')
+  const [ignoreLine, setIgnoredLine] = useAtom(ignoreLineAtom)
+  const chatMessages = useAtomValue(chatMessagesAtom)
+
+  const handleAddIgnoreLine = async () => {
+    const key = router.query.id! as string
+    let value: string
+    if (messages.length) {
+      value = String(messages[messages.length - 1].id)
+    } else { // must have chatMessages
+      value = String(chatMessages[chatMessages.length - 1].id)
+    }
+
+    const itemIndex = ignoreLine.findIndex(item => item.key === key)
+
+    if (itemIndex !== -1) {
+      // key exists，router.query.id exists
+      setIgnoredLine(prev => {
+        const newItems = [...prev]
+        newItems[itemIndex] = {
+          ...newItems[itemIndex],
+          value: [...newItems[itemIndex].value, value]
+        }
+        return newItems
+      })
+    } else {
+      setIgnoredLine(prev => [...prev, {key, value: [value]}])
+    }
+  }
 
   return (
     <div>
@@ -20,6 +54,7 @@ export default function FooterMoreIconsData(props: IProps) {
           dark:hover:bg-chatpage-message-robot-content-dark
           ${disabled && 'opacity-40'}
         `}
+        onClick={handleAddIgnoreLine}
       >
         <SeparatorIcon width={16} height={16}/>
         {t('chatPage.message.ignoreMessages')}

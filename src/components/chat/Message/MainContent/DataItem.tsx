@@ -1,11 +1,11 @@
 import Image from 'next/image'
-import { useAtomValue } from 'jotai'
+import { useAtom, useAtomValue } from 'jotai'
 import { useUser } from '@clerk/nextjs'
 import { useRouter } from 'next/router'
 import { encodingForModel } from 'js-tiktoken'
-import { forwardRef, useCallback, useState } from 'react'
+import { forwardRef, Fragment, useCallback, useState } from 'react'
 
-import { selectedModelIdAtom } from '@/atoms'
+import { ignoreLineAtom, selectedModelIdAtom } from '@/atoms'
 import { Gemini, GPT3, GPT4 } from '@/components/chat/Message/HeaderContent/OptionData'
 import CheckIcon from '@/components/icons/CheckIcon'
 import CopyIcon from '@/components/icons/CopyIcon'
@@ -13,6 +13,7 @@ import SpeedIcon from '@/components/icons/SpeedIcon'
 import VolumeIcon from '@/components/icons/VolumeIcon'
 import PlayerPauseIcon from '@/components/icons/PlayerPauseIcon'
 import PlayerStationIcon from '@/components/icons/PlayerStationIcon'
+import IgnoreLine from '@/components/chat/Message/MainContent/IgnoreLine'
 import useGetChatInformation from '@/hooks/useGetChatInformation'
 import MarkdownRender from '@/components/chat/Message/MainContent/MarkdownRender'
 
@@ -42,6 +43,7 @@ const DataItem =  forwardRef<HTMLDivElement, IProps>((props, ref) => {
   const { user } = useUser()
   const router = useRouter()
   const selectedModelId =  useAtomValue(selectedModelIdAtom)
+  const [ignoreLine, setIgnoreLine] = useAtom(ignoreLineAtom)
   const [rateId, setRateId] = useState<number>(1)
   const [copy, setCopy] = useState<{[key: string]: boolean}>({}) // key: message id, value: boolean
   const { currentChatModel } = useGetChatInformation(router.query.id as string | undefined, selectedModelId)
@@ -90,9 +92,24 @@ const DataItem =  forwardRef<HTMLDivElement, IProps>((props, ref) => {
     startSpeaking(data.id, data.content, newRateId)
   }
 
+  const handleDeleteIgnoreLine = (deleteKey: string, deleteValue: string) => {
+    setIgnoreLine(prev => {
+      return prev.map(item => {
+        if (item.key === deleteKey) {
+          const newValue = item.value.filter(val => val !== deleteValue)
+          return {
+            ...item,
+            value: newValue
+          }
+        }
+        return item
+      }).filter(item => item.value.length > 0) // delete whole item if value is empty
+    })
+  }
+
   return (
     <>
-      <div key={data.id} className={'group'}>
+      <div key={data.id} className={'group/icons mb-4'}>
         <div
           className={`
             flex flex-col gap-3 p-2 rounded-lg 
@@ -124,15 +141,16 @@ const DataItem =  forwardRef<HTMLDivElement, IProps>((props, ref) => {
           {/* content */}
           <article
             ref={ref}
-            className={'prose dark:prose-invert break-words whitespace-pre-wrap overflow-x-auto custom-message-light-scrollbar'}>
+            className={'prose dark:prose-invert break-words whitespace-pre-wrap overflow-x-auto custom-message-light-scrollbar'}
+          >
             {/* If data.messageContent is null, the data.content must be existed. */}
             <MarkdownRender markdown={data.content}/>
           </article>
         </div>
 
         {/* Footer content */}
-        <div className={'mb-5 mt-1 w-full h-[16px]'}>
-          <div className={'hidden group-hover:flex gap-1'}>
+        <div className={'w-full h-[20px] my-1'}>
+          <div className={'hidden group-hover/icons:flex gap-1'}>
             {copy[data.id] ? (
               <CheckIcon width={16} height={16} className={'text-green-600 p-1'}/>
             ) : (
@@ -170,9 +188,7 @@ const DataItem =  forwardRef<HTMLDivElement, IProps>((props, ref) => {
               <span className={'text-xs'}>{rateId}x</span>
             </div>
 
-            <div
-              className={'flex gap-1 p-1 rounded-md hover:bg-gray-200 dark:hover:bg-chatpage-message-robot-content-dark'}
-            >
+            <div className={'flex gap-1 p-1 rounded-md hover:bg-gray-200 dark:hover:bg-chatpage-message-robot-content-dark'}>
               <SpeedIcon width={16} height={16}/>
               {/* If the data costTokens is null, it means that this is the messages array render.  */}
               <span className={'text-xs'}>{data.costTokens || enc.encode(data.content).length} tokens</span>
@@ -180,6 +196,20 @@ const DataItem =  forwardRef<HTMLDivElement, IProps>((props, ref) => {
           </div>
         </div>
       </div>
+
+      {/* IgnoreLine */}
+      {/* When a user clicks ignore icon in FooterHeader Component, the ignored above messages should appear */}
+      {
+        ignoreLine
+          .filter(item => item.key === router.query.id)
+          .map(item => (
+            item.value.some(val => val === data.id) && (
+              <Fragment key={data.id}>
+                <IgnoreLine onDelete={() => handleDeleteIgnoreLine(item.key, data.id)}/>
+              </Fragment>
+            )
+        ))
+      }
     </>
   )
 })
