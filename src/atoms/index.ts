@@ -36,3 +36,6 @@ export const chatMessagesAtom = atom<TChatMessages[]>([]) // maintains the chat 
  */
 
 console.log('test1')
+
+console.log('test2')
+
