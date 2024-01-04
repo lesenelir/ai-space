@@ -88,4 +88,5 @@ This changelog provides a detailed record of the updates and improvements made t
 - Refactor `Footer` component.
 - Add `more icons and relevant dropdown components` to the `FooterHeader` component.
 - Add `Ignore above messages` feature, but had some bugs. When rendering real time messages array, the ignore above messages will not work after refreshing the page. Because the real time messages returned id type is string, haven't stored it in the database.
+- Implement the deletion of all chatMessages in the current ChatItem.
 
