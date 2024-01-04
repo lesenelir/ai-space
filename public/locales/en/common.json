@@ -59,7 +59,11 @@
       "ignoreMessages": "Ignore Messages",
       "deleteMessages": "Delete Messages",
       "ignoreMessagesContent": "Ignored above messages",
-      "deleteMessagesContent": "Deleted this line"
+      "deleteMessagesContent": "Deleted this line",
+      "deleteTitle": "Delete all messages in this chat",
+      "deleteContent": "This action cannot be undone.",
+      "cancel": "Cancel",
+      "confirm": "Confirm"
     }
   }
 }

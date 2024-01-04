@@ -59,7 +59,11 @@
       "ignoreMessages": "忽略消息",
       "deleteMessages": "清空消息",
       "ignoreMessagesContent": "忽略上述消息",
-      "deleteMessagesContent": "删除这一行"
+      "deleteMessagesContent": "删除这一行",
+      "deleteTitle": "删除该聊天的所有消息",
+      "deleteContent": "这将删除该聊天的所有消息，且无法恢复",
+      "cancel": "取消",
+      "confirm": "确认"
     }
   }
 }

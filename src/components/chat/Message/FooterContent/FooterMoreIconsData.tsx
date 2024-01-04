@@ -2,6 +2,7 @@ import { useRouter } from 'next/router'
 import { type Message } from 'ai/react'
 import { useTranslation } from 'next-i18next'
 import { useAtom, useAtomValue } from 'jotai'
+import type { Dispatch, SetStateAction } from 'react'
 
 import { chatMessagesAtom, ignoreLineAtom } from '@/atoms'
 import SeparatorIcon from '@/components/icons/SeparatorIcon'
@@ -10,10 +11,11 @@ import MessageClearIcon from '@/components/icons/MessageClearIcon'
 interface IProps {
   disabled: boolean
   messages: Message[]
+  setShowDeleteModal: Dispatch<SetStateAction<boolean>>
 }
 
 export default function FooterMoreIconsData(props: IProps) {
-  const { disabled, messages } = props
+  const { disabled, messages, setShowDeleteModal } = props
   const router = useRouter()
   const { t } = useTranslation('common')
   const [ignoreLine, setIgnoredLine] = useAtom(ignoreLineAtom)
@@ -60,7 +62,6 @@ export default function FooterMoreIconsData(props: IProps) {
         {t('chatPage.message.ignoreMessages')}
       </div>
 
-
       {/* clear messages */}
       <div
         className={`
@@ -68,6 +69,7 @@ export default function FooterMoreIconsData(props: IProps) {
           dark:text-red-500  dark:hover:bg-chatpage-message-robot-content-dark
           ${disabled && 'opacity-40'}
         `}
+        onClick={() => setShowDeleteModal(true)}
       >
         <MessageClearIcon width={16} height={16}/>
         {t('chatPage.message.deleteMessages')}

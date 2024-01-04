@@ -8,11 +8,12 @@ import FooterTextArea from '@/components/chat/Message/FooterContent/FooterTextAr
 interface IProps {
   isLoading: boolean
   messages: Message[]
+  setMessages: (messages: Message[]) => void
   append: (message: Message | CreateMessage, chatRequestOptions?: ChatRequestOptions) => Promise<string | null | undefined>
 }
 
 export default function FooterContent(props: IProps) {
-  const { isLoading, append, messages } = props
+  const { isLoading, append, messages, setMessages } = props
   const { transcript, listening, resetTranscript } = useSpeechRecognition()
   // const ref = useRef<HTMLTextAreaElement>(null) // or this way: create ref in FooterTextArea.tsx
 
@@ -21,6 +22,7 @@ export default function FooterContent(props: IProps) {
       {/* icons */}
       <FooterHeader
         messages={messages}
+        setMessages={setMessages}
         listening={listening}
         resetTranscript={resetTranscript}
       />

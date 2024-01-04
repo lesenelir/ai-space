@@ -7,22 +7,25 @@ import { useTranslation } from 'next-i18next'
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition'
 
 import { chatMessagesAtom } from '@/atoms'
+import Modal from '@/components/ui/Modal'
 import Tooltip from '@/components/ui/Tooltip'
 import DropDown from '@/components/ui/DropDown'
 import DotsIcon from '@/components/icons/DotsIcon'
+import useOutsideClick from '@/hooks/useOutsideClick'
 import PlayerRecordIcon from '@/components/icons/PlayerRecord'
 import MicrophoneIcon from '@/components/icons/MicrophoneIcon'
-import useOutsideClick from '@/hooks/useOutsideClick'
+import ModalDelete from '@/components/chat/Message/FooterContent/ModalDelete'
 import FooterMoreIconsData from '@/components/chat/Message/FooterContent/FooterMoreIconsData'
 
 interface IProps {
   listening: boolean
   messages: Message[]
+  setMessages: (messages: Message[]) => void
   resetTranscript: () => void
 }
 
 export default function FooterHeader(props: IProps) {
-  const { listening, resetTranscript, messages } = props
+  const { listening, resetTranscript, messages, setMessages } = props
   const router = useRouter()
   const { t } = useTranslation('common')
   const { browserSupportsSpeechRecognition } = useSpeechRecognition()
@@ -31,6 +34,7 @@ export default function FooterHeader(props: IProps) {
   const [disabled, setDisabled] = useState<boolean>(true)
   const dropDownDivRef = useRef<HTMLDivElement>(null)
   const triggerDivRef = useRef<HTMLDivElement>(null)
+  const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false)
 
   useEffect(() => {
     if (!chatMessages.length && !messages.length) {
@@ -66,6 +70,17 @@ export default function FooterHeader(props: IProps) {
 
   return (
     <>
+      {
+        showDeleteModal && (
+          <Modal
+            motionClassName={'w-1/3 h-[170px] p-4 bg-zinc-800 text-white border border-gray-500 rounded-xl'}
+            onClose={() => setShowDeleteModal(true)}
+          >
+            <ModalDelete setShowDeleteModal={setShowDeleteModal} setMessages={setMessages}/>
+          </Modal>
+        )
+      }
+
       <Toaster richColors position={'top-center'}/>
       {/* icons */}
       <div className={'md:w-[640px] max-md:w-full p-1 flex'}>
@@ -107,7 +122,7 @@ export default function FooterHeader(props: IProps) {
                       animate: {opacity: 1, y: 0},
                     }}
                   >
-                    <FooterMoreIconsData disabled={disabled} messages={messages}/>
+                    <FooterMoreIconsData disabled={disabled} messages={messages} setShowDeleteModal={setShowDeleteModal}/>
                   </DropDown>
                 )
               }
