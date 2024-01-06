@@ -1,14 +1,14 @@
 import { useRouter } from 'next/router'
 import { useAtom, useAtomValue } from 'jotai'
-import { Fragment, useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { Fragment, useEffect, useMemo, useRef, useState } from 'react'
 
 import type { TModel } from '@/types'
 import DropDown from '@/components/ui/DropDown'
 import useOutsideClick from '@/hooks/useOutsideClick'
 import ChevronUpIcon from '@/components/icons/ChevronUpIcon'
 import ChevronDownIcon from '@/components/icons/ChevronDownIcon'
+import RenderModelIcon from '@/components/common/chat/RenderModelIcon'
 import { chatItemsAtom, modelsAtom, selectedModelIdAtom } from '@/atoms'
-import { Gemini, GPT3, GPT4 } from '@/components/chat/Message/HeaderContent/OptionData'
 
 export default function Select() {
   const router = useRouter()
@@ -42,19 +42,6 @@ export default function Select() {
     models.find(model => model.id === currentChatItem?.modelPrimaryId),
     [models, currentChatItem?.modelPrimaryId]
   )
-
-  const renderModelIcon = useCallback((id: number) => {
-    switch (id) {
-      case 1:
-        return <GPT3 width={16} height={16} className={'rounded-md'} />
-      case 2:
-        return <GPT4 width={16} height={16} className={'rounded-md'} />
-      case 3:
-        return <Gemini width={16} height={16} className={'rounded-md'} />
-      default:
-        return null
-    }
-  }, [])
 
   return (
     <>
@@ -118,13 +105,14 @@ export default function Select() {
                   {/*))}*/}
                   {models.map(item => (
                     <Fragment key={item.id}>
-                      {item.id === 3 ? (
+                      {item.id === 4 ? (
                         <div
                           className={`
-                            cursor-pointer p-2 rounded-md hover-transition-change text-sm flex gap-2
+                            cursor-pointer p-2 rounded-md hover-transition-change text-sm flex gap-2 pointer-events-none
                           `}
                         >
-                          {renderModelIcon(item.id)} {/* Picture icon */}
+                          {/*{renderModelIcon(item.id)} /!* Picture icon *!/*/}
+                          <RenderModelIcon id={item.id} width={16} height={16}/>
                           <span>{item.modelName} (not supported yet)</span>
                         </div>
                       ) : (
@@ -135,7 +123,8 @@ export default function Select() {
                           `}
                           onClick={() => handleSelect(item)}
                         >
-                          {renderModelIcon(item.id)} {/* Picture icon */}
+                          {/*{renderModelIcon(item.id)} /!* Picture icon *!/*/}
+                          <RenderModelIcon id={item.id} width={16} height={16}/>
                           <span>{item.modelName}</span>
                         </div>
                       )}

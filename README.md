@@ -11,3 +11,12 @@
 
 TODO：
 - stop 的时候，捕获 TCP 错误，针对这个错误，将所生成的所有 token 存入数据库
+
+
+增加 model 步骤：
+- 数据库中 添加 新的 model
+- 修改 `RenderModelIcon` 组件
+- Select 组件中，修改 `models.map` 方法
+- 修改 `utils/modelName` 方法
+- 修改发送请求的部分
+

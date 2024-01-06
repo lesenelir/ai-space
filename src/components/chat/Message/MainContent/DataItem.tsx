@@ -3,16 +3,16 @@ import { useAtom, useAtomValue } from 'jotai'
 import { useUser } from '@clerk/nextjs'
 import { useRouter } from 'next/router'
 import { encodingForModel } from 'js-tiktoken'
-import { forwardRef, Fragment, useCallback, useState } from 'react'
+import { forwardRef, Fragment, useState } from 'react'
 
 import { ignoreLineAtom, selectedModelIdAtom } from '@/atoms'
-import { Gemini, GPT3, GPT4 } from '@/components/chat/Message/HeaderContent/OptionData'
 import CheckIcon from '@/components/icons/CheckIcon'
 import CopyIcon from '@/components/icons/CopyIcon'
 import SpeedIcon from '@/components/icons/SpeedIcon'
 import VolumeIcon from '@/components/icons/VolumeIcon'
 import PlayerPauseIcon from '@/components/icons/PlayerPauseIcon'
 import PlayerStationIcon from '@/components/icons/PlayerStationIcon'
+import RenderModelIcon from '@/components/common/chat/RenderModelIcon'
 import IgnoreLine from '@/components/chat/Message/MainContent/IgnoreLine'
 import useGetChatInformation from '@/hooks/useGetChatInformation'
 import MarkdownRender from '@/components/chat/Message/MainContent/MarkdownRender'
@@ -47,19 +47,6 @@ const DataItem =  forwardRef<HTMLDivElement, IProps>((props, ref) => {
   const [rateId, setRateId] = useState<number>(1)
   const [copy, setCopy] = useState<{[key: string]: boolean}>({}) // key: message id, value: boolean
   const { currentChatModel } = useGetChatInformation(router.query.id as string | undefined, selectedModelId)
-
-  const renderModelIcon = useCallback((id: number) => {
-    switch (id) {
-      case 1:
-        return <GPT3 width={22} height={22} className={'rounded-full'} />
-      case 2:
-        return <GPT4 width={22} height={22} className={'rounded-full'} />
-      case 3:
-        return <Gemini width={22} height={22} className={'rounded-full'} />
-      default:
-        return null
-    }
-  }, [])
 
   const handleCopyClick = (code: string, id: string) => {
     navigator.clipboard.writeText(code).then(() => {})
@@ -129,7 +116,7 @@ const DataItem =  forwardRef<HTMLDivElement, IProps>((props, ref) => {
                   className={'rounded-full'}
                 />
               ) : (
-                renderModelIcon(currentChatModel?.id!)
+                <RenderModelIcon id={currentChatModel?.id!} width={22} height={22}/>
               )
             }
             <p className={'flex items-center font-semibold text-gray-900/90 dark:text-white'}>
