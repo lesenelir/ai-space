@@ -1,3 +1,4 @@
+import { v4 as uuid } from 'uuid'
 import { useAtomValue } from 'jotai'
 import { toast, Toaster } from 'sonner'
 import { useRouter } from 'next/router'
@@ -33,8 +34,9 @@ import FooterMoreIconsData from '@/components/chat/Message/FooterContent/FooterM
 interface IProps {
   listening: boolean
   messages: Message[]
-  setMessages: (messages: Message[]) => void
+  previewUrls: TImage[]
   resetTranscript: () => void
+  setMessages: (messages: Message[]) => void
   setRemoteUrls: Dispatch<SetStateAction<TImage[]>>
   setPreviewUrls: Dispatch<SetStateAction<TImage[]>>
   setUploading: Dispatch<SetStateAction<{[p: string]: boolean}>>
@@ -46,6 +48,7 @@ export default function FooterHeader(props: IProps) {
     listening,
     resetTranscript,
     messages,
+    previewUrls,
     setMessages,
     setPreviewUrls,
     setUploading,
@@ -107,46 +110,56 @@ export default function FooterHeader(props: IProps) {
       const file = files[i]
       const reader = new FileReader()
       reader.onload = () => {
-        newPreviewUrls.push({id: String(i), url: reader.result as string})
+        newPreviewUrls.push({id: uuid(), url: reader.result as string})
         if (newPreviewUrls.length === files.length) {
-          setPreviewUrls(newPreviewUrls)
+          setPreviewUrls(prev => [...prev, ...newPreviewUrls])
+          handleUploadSubmit(e, e.target.files, newPreviewUrls)
         }
       }
       reader.readAsDataURL(file)
     }
 
-    handleUploadSubmit(e, e.target.files)
   }
 
-  const handleUploadSubmit = (e: FormEvent<HTMLFormElement> | ChangeEvent<HTMLInputElement>, files: FileList | null) => {
+  const handleUploadSubmit = (
+    e: FormEvent<HTMLFormElement> | ChangeEvent<HTMLInputElement>,
+    files: FileList | null,
+    newPreviewUrls: TImage[] | null
+  ) => {
     e.preventDefault()
     if (!files || !files.length) return
 
+    const mergedPreviewUrls = [...previewUrls, ...(newPreviewUrls || [])]
+    const len = !Object.keys(previewUrls).length ? files.length : mergedPreviewUrls.length
+    const start = !Object.keys(previewUrls).length ? 0 : previewUrls.length
+
     // initial uploading state
     const initialUploadingState: {[key: string]: boolean} = {}
-    for (let i = 0; i < files.length; i++) {
-      initialUploadingState[String(i)] = true
+    for (let i = start; i < len; i++) {
+      initialUploadingState[mergedPreviewUrls[i].id] = true
     }
+
     setUploading(initialUploadingState)
 
     // update images urls to cloudinary
     const uploadTask = [...files].map(async (file, index) => {
       const controller = new AbortController() // cancel upload (abort)
-      abortControllers.current[String(index)] = controller
+      abortControllers.current[mergedPreviewUrls[start + index].id] = controller
 
       try {
-        const item = await uploadImage(file, index, controller)
-        setUploading(prev => ({...prev, [String(index)]: false}))
+        const item = await uploadImage(file, mergedPreviewUrls[start + index].id, controller)
+        setUploading(prev => ({...prev, [mergedPreviewUrls[start + index].id]: false})) // when upload success, set uploading to false
         return item
       } catch {
-        setUploading(prev_1 => ({...prev_1, [String(index)]: false})) // when upload failed, set uploading to false
+        setUploading(prev => ({...prev, [mergedPreviewUrls[start + index].id]: false})) // when upload failed, set uploading to false
         return undefined
       }
     })
 
     Promise.all(uploadTask).then((values) => {
       const successfulUploads = values.filter(item => item !== undefined) as TImage[]
-      setRemoteUrls(successfulUploads)
+      setUploading({}) // reset uploading state
+      setRemoteUrls(prev => [...prev, ...successfulUploads])
     }).catch((error) => {
       console.log(error)
     })
@@ -188,7 +201,7 @@ export default function FooterHeader(props: IProps) {
         <div onClick={() => hiddenUploadImageRef.current?.click()}>
           <form
             className={'relative p-2 rounded-md cursor-pointer hover:bg-gray-200 dark:hover:bg-chatpage-message-robot-content-dark'}
-            onSubmit={(e) => handleUploadSubmit(e, null)}
+            onSubmit={(e) => handleUploadSubmit(e, null, null)}
           >
             {
               modelName === 'gpt-4-vision-preview' && (

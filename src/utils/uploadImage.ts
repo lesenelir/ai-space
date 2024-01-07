@@ -1,4 +1,4 @@
-export async function uploadImage(file: File, index: number, controller: AbortController) {
+export async function uploadImage(file: File, id: string, controller: AbortController) {
   const formData = new FormData()
 
   formData.append('file', file)
@@ -12,7 +12,7 @@ export async function uploadImage(file: File, index: number, controller: AbortCo
     }
     const response = await fetch('https://api.cloudinary.com/v1_1/dyecgzt54/image/upload', options)
     const data = await response.json()
-    return {id: String(index), url: data.url}
+    return {id, url: data.url}
   } catch (error: any) {
     if (error.name === 'AbortError') {
       console.log('Upload cancelled')

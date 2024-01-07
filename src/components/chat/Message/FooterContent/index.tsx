@@ -32,8 +32,6 @@ export default function FooterContent(props: IProps) {
     setUploading({})
   }, [router.query.id])
 
-  console.log(remoteUrls)
-  console.log(previewUrls, 'asdasd')
   return (
     <div className={'w-full flex flex-col items-center border-t dark:border-t-gray-500'}>
       {/* icons */}
@@ -41,6 +39,7 @@ export default function FooterContent(props: IProps) {
         messages={messages}
         setMessages={setMessages}
         listening={listening}
+        previewUrls={previewUrls}
         resetTranscript={resetTranscript}
         setPreviewUrls={setPreviewUrls}
         setUploading={setUploading}
