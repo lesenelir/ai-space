@@ -23,6 +23,8 @@
     "@prisma/client": "5.7.0",
     "@stackblitz/sdk": "^1.9.0",
     "ai": "^2.2.30",
+    "cloudinary": "^1.41.1",
+    "cloudinary-build-url": "^0.2.4",
     "date-fns": "^2.30.0",
     "framer-motion": "^10.16.14",
     "franc-min": "^6.1.0",

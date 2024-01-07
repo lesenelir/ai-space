@@ -10,28 +10,53 @@ import {
   type CompositionEvent,
   type FormEvent,
   type KeyboardEvent,
+  type Dispatch,
+  type SetStateAction,
+  type MutableRefObject,
   forwardRef,
   useState,
   useEffect,
   useRef,
 } from 'react'
 
+import { chatItemsAtom, maxTokensAtom, selectedModelIdAtom, temperatureAtom } from '@/atoms'
+import { TImage } from '@/types'
 import Tooltip from '@/components/ui/Tooltip'
-import LoadingDots from '@/components/ui/LoadingDots'
+import LoadingDots from '@/components/common/chat/LoadingDots'
 import useGetChatInformation from '@/hooks/useGetChatInformation'
 import ArrowNarrowUpIcon from '@/components/icons/ArrowNarrowUpIcon'
-import { chatItemsAtom, maxTokensAtom, selectedModelIdAtom, temperatureAtom } from '@/atoms'
+import PreviewImg from '@/components/chat/Message/FooterContent/PreviewImg'
 
 interface IProps {
   isLoading: boolean
   listening: boolean
   transcript: string
+  previewUrls: {id: string, url: string}[]
+  uploading: {[key: string]: boolean}
   resetTranscript: () => void
+  remoteUrls: TImage[]
+  setPreviewUrls: Dispatch<SetStateAction<TImage[]>>
+  setRemoteUrls: Dispatch<SetStateAction<TImage[]>>
+  abortControllers: MutableRefObject<{[p: string]: AbortController}>
+  setUploading: Dispatch<SetStateAction<{[p: string]: boolean}>>
   append: (message: Message | CreateMessage, chatRequestOptions?: ChatRequestOptions) => Promise<string | null | undefined>
 }
 
 const FooterTextArea = forwardRef<HTMLTextAreaElement, IProps>((props, ref) => {
-  const { isLoading, append, transcript, listening, resetTranscript } = props
+  const {
+    isLoading,
+    append,
+    transcript,
+    listening,
+    resetTranscript,
+    previewUrls,
+    setPreviewUrls,
+    uploading,
+    setUploading,
+    setRemoteUrls,
+    abortControllers,
+    remoteUrls
+  } = props
   const maxHeight = 200
   const router = useRouter()
   const { userId } = useAuth()
@@ -200,6 +225,19 @@ const FooterTextArea = forwardRef<HTMLTextAreaElement, IProps>((props, ref) => {
     <>
       <div className={'md:w-[640px] max-md:w-full p-1'}>
         <form onSubmit={handleFormSubmit} className={'relative'}>
+          {
+            modelName === 'gpt-4-vision-preview' && previewUrls && (
+              <PreviewImg
+                uploading={uploading}
+                remoteUrls={remoteUrls}
+                previewUrls={previewUrls}
+                setRemoteUrls={setRemoteUrls}
+                setUploading={setUploading}
+                setPreviewUrls={setPreviewUrls}
+                abortControllers={abortControllers}
+              />
+            )
+          }
           <textarea
             ref={textAreaRef}
             required={true}

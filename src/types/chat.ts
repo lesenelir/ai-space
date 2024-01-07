@@ -28,3 +28,8 @@ export type TChatMessages = {
   chatItemPrimaryId: number
   userPrimaryId: number
 }
+
+export type TImage = {
+  id: string
+  url: string
+}

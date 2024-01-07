@@ -30,6 +30,7 @@ const config: Config = {
       animation: {
         blink: 'blink 1.4s infinite both',
         record: 'record 1.5s infinite both',
+        slowSpin: 'spin 2s linear infinite',
       },
       colors: {
         homepage: {

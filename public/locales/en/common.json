@@ -63,7 +63,8 @@
       "deleteTitle": "Delete all messages in this chat",
       "deleteContent": "This action cannot be undone.",
       "cancel": "Cancel",
-      "confirm": "Confirm"
+      "confirm": "Confirm",
+      "upload": "upload image"
     }
   }
 }

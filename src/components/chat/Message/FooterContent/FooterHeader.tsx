@@ -2,18 +2,31 @@ import { useAtomValue } from 'jotai'
 import { toast, Toaster } from 'sonner'
 import { useRouter } from 'next/router'
 import type { Message } from 'ai/react'
-import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'next-i18next'
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition'
+import {
+  type ChangeEvent,
+  type Dispatch,
+  type FormEvent,
+  type MutableRefObject,
+  type SetStateAction,
+  useEffect,
+  useRef,
+  useState
+} from 'react'
 
-import { chatMessagesAtom } from '@/atoms'
+import { chatMessagesAtom, selectedModelIdAtom } from '@/atoms'
+import { uploadImage } from '@/utils'
+import { type TImage } from '@/types'
 import Modal from '@/components/ui/Modal'
 import Tooltip from '@/components/ui/Tooltip'
 import DropDown from '@/components/ui/DropDown'
 import DotsIcon from '@/components/icons/DotsIcon'
+import LinkIcon from '@/components/icons/LinkIcon'
 import useOutsideClick from '@/hooks/useOutsideClick'
 import PlayerRecordIcon from '@/components/icons/PlayerRecord'
 import MicrophoneIcon from '@/components/icons/MicrophoneIcon'
+import useGetChatInformation from '@/hooks/useGetChatInformation'
 import ModalDelete from '@/components/chat/Message/FooterContent/ModalDelete'
 import FooterMoreIconsData from '@/components/chat/Message/FooterContent/FooterMoreIconsData'
 
@@ -22,19 +35,35 @@ interface IProps {
   messages: Message[]
   setMessages: (messages: Message[]) => void
   resetTranscript: () => void
+  setRemoteUrls: Dispatch<SetStateAction<TImage[]>>
+  setPreviewUrls: Dispatch<SetStateAction<TImage[]>>
+  setUploading: Dispatch<SetStateAction<{[p: string]: boolean}>>
+  abortControllers: MutableRefObject<{[p: string]: AbortController}>
 }
 
 export default function FooterHeader(props: IProps) {
-  const { listening, resetTranscript, messages, setMessages } = props
+  const {
+    listening,
+    resetTranscript,
+    messages,
+    setMessages,
+    setPreviewUrls,
+    setUploading,
+    setRemoteUrls,
+    abortControllers
+  } = props
   const router = useRouter()
   const { t } = useTranslation('common')
   const { browserSupportsSpeechRecognition } = useSpeechRecognition()
   const chatMessages = useAtomValue(chatMessagesAtom)
+  const selectedModelId = useAtomValue(selectedModelIdAtom)
   const [isDropDownOpen, setIsDropDownOpen] = useState<boolean>(false)
+  const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false)
   const [disabled, setDisabled] = useState<boolean>(true)
   const dropDownDivRef = useRef<HTMLDivElement>(null)
   const triggerDivRef = useRef<HTMLDivElement>(null)
-  const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false)
+  const hiddenUploadImageRef = useRef<HTMLInputElement>(null)
+  const { modelName } = useGetChatInformation(router.query.id as string | undefined, selectedModelId)
 
   useEffect(() => {
     if (!chatMessages.length && !messages.length) {
@@ -68,6 +97,61 @@ export default function FooterHeader(props: IProps) {
     }
   }
 
+  const handleUploadImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files) return
+
+    const [files, len] = [e.target.files, e.target.files.length]
+    const newPreviewUrls: TImage[] = []
+
+    for (let i = 0; i < len; i++) {
+      const file = files[i]
+      const reader = new FileReader()
+      reader.onload = () => {
+        newPreviewUrls.push({id: String(i), url: reader.result as string})
+        if (newPreviewUrls.length === files.length) {
+          setPreviewUrls(newPreviewUrls)
+        }
+      }
+      reader.readAsDataURL(file)
+    }
+
+    handleUploadSubmit(e, e.target.files)
+  }
+
+  const handleUploadSubmit = (e: FormEvent<HTMLFormElement> | ChangeEvent<HTMLInputElement>, files: FileList | null) => {
+    e.preventDefault()
+    if (!files || !files.length) return
+
+    // initial uploading state
+    const initialUploadingState: {[key: string]: boolean} = {}
+    for (let i = 0; i < files.length; i++) {
+      initialUploadingState[String(i)] = true
+    }
+    setUploading(initialUploadingState)
+
+    // update images urls to cloudinary
+    const uploadTask = [...files].map(async (file, index) => {
+      const controller = new AbortController() // cancel upload (abort)
+      abortControllers.current[String(index)] = controller
+
+      try {
+        const item = await uploadImage(file, index, controller)
+        setUploading(prev => ({...prev, [String(index)]: false}))
+        return item
+      } catch {
+        setUploading(prev_1 => ({...prev_1, [String(index)]: false})) // when upload failed, set uploading to false
+        return undefined
+      }
+    })
+
+    Promise.all(uploadTask).then((values) => {
+      const successfulUploads = values.filter(item => item !== undefined) as TImage[]
+      setRemoteUrls(successfulUploads)
+    }).catch((error) => {
+      console.log(error)
+    })
+  }
+
   return (
     <>
       {
@@ -98,6 +182,30 @@ export default function FooterHeader(props: IProps) {
               </Tooltip>
             )
           }
+        </div>
+
+        {/* upload */}
+        <div onClick={() => hiddenUploadImageRef.current?.click()}>
+          <form
+            className={'relative p-2 rounded-md cursor-pointer hover:bg-gray-200 dark:hover:bg-chatpage-message-robot-content-dark'}
+            onSubmit={(e) => handleUploadSubmit(e, null)}
+          >
+            {
+              modelName === 'gpt-4-vision-preview' && (
+                <Tooltip title={t('chatPage.message.upload')} className={'w-24 left-0 flex justify-center'}>
+                  <input
+                    ref={hiddenUploadImageRef}
+                    multiple={true}
+                    type={'file'}
+                    accept={'image/*'}
+                    className={'opacity-0 absolute w-0 h-0'}
+                    onChange={handleUploadImageChange}
+                  />
+                  <LinkIcon width={16} height={16}/>
+                </Tooltip>
+              )
+            }
+          </form>
         </div>
 
         {/* more */}

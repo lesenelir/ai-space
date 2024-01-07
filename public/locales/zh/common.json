@@ -63,7 +63,8 @@
       "deleteTitle": "删除该聊天的所有消息",
       "deleteContent": "这将删除该聊天的所有消息，且无法恢复",
       "cancel": "取消",
-      "confirm": "确认"
+      "confirm": "确认",
+      "upload": "上传图片"
     }
   }
 }
