@@ -10,7 +10,6 @@ import ChatContent from '@/components/chat/Message/MainContent/ChatContent'
 
 interface IProps {
   messages: Message[]
-  isLoading: boolean
   setMessages: (messages: Message[]) => void
 }
 
