@@ -14,8 +14,6 @@ export default function Message() {
     api: '/api/chat/sendMessage'
   })
 
-  console.log(messages)
-
   return (
     <div className={'flex-1 w-full flex flex-col bg-gray-50 dark:bg-chatpage-message-background-dark dark:text-chatpage-message-text-dark'}>
       <HeaderContent/>
