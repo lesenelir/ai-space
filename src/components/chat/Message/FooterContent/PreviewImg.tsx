@@ -1,16 +1,17 @@
 import Image from 'next/image'
-import { useRouter } from 'next/router'
-import { Dispatch, MutableRefObject, SetStateAction, useEffect, useState } from 'react'
+import type { Dispatch, MutableRefObject, SetStateAction } from 'react'
 
-import { type TImage } from '@/types'
+import type { TImage } from '@/types'
 import LoadingSpinner from '@/components/common/chat/LoadingSpinner'
 
 interface IProps {
   previewUrls: TImage[]
   remoteUrls: TImage[]
   uploading: {[key: string]: boolean}
+  deleting: {[key: string]: boolean}
   setPreviewUrls: Dispatch<SetStateAction<TImage[]>>
   setRemoteUrls: Dispatch<SetStateAction<TImage[]>>
+  setDeleting: Dispatch<SetStateAction<{[p: string]: boolean}>>
   setUploading: Dispatch<SetStateAction<{[p: string]: boolean}>>
   abortControllers: MutableRefObject<{[p: string]: AbortController}>
 }
@@ -23,14 +24,10 @@ export default function PreviewImg(props: IProps) {
     abortControllers,
     setRemoteUrls,
     setUploading,
+    deleting,
+    setDeleting,
     remoteUrls
   } = props
-  const router = useRouter()
-  const [deleting, setDeleting] = useState<{[key: string]: boolean}>({})
-
-  useEffect(() => {
-    setDeleting({})
-  }, [router.query.id])
 
   const removePreviewImg = async (id: string) => {
     if (uploading[id]) {

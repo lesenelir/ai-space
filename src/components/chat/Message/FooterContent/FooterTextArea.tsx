@@ -66,6 +66,7 @@ const FooterTextArea = forwardRef<HTMLTextAreaElement, IProps>((props, ref) => {
   const selectedModelId = useAtomValue(selectedModelIdAtom)
   const setChatItems = useSetAtom(chatItemsAtom)
   const [isDisabled, setIsDisabled] = useState<boolean>(true)
+  const [deleting, setDeleting] = useState<{[key: string]: boolean}>({})
   const [isComposing, setIsComposing] = useState<boolean>(false)
   const { modelName } = useGetChatInformation(router.query.id as string | undefined, selectedModelId)
   const textAreaRef = useRef<HTMLTextAreaElement>(null)
@@ -79,7 +80,24 @@ const FooterTextArea = forwardRef<HTMLTextAreaElement, IProps>((props, ref) => {
     }
   }, [transcript, listening, textAreaRef])
 
-  // when the router.query.id changes, reset the textarea value and focus on it.
+  // when the uploading / deleting states changes, set the disabled state.
+  useEffect(() => {
+    const isUploading = Object.keys(uploading).length > 0
+    const isDeleting = Object.values(deleting).some(item => item)
+
+    // If there's an ongoing upload or delete operation, disable the text area.
+    if (isUploading || isDeleting) {
+      setIsDisabled(true)
+    } else if (previewUrls.length > 0) {
+      // If there are no ongoing operations, but there are preview images.
+      setIsDisabled(false)
+    } else {
+      // If there are no ongoing operations, and no preview images, check the content of the text area.
+      setIsDisabled(!textAreaRef.current?.value.trim())
+    }
+  }, [deleting, previewUrls.length, uploading])
+
+  // when the router.query.id changes, reset the textarea value and focus on it and set deleting state to {} empty.
   useEffect(() => {
     SpeechRecognition.stopListening().then(() => {
       resetTranscript()
@@ -90,6 +108,8 @@ const FooterTextArea = forwardRef<HTMLTextAreaElement, IProps>((props, ref) => {
       textAreaRef.current?.focus()
       setIsDisabled(!textAreaRef.current.value.trim()) // set disabled true
     }
+
+    setDeleting({})
   }, [resetTranscript, router.query.id])
 
   const handleComposition = (e: CompositionEvent) => {
@@ -228,6 +248,8 @@ const FooterTextArea = forwardRef<HTMLTextAreaElement, IProps>((props, ref) => {
           {
             modelName === 'gpt-4-vision-preview' && previewUrls && (
               <PreviewImg
+                deleting={deleting}
+                setDeleting={setDeleting}
                 uploading={uploading}
                 remoteUrls={remoteUrls}
                 previewUrls={previewUrls}
