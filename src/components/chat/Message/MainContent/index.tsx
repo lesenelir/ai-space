@@ -3,6 +3,8 @@ import { useRouter } from 'next/router'
 import type { Message } from 'ai/react'
 import { useEffect, useRef, useState } from 'react'
 
+import ChevronUpIcon from '@/components/icons/ChevronUpIcon'
+import ChevronDownIcon from '@/components/icons/ChevronDownIcon'
 import ChatHome from '@/components/chat/Message/MainContent/ChatHome'
 import ChatContent from '@/components/chat/Message/MainContent/ChatContent'
 
@@ -63,6 +65,20 @@ export default function MainContent(props: IProps) {
     }
   }
 
+  const handleScrollToTop = () => {
+    containerRef.current?.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    })
+  }
+
+  const handleScrollToBottom = () => {
+    containerRef.current?.scrollTo({
+      top: containerRef.current.scrollHeight,
+      behavior: 'smooth'
+    })
+  }
+
   if (!router.query.id) {
     return (
       <div className={'w-full flex-1 overflow-y-auto custom-message-light-scrollbar'}>
@@ -79,6 +95,29 @@ export default function MainContent(props: IProps) {
       <div className={'md:w-[640px] max-md:w-full mx-auto p-3 dark:text-gray-50'}>
         <ChatContent speakingId={speakingId} startSpeaking={startSpeaking} stopSpeaking={stopSpeaking} messages={messages} setMessages={setMessages}/>
       </div>
+
+      {/* scroll button */}
+      <button
+        className={`
+          max-md:hidden
+          fixed right-4 top-20 z-50 rounded-md p-1 border dark:border-gray-500 hover-transition-change
+          hover:bg-gray-200/90 dark:hover:bg-gray-500/20
+        `}
+        onClick={handleScrollToTop}
+      >
+        <ChevronUpIcon width={16} height={16} className={''}/>
+      </button>
+
+      <button
+        className={`
+          max-md:hidden
+          fixed right-4 bottom-28 z-50 rounded-md p-1 border dark:border-gray-500 hover-transition-change
+          hover:bg-gray-200/90 dark:hover:bg-gray-500/20
+        `}
+        onClick={handleScrollToBottom}
+      >
+        <ChevronDownIcon width={16} height={16} className={''}/>
+      </button>
     </div>
   )
 }
