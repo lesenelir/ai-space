@@ -11,7 +11,7 @@ const router = createRouter<NextApiRequest, NextApiResponse>()
 
 const handleSaveUserInput = async (req: NextApiRequest, res: NextApiResponse) => {
   const { userId } = getAuth(req)
-  const { message, chat_item_uuid } = req.body
+  const { message, chat_item_uuid, image_urls } = req.body
 
   if (!userId) {
     return res.status(400).json({ status: 'User not found' })
@@ -52,6 +52,7 @@ const handleSaveUserInput = async (req: NextApiRequest, res: NextApiResponse) =>
         message_role: 'user',
         created_at: new Date(),
         cost_tokens: costTokens,
+        image_urls: image_urls, // empty array or array of urls
         user_primary_id: user!.id,
         chat_item_primary_id: chatItem!.id
       }

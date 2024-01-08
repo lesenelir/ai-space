@@ -45,6 +45,7 @@ const handleSaveRobotMessage = async (req: NextApiRequest, res: NextApiResponse)
         message_content: completion,
         message_role: 'assistant',
         cost_tokens: cost_tokens,
+        image_urls: [], // empty array
         created_at: new Date(),
         user_primary_id: user!.id,
         chat_item_primary_id: chatItem!.id

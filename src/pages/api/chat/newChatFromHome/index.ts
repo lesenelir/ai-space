@@ -12,7 +12,7 @@ const router = createRouter<NextApiRequest, NextApiResponse>()
 
 const handleNewChatFromHome = async (req: NextApiRequest, res: NextApiResponse) => {
   const { userId } = getAuth(req)
-  const { model_primary_id, message } = req.body
+  const { model_primary_id, message, image_urls } = req.body
 
   if (!userId) {
     return res.status(400).json({ status: 'User not found' })
@@ -49,6 +49,7 @@ const handleNewChatFromHome = async (req: NextApiRequest, res: NextApiResponse) 
         message_role: 'user',
         created_at: new Date(),
         cost_tokens: costTokens,
+        image_urls: image_urls, // empty array or array of urls
         user_primary_id: user!.id,
         chat_item_primary_id: newChatItem.id
       }

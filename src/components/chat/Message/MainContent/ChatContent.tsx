@@ -87,7 +87,8 @@ export default function ChatContent(props: IProps) {
               id: String(m.id),
               role: m.messageRole,
               content: m.messageContent,
-              costTokens: m.costTokens
+              costTokens: m.costTokens,
+              imageUrls: m.imageUrls,
             }}
             speakingId={speakingId}
             startSpeaking={startSpeaking}
@@ -105,7 +106,7 @@ export default function ChatContent(props: IProps) {
             data={{
               id: String(m.id),
               role: m.role,
-              content: m.content
+              content: m.content,
             }}
             speakingId={speakingId}
             startSpeaking={startSpeaking}

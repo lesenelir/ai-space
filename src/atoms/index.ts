@@ -30,7 +30,8 @@ export const chatMessagesAtom = atom<TChatMessages[]>([]) // maintains the chat 
  *  [
  *   { id: 1, modelName: 'GPT-3.5 Turbo' },
  *   { id: 2, modelName: 'GPT-4 Turbo' },
- *   { id: 3, modelName: 'Gemini Pro' }
+ *   { id: 3, modelName: 'GPT-4 Vision' },
+ *   { id: 4, modelName: 'Gemini Pro' }
  *  ]
  *
  */

@@ -11,26 +11,10 @@ export default function Message() {
     append,
     isLoading,
   } = useChat({
-    api: '/api/chat/sendMessage',
-    // onFinish: async (message) => {
-    //   const options = {
-    //     method: 'POST',
-    //     headers: {
-    //       'Content-Type': 'application/json'
-    //     },
-    //     body: JSON.stringify({
-    //       completion: message.content,
-    //       chat_item_uuid: router.query.id,
-    //     })
-    //   }
-    //
-    //   try {
-    //     await fetch(`/api/chat/saveRobotMessage`, options)
-    //   } catch (e) {
-    //     console.log(e)
-    //   }
-    // }
+    api: '/api/chat/sendMessage'
   })
+
+  console.log(messages)
 
   return (
     <div className={'flex-1 w-full flex flex-col bg-gray-50 dark:bg-chatpage-message-background-dark dark:text-chatpage-message-text-dark'}>

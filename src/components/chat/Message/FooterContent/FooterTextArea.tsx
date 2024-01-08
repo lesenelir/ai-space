@@ -144,9 +144,12 @@ const FooterTextArea = forwardRef<HTMLTextAreaElement, IProps>((props, ref) => {
           body: JSON.stringify({
             chat_item_uuid: router.query.id,
             message: textAreaRef.current?.value,
+            image_urls: remoteUrls.length > 0 ? remoteUrls.map(item => item.url) : []
           })
         }
 
+        setPreviewUrls([])
+        setRemoteUrls([])
         // To update the chat items list, we need to get saveUserInput response to get the new chat item.
         const response = await fetch('/api/chat/saveUserInput', options)
         const data = await response.json()
@@ -169,7 +172,8 @@ const FooterTextArea = forwardRef<HTMLTextAreaElement, IProps>((props, ref) => {
               temperature,
               userId,
               modelName: modelName,
-              chat_item_uuid: router.query.id
+              chat_item_uuid: router.query.id,
+              remoteUrls: remoteUrls.length > 0 ? remoteUrls.map(item => item.url) : []
             }
           }
         })
@@ -188,9 +192,12 @@ const FooterTextArea = forwardRef<HTMLTextAreaElement, IProps>((props, ref) => {
           body: JSON.stringify({
             message: textAreaRef.current?.value,
             model_primary_id: selectedModelId,
+            image_urls: remoteUrls.length > 0 ? remoteUrls.map(item => item.url) : []
           })
         }
 
+        setPreviewUrls([])
+        setRemoteUrls([])
         const response = await fetch('api/chat/newChatFromHome', options)
         const data = (await response.json())
         setChatItems(data.chatItems)

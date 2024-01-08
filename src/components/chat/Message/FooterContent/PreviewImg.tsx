@@ -73,13 +73,13 @@ export default function PreviewImg(props: IProps) {
           >
             <Image
               src={item.url}
+              sizes={'100%'}
+              fill={true}
               alt={'preview image'}
-              layout={'fill'}
-              objectFit={'cover'}
-              className={`rounded-xl ${uploading[item.id] && 'opacity-40'}`}
               unoptimized={true}
               placeholder={'blur'}
               blurDataURL={item.url}
+              className={`rounded-xl object-cover ${uploading[item.id] && 'opacity-40'}`}
             />
             {
               (uploading[item.id] || deleting[item.id]) && (

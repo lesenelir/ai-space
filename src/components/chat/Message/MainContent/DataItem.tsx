@@ -31,7 +31,8 @@ interface IProps {
     id: string
     role: string
     content: string
-    costTokens?: number
+    costTokens?: number // chatMessages
+    imageUrls?: string[] // chatMessages
   }
   speakingId: string | null
   startSpeaking: (id: string, content: string, rate: number) => void
@@ -126,13 +127,33 @@ const DataItem =  forwardRef<HTMLDivElement, IProps>((props, ref) => {
             </p>
           </div>
           {/* content */}
-          <article
-            ref={ref}
-            className={'prose dark:prose-invert break-words whitespace-pre-wrap overflow-x-auto custom-message-light-scrollbar'}
-          >
-            {/* If data.messageContent is null, the data.content must be existed. */}
-            <MarkdownRender markdown={data.content}/>
-          </article>
+          <div>
+            {/* images */}
+            <div className={'flex flex-wrap gap-2'}>
+              {
+                data.imageUrls && data.imageUrls.length > 0 && data.imageUrls.map((url, index) => (
+                  <div key={index} className={'relative w-20 h-20 mb-2'}>
+                    <Image
+                      src={url}
+                      sizes={'100%'}
+                      fill={true}
+                      alt={'upload images'}
+                      className={'rounded-xl object-cover'}
+                    />
+                  </div>
+                ))
+              }
+            </div>
+
+            {/* words */}
+            <article
+              ref={ref}
+              className={'prose dark:prose-invert break-words whitespace-pre-wrap overflow-x-auto custom-message-light-scrollbar'}
+            >
+              {/* If data.messageContent is null, the data.content must be existed. */}
+              <MarkdownRender markdown={data.content}/>
+            </article>
+          </div>
         </div>
 
         {/* Footer content */}

@@ -52,6 +52,7 @@ model ChatMessage {
   message_role    String // user, robot
   created_at      DateTime @default(now())
   cost_tokens     Int
+  image_urls      Json
 
   chat_item_primary_id Int // foreign key -> identify which chatItem has this chatMessage
   chatItem             ChatItem @relation(fields: [chat_item_primary_id], references: [id])
