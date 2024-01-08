@@ -242,71 +242,69 @@ const FooterTextArea = forwardRef<HTMLTextAreaElement, IProps>((props, ref) => {
   }
 
   return (
-    <>
-      <div className={'md:w-[640px] max-md:w-full p-1'}>
-        <form onSubmit={handleFormSubmit} className={'relative'}>
-          {
-            modelName === 'gpt-4-vision-preview' && previewUrls && (
-              <PreviewImg
-                deleting={deleting}
-                setDeleting={setDeleting}
-                uploading={uploading}
-                remoteUrls={remoteUrls}
-                previewUrls={previewUrls}
-                setRemoteUrls={setRemoteUrls}
-                setUploading={setUploading}
-                setPreviewUrls={setPreviewUrls}
-                abortControllers={abortControllers}
-              />
-            )
-          }
-          <textarea
-            ref={textAreaRef}
-            required={true}
-            placeholder={t('chatPage.message.textAreaPlaceholder')}
-            className={`
-              resize-none w-full py-1 pl-3 pr-11 text-sm custom-message-light-scrollbar bg-transparent rounded-xl
-              dark:bg-chatpage-message-background-dark focus:outline-none dark:border-gray-500
-            `}
-            onChange={handleChange}
-            onKeyDown={handleKeyDown}
-            onCompositionStart={handleComposition}
-            onCompositionEnd={handleComposition}
-          />
-          {
-            isLoading ? (
-              <>
-                <button
-                  disabled={true}
-                  className={'absolute bottom-5 right-3 border rounded-lg p-1'}
-                >
-                  <LoadingDots/>
-                </button>
-              </>
-            ) : (
-              <Tooltip title={t('chatPage.message.send')} className={'right-0 bottom-11'}>
-                <button
-                  type={'submit'}
-                  // disabled={!textAreaRef.current || textAreaRef.current?.value === ''}
-                  disabled={isDisabled}
-                  className={`
-                    absolute bottom-5 right-3 border rounded-lg p-1
-                    hover:bg-gray-200/80 hover-transition-change dark:hover:bg-gray-500/10
-                    disabled:opacity-50 disabled:cursor-not-allowed
-                  `}
-                >
-                  <ArrowNarrowUpIcon
-                    width={20}
-                    height={20}
-                    className={'dark:text-gray-50/80 dark:text-gray-100'}
-                  />
-                </button>
-              </Tooltip>
-            )
-          }
-        </form>
-      </div>
-    </>
+    <div className={'md:w-[640px] max-md:w-full p-1'}>
+      <form onSubmit={handleFormSubmit} className={'relative'}>
+        {
+          modelName === 'gpt-4-vision-preview' && previewUrls && (
+            <PreviewImg
+              deleting={deleting}
+              setDeleting={setDeleting}
+              uploading={uploading}
+              remoteUrls={remoteUrls}
+              previewUrls={previewUrls}
+              setRemoteUrls={setRemoteUrls}
+              setUploading={setUploading}
+              setPreviewUrls={setPreviewUrls}
+              abortControllers={abortControllers}
+            />
+          )
+        }
+        <textarea
+          ref={textAreaRef}
+          required={true}
+          placeholder={t('chatPage.message.textAreaPlaceholder')}
+          className={`
+            resize-none w-full py-1 pl-3 pr-11 text-sm custom-message-light-scrollbar bg-transparent rounded-xl
+            dark:bg-chatpage-message-background-dark focus:outline-none dark:border-gray-500
+          `}
+          onChange={handleChange}
+          onKeyDown={handleKeyDown}
+          onCompositionStart={handleComposition}
+          onCompositionEnd={handleComposition}
+        />
+        {
+          isLoading ? (
+            <>
+              <button
+                disabled={true}
+                className={'absolute bottom-5 right-3 border rounded-lg p-1'}
+              >
+                <LoadingDots/>
+              </button>
+            </>
+          ) : (
+            <Tooltip title={t('chatPage.message.send')} className={'right-0 bottom-11'}>
+              <button
+                type={'submit'}
+                // disabled={!textAreaRef.current || textAreaRef.current?.value === ''}
+                disabled={isDisabled}
+                className={`
+                  absolute bottom-5 right-3 border rounded-lg p-1
+                  hover:bg-gray-200/80 hover-transition-change dark:hover:bg-gray-500/10
+                  disabled:opacity-50 disabled:cursor-not-allowed
+                `}
+              >
+                <ArrowNarrowUpIcon
+                  width={20}
+                  height={20}
+                  className={'dark:text-gray-50/80 dark:text-gray-100'}
+                />
+              </button>
+            </Tooltip>
+          )
+        }
+      </form>
+    </div>
   )
 })
 
