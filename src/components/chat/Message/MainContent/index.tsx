@@ -1,16 +1,22 @@
 import { franc } from 'franc-min'
 import { useRouter } from 'next/router'
-import type { Message } from 'ai/react'
-import { useEffect, useRef, useState } from 'react'
+import {
+  type Dispatch,
+  type SetStateAction,
+  useEffect,
+  useRef,
+  useState
+} from 'react'
 
+import type { TMessage } from '@/types'
 import ChevronUpIcon from '@/components/icons/ChevronUpIcon'
 import ChevronDownIcon from '@/components/icons/ChevronDownIcon'
 import ChatHome from '@/components/chat/Message/MainContent/ChatHome'
 import ChatContent from '@/components/chat/Message/MainContent/ChatContent'
 
 interface IProps {
-  messages: Message[]
-  setMessages: (messages: Message[]) => void
+  messages: TMessage[]
+  setMessages: Dispatch<SetStateAction<TMessage[]>>
 }
 
 export default function MainContent(props: IProps) {
@@ -82,7 +88,12 @@ export default function MainContent(props: IProps) {
     return (
       <div className={'w-full flex-1 overflow-y-auto custom-message-light-scrollbar'}>
         <div className={'md:w-[640px] max-md:w-full mx-auto p-3 dark:text-gray-50 min-h-full relative'}>
-          <ChatHome speakingId={speakingId} startSpeaking={startSpeaking} stopSpeaking={stopSpeaking} messages={messages}/>
+          <ChatHome
+            speakingId={speakingId}
+            startSpeaking={startSpeaking}
+            stopSpeaking={stopSpeaking}
+            messages={messages}
+          />
         </div>
       </div>
     )
@@ -92,14 +103,20 @@ export default function MainContent(props: IProps) {
     <div ref={containerRef} className={'w-full flex-1 overflow-y-auto custom-message-light-scrollbar'}>
       {/* basic content */}
       <div className={'md:w-[640px] max-md:w-full mx-auto p-3 dark:text-gray-50'}>
-        <ChatContent speakingId={speakingId} startSpeaking={startSpeaking} stopSpeaking={stopSpeaking} messages={messages} setMessages={setMessages}/>
+        <ChatContent
+          speakingId={speakingId}
+          startSpeaking={startSpeaking}
+          stopSpeaking={stopSpeaking}
+          messages={messages}
+          setMessages={setMessages}
+        />
       </div>
 
       {/* scroll button */}
       <button
         className={`
           max-md:hidden
-          fixed right-4 top-20 z-50 rounded-md p-1 border dark:border-gray-500 hover-transition-change
+          fixed right-4 top-20 rounded-md p-1 border dark:border-gray-500 hover-transition-change
           hover:bg-gray-200/90 dark:hover:bg-gray-500/20
         `}
         onClick={handleScrollToTop}
@@ -110,7 +127,7 @@ export default function MainContent(props: IProps) {
       <button
         className={`
           max-md:hidden
-          fixed right-4 bottom-28 z-50 rounded-md p-1 border dark:border-gray-500 hover-transition-change
+          fixed right-4 bottom-28 rounded-md p-1 border dark:border-gray-500 hover-transition-change
           hover:bg-gray-200/90 dark:hover:bg-gray-500/20
         `}
         onClick={handleScrollToBottom}

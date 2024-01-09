@@ -1,22 +1,24 @@
 import { useRouter } from 'next/router'
-import { type ChatRequestOptions } from 'ai'
-import { useEffect, useRef, useState } from 'react'
-import { type Message, type CreateMessage } from 'ai/react'
 import { useSpeechRecognition } from 'react-speech-recognition'
+import {
+  type Dispatch,
+  type SetStateAction,
+  useEffect,
+  useRef,
+  useState
+} from 'react'
 
-import { type TImage } from '@/types'
+import type { TImage, TMessage } from '@/types'
 import FooterHeader from '@/components/chat/Message/FooterContent/FooterHeader'
 import FooterTextArea from '@/components/chat/Message/FooterContent/FooterTextArea'
 
 interface IProps {
-  isLoading: boolean
-  messages: Message[]
-  setMessages: (messages: Message[]) => void
-  append: (message: Message | CreateMessage, chatRequestOptions?: ChatRequestOptions) => Promise<string | null | undefined>
+  messages: TMessage[]
+  setMessages: Dispatch<SetStateAction<TMessage[]>>
 }
 
 export default function FooterContent(props: IProps) {
-  const { isLoading, append, messages, setMessages } = props
+  const { messages, setMessages } = props
   const router = useRouter()
   const { transcript, listening, resetTranscript } = useSpeechRecognition()
   const [remoteUrls, setRemoteUrls] = useState<TImage[]>([])
@@ -50,8 +52,8 @@ export default function FooterContent(props: IProps) {
       {/* footer main content area: textarea */}
       {/* ref={ref}; does not forward ref */}
       <FooterTextArea
-        isLoading={isLoading}
-        append={append}
+        messages={messages}
+        setMessages={setMessages}
         listening={listening}
         transcript={transcript}
         resetTranscript={resetTranscript}

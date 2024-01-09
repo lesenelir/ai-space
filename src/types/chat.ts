@@ -30,6 +30,13 @@ export type TChatMessages = {
   userPrimaryId: number
 }
 
+export type TMessage = {
+  id: string
+  messageContent: string
+  messageRole: string
+  imageUrls: string[]
+}
+
 export type TImage = {
   id: string
   url: string

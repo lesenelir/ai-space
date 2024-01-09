@@ -91,4 +91,8 @@ This changelog provides a detailed record of the updates and improvements made t
 - Implement the deletion of all chatMessages in the current ChatItem.
 - Add `GPT4 vision` model.
 - Integrated `cloudinary` for image upload and image display.
+- Abort `useChat hook` and Refactor `messages array` state for real time messages. (#BIG Feature)
+- Abort `/api/chat/sendMessage` api routes and Add`/api/chat/send` api for real time messages.
+- Refactor `/api/RobotMessage` api routes.
+- Add `abort controller` for aborting stream response. When a user switches to another chatItem, the previous chatItem stream response will be aborted.
 

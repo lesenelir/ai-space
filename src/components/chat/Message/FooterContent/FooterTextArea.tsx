@@ -1,9 +1,7 @@
+import { v4 as uuid } from 'uuid'
 import { useRouter } from 'next/router'
-import { useAuth } from '@clerk/nextjs'
-import type { ChatRequestOptions } from 'ai'
 import { useTranslation } from 'next-i18next'
 import { useAtomValue, useSetAtom } from 'jotai'
-import type { CreateMessage, Message } from 'ai/react'
 import SpeechRecognition from 'react-speech-recognition'
 import {
   type ChangeEvent,
@@ -13,14 +11,14 @@ import {
   type Dispatch,
   type SetStateAction,
   type MutableRefObject,
-  forwardRef,
   useState,
   useEffect,
   useRef,
 } from 'react'
 
 import { chatItemsAtom, maxTokensAtom, selectedModelIdAtom, temperatureAtom } from '@/atoms'
-import { TImage } from '@/types'
+import { saveCompletionRequest, saveUserInputFromHomeRequest, saveUserInputRequest } from '@/utils'
+import type { TImage, TMessage } from '@/types'
 import Tooltip from '@/components/ui/Tooltip'
 import LoadingDots from '@/components/common/chat/LoadingDots'
 import useGetChatInformation from '@/hooks/useGetChatInformation'
@@ -28,24 +26,22 @@ import ArrowNarrowUpIcon from '@/components/icons/ArrowNarrowUpIcon'
 import PreviewImg from '@/components/chat/Message/FooterContent/PreviewImg'
 
 interface IProps {
-  isLoading: boolean
   listening: boolean
   transcript: string
-  previewUrls: {id: string, url: string}[]
-  uploading: {[key: string]: boolean}
-  resetTranscript: () => void
   remoteUrls: TImage[]
+  messages: TMessage[]
+  resetTranscript: () => void
+  uploading: {[key: string]: boolean}
+  previewUrls: {id: string, url: string}[]
+  setMessages: Dispatch<SetStateAction<TMessage[]>>
   setPreviewUrls: Dispatch<SetStateAction<TImage[]>>
   setRemoteUrls: Dispatch<SetStateAction<TImage[]>>
-  abortControllers: MutableRefObject<{[p: string]: AbortController}>
   setUploading: Dispatch<SetStateAction<{[p: string]: boolean}>>
-  append: (message: Message | CreateMessage, chatRequestOptions?: ChatRequestOptions) => Promise<string | null | undefined>
+  abortControllers: MutableRefObject<{[p: string]: AbortController}>
 }
 
-const FooterTextArea = forwardRef<HTMLTextAreaElement, IProps>((props, ref) => {
+export default function FooterTextArea(props: IProps) {
   const {
-    isLoading,
-    append,
     transcript,
     listening,
     resetTranscript,
@@ -55,11 +51,12 @@ const FooterTextArea = forwardRef<HTMLTextAreaElement, IProps>((props, ref) => {
     setUploading,
     setRemoteUrls,
     abortControllers,
-    remoteUrls
+    remoteUrls,
+    setMessages,
+    messages
   } = props
   const maxHeight = 200
   const router = useRouter()
-  const { userId } = useAuth()
   const { t } = useTranslation('common')
   const temperature  = useAtomValue(temperatureAtom)
   const maxTokens = useAtomValue(maxTokensAtom)
@@ -68,8 +65,10 @@ const FooterTextArea = forwardRef<HTMLTextAreaElement, IProps>((props, ref) => {
   const [isDisabled, setIsDisabled] = useState<boolean>(true)
   const [deleting, setDeleting] = useState<{[key: string]: boolean}>({})
   const [isComposing, setIsComposing] = useState<boolean>(false)
+  const [isLoading, setIsLoading] = useState<boolean>(false)
   const { modelName } = useGetChatInformation(router.query.id as string | undefined, selectedModelId)
   const textAreaRef = useRef<HTMLTextAreaElement>(null)
+  const abortController = useRef<AbortController | null>(null)
   // const textAreaRef = ref as MutableRefObject<HTMLTextAreaElement>
 
   // when the transcript changes, set the value of the textarea.
@@ -80,24 +79,22 @@ const FooterTextArea = forwardRef<HTMLTextAreaElement, IProps>((props, ref) => {
     }
   }, [transcript, listening, textAreaRef])
 
-  // when the uploading / deleting states changes, set the disabled state.
+  // when uploading changes or deleting changes, setting isDisabled state.
   useEffect(() => {
     const isUploading = Object.keys(uploading).length > 0
     const isDeleting = Object.values(deleting).some(item => item)
+    const hasText = textAreaRef.current?.value.trim()
 
-    // If there's an ongoing upload or delete operation, disable the text area.
     if (isUploading || isDeleting) {
       setIsDisabled(true)
-    } else if (previewUrls.length > 0) {
-      // If there are no ongoing operations, but there are preview images.
-      setIsDisabled(false)
     } else {
-      // If there are no ongoing operations, and no preview images, check the content of the text area.
-      setIsDisabled(!textAreaRef.current?.value.trim())
+      setIsDisabled(!hasText)
     }
-  }, [deleting, previewUrls.length, uploading])
 
-  // when the router.query.id changes, reset the textarea value and focus on it and set deleting state to {} empty.
+  }, [deleting, uploading])
+
+  // when the router.query.id changes,
+  // reset the textarea value and focus on it and set deleting state to {} empty.
   useEffect(() => {
     SpeechRecognition.stopListening().then(() => {
       resetTranscript()
@@ -106,11 +103,18 @@ const FooterTextArea = forwardRef<HTMLTextAreaElement, IProps>((props, ref) => {
     if (textAreaRef.current) {
       textAreaRef.current.value = ''
       textAreaRef.current?.focus()
-      setIsDisabled(!textAreaRef.current.value.trim()) // set disabled true
+      setIsDisabled(!textAreaRef.current.value.trim()) // when router changes, reset isDisabled state.
     }
 
     setDeleting({})
   }, [resetTranscript, router.query.id])
+
+  // when the router.query.id changes, cancel the fetch request if it is still running.
+  useEffect(() => {
+    if (abortController.current) {
+      abortController.current?.abort()
+    }
+  }, [router.query.id])
 
   const handleComposition = (e: CompositionEvent) => {
     if (e.type === 'compositionstart') {
@@ -122,114 +126,137 @@ const FooterTextArea = forwardRef<HTMLTextAreaElement, IProps>((props, ref) => {
     }
   }
 
+  const handleCancelStreaming = () => {
+    if (!abortController.current) return
+
+    abortController.current?.abort()
+    abortController.current = null
+  }
+
   const handleFormSubmit = async (e: FormEvent<HTMLFormElement> | KeyboardEvent<HTMLTextAreaElement>) => {
     e.preventDefault()
     if (isLoading) return // prevent user from sending multiple requests
+    if (isDisabled) return // prevent user from sending an empty message
     if (listening) {
       SpeechRecognition.stopListening().then(() => {
         resetTranscript()
       })
     }
 
-    // In an existing chat, send the request to openai directly.
-    if (router.query.id) {
-      // when router.query.id exists, it means that the chat is already created.
-      // 1. save user input to the database
-      try {
-        const options = {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            chat_item_uuid: router.query.id,
-            message: textAreaRef.current?.value,
-            image_urls: remoteUrls.length > 0 ? remoteUrls.map(item => item.url) : []
-          })
-        }
-
-        setPreviewUrls([])
-        setRemoteUrls([])
-        // To update the chat items list, we need to get saveUserInput response to get the new chat item.
-        const response = await fetch('/api/chat/saveUserInput', options)
-        const data = await response.json()
-        setChatItems(data.chatItems)
-
-        // 2. call useChat hook
-        const message = textAreaRef.current?.value!
-        if (textAreaRef.current) {
-          textAreaRef.current.value = '' // sync textValue [Must Important!]
-          textAreaRef.current.style.height = 'auto' // reset height
-        }
-        await append({
-          id: String(new Date().getTime()),
-          content: message,
-          role: 'user'
-        }, {
-          options: {
-            body: {
-              maxTokens,
-              temperature,
-              userId,
-              modelName: modelName,
-              chat_item_uuid: router.query.id,
-              remoteUrls: remoteUrls.length > 0 ? remoteUrls.map(item => item.url) : []
-            }
-          }
-        })
-      } catch (e) {
-        console.log('save user input error: ', e)
-      }
-    } else {
-      // router.query.id is undefined, it means that the chat is not created yet. The user is on the chat home page.
-      try {
-        // 1. create a new chat and save user input to the database.
-        const options = {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            message: textAreaRef.current?.value,
-            model_primary_id: selectedModelId,
-            image_urls: remoteUrls.length > 0 ? remoteUrls.map(item => item.url) : []
-          })
-        }
-
-        setPreviewUrls([])
-        setRemoteUrls([])
-        const response = await fetch('api/chat/newChatFromHome', options)
-        const data = (await response.json())
-        setChatItems(data.chatItems)
-
-        // 2. trigger api call
-        const message = textAreaRef.current?.value!
-        if (textAreaRef.current) {
-          textAreaRef.current.value = '' // sync textValue [Must Important!]
-          textAreaRef.current.style.height = 'auto' // reset height
-        }
-        await append({
-          id: 'start',
-          content: message,
-          role: 'user'
-        }, {
-          options: {
-            body: {
-              maxTokens,
-              temperature,
-              userId,
-              modelName: modelName,
-              chat_item_uuid: data.newChatItem.item_uuid
-            }
-          }
-        })
-
-        // 3. redirect /chat/[id]
-        await router.push(`/chat/${data.newChatItem.item_uuid}`)
-      } catch (e) {
-        console.log(e)
-      }
+    // 1. reset the textarea value and height.
+    setIsLoading(true)
+    const value = textAreaRef.current?.value // save textValue temporary [Must Important!!!]
+    if (textAreaRef.current) {
+      textAreaRef.current.value = '' // sync textValue [Must Important!]
+      textAreaRef.current.style.height = 'auto' // reset height
     }
+
+    // 2. update messages state from user input and save user input to the database.
+    const userMessage: TMessage = {
+      id: uuid(),
+      messageContent: value || '',
+      messageRole: 'user',
+      // imageUrls: remoteUrls.length > 0?remoteUrls.map(item => item.url) : []
+      // don't use remoteUrls, use previewUrls instead (base64).
+      // so, when the user sends a message, the message will be displayed immediately.
+      imageUrls: previewUrls.length > 0 ? previewUrls.map(item => item.url): []
+    }
+    setMessages(prev => [...prev, userMessage])
+    setPreviewUrls([])
+    setRemoteUrls([])
+
+    let data
+    try {
+      // To update the chat items list, we need to get saveUserInput response to get the new chat item.
+      let response
+      if (router.query.id) {
+        response = await saveUserInputRequest(value!, router.query.id as string, remoteUrls)
+      } else {
+        response = await saveUserInputFromHomeRequest(value!, selectedModelId, remoteUrls)
+      }
+      data = await response!.json()
+      setChatItems(data.chatItems)
+    } catch (e) {
+      console.log('save user input error', e)
+    }
+
+    // 3. update messages state from LLM response, and display the response to the user.
+    const receivedMessage: TMessage = {
+      id: uuid(),
+      messageContent: '',
+      messageRole: 'assistant',
+      imageUrls: [],
+    }
+    setMessages(prev => [...prev, receivedMessage])
+
+    let content
+    if (remoteUrls.length > 0) {
+      const temp = remoteUrls.map(item => ({
+        type: 'image_url',
+        image_url: item.url
+      }))
+
+      content = [
+        {
+          type: 'text',
+          text: value
+        },
+        ...temp
+      ]
+    } else {
+      content = value
+    }
+
+    abortController.current = new AbortController()
+    const options = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        temperature,
+        max_tokens: maxTokens,
+        model_name: modelName!,
+        content,
+      }),
+      signal: abortController.current.signal
+    }
+    const res = await fetch('/api/chat/send', options)
+    if (!res.ok || !res.body) return
+
+    let completion = ''
+    try {
+      const reader = res.body.getReader()
+      const decoder = new TextDecoder()
+      while (true) {
+        const {value, done} = await reader.read()
+        const text = decoder.decode(value)
+        completion += text
+        receivedMessage.messageContent += text
+        setMessages(prev => prev.map(item => item.id === receivedMessage.id ? receivedMessage : item))
+
+        if (done) { // when the response is done, save the response to the database.
+          try {
+            await saveCompletionRequest(completion, modelName!, router.query.id as string | undefined, data)
+          } catch (e) {
+            console.log('save response error', e)
+          }
+          break
+        }
+      }
+    } catch (e) {
+      // stream interrupted, save the response to the database.
+      await saveCompletionRequest(completion, modelName!, router.query.id as string | undefined, data)
+    }
+
+    // 4. redirect /chat/[id]
+    if (!router.query.id) {
+      await router.push(`/chat/${data.newChatItem.item_uuid}`)
+      setMessages([])
+    }
+
+    abortController.current = null
+    setIsLoading(false)
   }
 
   const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
@@ -245,7 +272,17 @@ const FooterTextArea = forwardRef<HTMLTextAreaElement, IProps>((props, ref) => {
     const textarea = e.target
     textarea.style.height = 'auto'
     textarea.style.height = Math.min(textarea.scrollHeight, maxHeight) + 'px'
-    setIsDisabled(!textarea.value.trim())
+
+    // when user input textarea and images are uploading or deleting at the same time, setting isDisabled state to true.
+    const isUploading = Object.keys(uploading).length > 0
+    const isDeleting = Object.values(deleting).some(item => item)
+    const hasText = textAreaRef.current?.value.trim()
+
+    if (isUploading || isDeleting) {
+      setIsDisabled(true)
+    } else {
+      setIsDisabled(!hasText)
+    }
   }
 
   return (
@@ -281,22 +318,21 @@ const FooterTextArea = forwardRef<HTMLTextAreaElement, IProps>((props, ref) => {
         />
         {
           isLoading ? (
-            <>
-              <button
-                disabled={true}
-                className={'absolute bottom-5 right-3 border rounded-lg p-1'}
+            <Tooltip title={t('chatPage.message.stop')} className={'right-0 bottom-10'}>
+              <div
+                className={'absolute bottom-5 right-3 border rounded-lg p-1 cursor-pointer'}
+                onClick={handleCancelStreaming}
               >
                 <LoadingDots/>
-              </button>
-            </>
+              </div>
+            </Tooltip>
           ) : (
-            <Tooltip title={t('chatPage.message.send')} className={'right-0 bottom-11'}>
+            <Tooltip title={t('chatPage.message.send')} className={'right-0 bottom-10'}>
               <button
                 type={'submit'}
-                // disabled={!textAreaRef.current || textAreaRef.current?.value === ''}
                 disabled={isDisabled}
                 className={`
-                  absolute bottom-5 right-3 border rounded-lg p-1
+                  absolute bottom-4 right-3 border rounded-lg p-1 
                   hover:bg-gray-200/80 hover-transition-change dark:hover:bg-gray-500/10
                   disabled:opacity-50 disabled:cursor-not-allowed
                 `}
@@ -313,8 +349,4 @@ const FooterTextArea = forwardRef<HTMLTextAreaElement, IProps>((props, ref) => {
       </form>
     </div>
   )
-})
-
-FooterTextArea.displayName = 'FooterTextArea'
-
-export default FooterTextArea
+}

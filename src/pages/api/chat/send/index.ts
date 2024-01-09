@@ -10,14 +10,16 @@ const openai = new OpenAI({
 export const runtime = 'edge'
 
 export default async function handler(req: Request) {
-  const { content } = await req.json()
+  const { content, temperature, max_tokens, model_name } = await req.json()
 
   try {
     // Ask OpenAI for a streaming chat completion given the prompt
     const response = await openai.chat.completions.create({
       messages: [{role: 'user', content}],
-      model: 'gpt-4-1106-preview',
+      model: model_name,
       stream: true,
+      temperature,
+      max_tokens
     })
 
     // Convert the response into a friendly text-stream
@@ -29,33 +31,3 @@ export default async function handler(req: Request) {
     throw error
   }
 }
-
-/**
- *
- *  const res = await fetch('/api/chat/send', {
- *    method: 'POST',
- *    headers: {
- *      'Content-Type': 'application/json'
- *    },
- *           body: JSON.stringify({content: message})
- *         })
- *
- *         if (!res.ok || !res.body) {
- *           return
- *         }
- *
- *         const reader = res.body.getReader()
- *         const decoder = new TextDecoder()
- *         let finalResult = ''
- *         while (true) {
- *           const {value, done} = await reader.read()
- *           const text = decoder.decode(value)
- *           finalResult += text
- *           console.log(finalResult)
- *           if (done) {
- *             break
- *           }
- *         }
- *
- *
- */

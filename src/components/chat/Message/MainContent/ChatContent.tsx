@@ -1,19 +1,24 @@
 import { useAtom } from 'jotai'
-import { type Message } from 'ai/react'
 import { useRouter } from 'next/router'
 import { Toaster, toast } from 'sonner'
-import { useEffect, useRef } from 'react'
 import { useTranslation } from 'next-i18next'
+import {
+  type Dispatch,
+  type SetStateAction,
+  useEffect,
+  useRef
+} from 'react'
 
+import { type TMessage } from '@/types'
 import { chatMessagesAtom } from '@/atoms'
 import DataItem from '@/components/chat/Message/MainContent/DataItem'
 
 interface IProps {
-  messages: Message[]
-  setMessages: (messages: Message[]) => void
+  messages: TMessage[]
   speakingId: string | null
-  startSpeaking: (id: string, content: string, rate: number) => void
   stopSpeaking: () => void
+  setMessages: Dispatch<SetStateAction<TMessage[]>>
+  startSpeaking: (id: string, content: string, rate: number) => void
 }
 
 /**
@@ -105,8 +110,9 @@ export default function ChatContent(props: IProps) {
             ref={endOfMessagesRef}
             data={{
               id: String(m.id),
-              role: m.role,
-              content: m.content,
+              role: m.messageRole,
+              content: m.messageContent,
+              imageUrls: m.imageUrls,
             }}
             speakingId={speakingId}
             startSpeaking={startSpeaking}

@@ -2,7 +2,6 @@ import { v4 as uuid } from 'uuid'
 import { useAtomValue } from 'jotai'
 import { toast, Toaster } from 'sonner'
 import { useRouter } from 'next/router'
-import type { Message } from 'ai/react'
 import { useTranslation } from 'next-i18next'
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition'
 import {
@@ -18,7 +17,7 @@ import {
 
 import { chatMessagesAtom, selectedModelIdAtom } from '@/atoms'
 import { uploadImage } from '@/utils'
-import { type TImage } from '@/types'
+import type { TImage, TMessage } from '@/types'
 import Modal from '@/components/ui/Modal'
 import Tooltip from '@/components/ui/Tooltip'
 import DropDown from '@/components/ui/DropDown'
@@ -33,10 +32,10 @@ import FooterMoreIconsData from '@/components/chat/Message/FooterContent/FooterM
 
 interface IProps {
   listening: boolean
-  messages: Message[]
+  messages: TMessage[]
   previewUrls: TImage[]
   resetTranscript: () => void
-  setMessages: (messages: Message[]) => void
+  setMessages: Dispatch<SetStateAction<TMessage[]>>
   setRemoteUrls: Dispatch<SetStateAction<TImage[]>>
   setPreviewUrls: Dispatch<SetStateAction<TImage[]>>
   setUploading: Dispatch<SetStateAction<{[p: string]: boolean}>>
@@ -198,13 +197,13 @@ export default function FooterHeader(props: IProps) {
         </div>
 
         {/* upload */}
-        <div onClick={() => hiddenUploadImageRef.current?.click()}>
-          <form
-            className={'relative p-2 rounded-md cursor-pointer hover:bg-gray-200 dark:hover:bg-chatpage-message-robot-content-dark'}
-            onSubmit={(e) => handleUploadSubmit(e, null, null)}
-          >
-            {
-              modelName === 'gpt-4-vision-preview' && (
+        {
+          modelName === 'gpt-4-vision-preview' && (
+            <div onClick={() => hiddenUploadImageRef.current?.click()}>
+              <form
+                className={'relative p-2 rounded-md cursor-pointer hover:bg-gray-200 dark:hover:bg-chatpage-message-robot-content-dark'}
+                onSubmit={(e) => handleUploadSubmit(e, null, null)}
+              >
                 <Tooltip title={t('chatPage.message.upload')} className={'w-24 left-0 flex justify-center'}>
                   <input
                     ref={hiddenUploadImageRef}
@@ -216,10 +215,10 @@ export default function FooterHeader(props: IProps) {
                   />
                   <LinkIcon width={16} height={16}/>
                 </Tooltip>
-              )
-            }
-          </form>
-        </div>
+              </form>
+            </div>
+          )
+        }
 
         {/* more */}
         {

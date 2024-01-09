@@ -1,13 +1,13 @@
 import { useSetAtom } from 'jotai'
 import { useRouter } from 'next/router'
-import type { Message } from 'ai/react'
 import { useTranslation } from 'next-i18next'
 import type { Dispatch, SetStateAction } from 'react'
 
+import type { TMessage } from '@/types'
 import { chatMessagesAtom } from '@/atoms'
 
 interface IProps {
-  setMessages: (messages: Message[]) => void
+  setMessages: Dispatch<SetStateAction<TMessage[]>>
   setShowDeleteModal: Dispatch<SetStateAction<boolean>>
 }
 

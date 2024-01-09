@@ -1,16 +1,16 @@
 import { useRouter } from 'next/router'
-import { type Message } from 'ai/react'
 import { useTranslation } from 'next-i18next'
 import { useAtom, useAtomValue } from 'jotai'
 import type { Dispatch, SetStateAction } from 'react'
 
+import type { TMessage } from '@/types'
 import { chatMessagesAtom, ignoreLineAtom } from '@/atoms'
 import SeparatorIcon from '@/components/icons/SeparatorIcon'
 import MessageClearIcon from '@/components/icons/MessageClearIcon'
 
 interface IProps {
   disabled: boolean
-  messages: Message[]
+  messages: TMessage[]
   setShowDeleteModal: Dispatch<SetStateAction<boolean>>
 }
 

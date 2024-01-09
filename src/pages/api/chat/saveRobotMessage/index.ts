@@ -1,4 +1,6 @@
 import { createRouter } from 'next-connect'
+import { getAuth } from '@clerk/nextjs/server'
+import { encodingForModel } from 'js-tiktoken'
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 import prisma from '@/utils/db.server'
@@ -6,10 +8,8 @@ import prisma from '@/utils/db.server'
 const router = createRouter<NextApiRequest, NextApiResponse>()
 
 const handleSaveRobotMessage = async (req: NextApiRequest, res: NextApiResponse) => {
-  // unprotected route [unsafe!], this route is for the edge runtime call only.
-  // const { userId } = getAuth(req)
-  // const { completion, chat_item_uuid } = req.body
-  const { completion, chat_item_uuid, userId, cost_tokens } = req.body
+  const { userId } = getAuth(req)
+  const { completion, chat_item_uuid, model_name } = req.body
 
   if (!userId) {
     return res.status(400).json({ status: 'User not found' })
@@ -44,7 +44,7 @@ const handleSaveRobotMessage = async (req: NextApiRequest, res: NextApiResponse)
         message_type: 'text',
         message_content: completion,
         message_role: 'assistant',
-        cost_tokens: cost_tokens,
+        cost_tokens: encodingForModel(model_name).encode(completion).length,
         image_urls: [], // empty array
         created_at: new Date(),
         user_primary_id: user!.id,

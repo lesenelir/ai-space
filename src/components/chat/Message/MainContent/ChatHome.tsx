@@ -1,19 +1,19 @@
-import type { Message } from 'ai/react'
-import { Toaster, toast } from 'sonner'
 import { useAtom } from 'jotai'
+import { Toaster, toast } from 'sonner'
 import { useTranslation } from 'next-i18next'
 import { type FormEvent, useRef} from 'react'
 
+import { isUserSaveOpenAIKeyAtom, userOpenAIKeyAtom } from '@/atoms'
+import type { TMessage } from '@/types'
 import Input from '@/components/ui/Input'
 import Button from '@/components/ui/Button'
-import { isUserSaveOpenAIKeyAtom, userOpenAIKeyAtom } from '@/atoms'
 import DataItem from '@/components/chat/Message/MainContent/DataItem'
 
 interface IProps {
-  messages: Message[]
+  messages: TMessage[]
   speakingId: string | null
-  startSpeaking: (id: string, content: string, rate: number) => void
   stopSpeaking: () => void
+  startSpeaking: (id: string, content: string, rate: number) => void
 }
 
 export default function ChatHome(props: IProps) {
@@ -52,8 +52,9 @@ export default function ChatHome(props: IProps) {
             ref={endOfMessagesRef}
             data={{
               id: String(m.id),
-              role: m.role,
-              content: m.content
+              role: m.messageRole,
+              content: m.messageContent,
+              imageUrls: m.imageUrls
             }}
             speakingId={speakingId}
             startSpeaking={startSpeaking}
