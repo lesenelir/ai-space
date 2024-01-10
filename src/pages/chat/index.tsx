@@ -51,7 +51,7 @@ export default function ChatPage(props: IProps) {
         <link rel='icon' href={`/favicon.ico`}/>
       </Head>
 
-      <div className={'w-full h-screen flex flex-row'}>
+      <div className={'w-screen h-screen flex flex-row'}>
         <Menu/>
         <Message/>
       </div>
