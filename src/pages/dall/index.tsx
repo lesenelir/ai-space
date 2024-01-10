@@ -1,17 +1,8 @@
 import Head from 'next/head'
-import { UserButton } from '@clerk/nextjs'
+import { useRouter } from 'next/router'
 
 export default function DallPage() {
-
-  const request = async () => {
-    const Response = await fetch('/api/example', {
-      method: 'POST',
-    })
-
-    const data = await Response.json()
-
-    console.log(data)
-  }
+  const router = useRouter()
 
   return (
     <>
@@ -21,14 +12,15 @@ export default function DallPage() {
         <link rel='icon' href={`/favicon.ico`}/>
       </Head>
 
-      <header>
-        <UserButton afterSignOutUrl={'/'}/>
-      </header>
-      Dall page
-
-      <button className={'w-12 p-2 bg-blue-400 rounded-md ml-6'} onClick={request}>
-        click
-      </button>
+      <div className={'fixed left-1/2 top-1/2 -translate-y-1/2 -translate-x-1/2 flex gap-2 '}>
+        <p className={'self-center'}>This page is being built.</p>
+        <button
+          className={'w-fit  border px-2 py-1 rounded-md hover:bg-gray-100 dark:hover:bg-neutral-800 hover-transition-change'}
+          onClick={() => router.push('/')}
+        >
+          back
+        </button>
+      </div>
     </>
   )
 }
