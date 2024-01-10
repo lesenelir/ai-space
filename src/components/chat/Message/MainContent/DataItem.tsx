@@ -108,7 +108,7 @@ const DataItem =  forwardRef<HTMLDivElement, IProps>((props, ref) => {
           {/* avatar + name */}
           <div className={'flex gap-2'}>
             {
-              data.role === 'user' ? (
+              data.role === 'user' && (
                 <Image
                   width={30}
                   height={30}
@@ -116,13 +116,27 @@ const DataItem =  forwardRef<HTMLDivElement, IProps>((props, ref) => {
                   alt='avatar'
                   className={'rounded-full'}
                 />
-              ) : (
+              )
+            }
+            {
+              data.role === 'system' && (
+                <Image
+                  width={30}
+                  height={30}
+                  src={'/robot.svg'}
+                  alt='avatar'
+                  className={'rounded-full'}
+                />
+              )
+            }
+            {
+              data.role === 'assistant' && (
                 <RenderModelIcon id={currentChatModel?.id!} width={22} height={22}/>
               )
             }
             <p className={'flex items-center font-semibold text-gray-900/90 dark:text-white'}>
               {
-                data.role === 'user' ? 'You' : currentChatModel?.modelName
+                data.role === 'user' ? 'You' : data.role === 'system' ? 'System' : currentChatModel?.modelName
               }
             </p>
           </div>

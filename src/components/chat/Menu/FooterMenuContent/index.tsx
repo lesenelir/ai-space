@@ -10,6 +10,7 @@ import useOutsideClick from '@/hooks/useOutsideClick'
 import UserCard, { userData } from '@/components/chat/Menu/FooterMenuContent/UserCard'
 import ModalPlan from '@/components/chat/Menu/FooterMenuContent/ModalPlan'
 import ModalSettings from '@/components/chat/Menu/FooterMenuContent/ModalSettings'
+import ModalCopilot from '@/components/chat/Menu/FooterMenuContent/ModalCopilot'
 
 export default function FooterMenuContent() {
   const router = useRouter()
@@ -25,16 +26,36 @@ export default function FooterMenuContent() {
     if (!triggerDivRef.current?.contains(event!.target as Node)) setIsDropDownOpen(false)
   })
 
-  const handlerMyPlan = () => {
+  const handleMyPlan = () => {
     setIsDropDownOpen(false)
     setIsModalOpen(true)
     setActiveModal('MyPlan')
   }
 
-  const handlerSettings = () => {
+  const handleMyCopilot = () => {
+    setIsDropDownOpen(false)
+    setIsModalOpen(true)
+    setActiveModal('MyCopilot')
+  }
+
+  const handleSettings = () => {
     setIsDropDownOpen(false)
     setIsModalOpen(true)
     setActiveModal('Settings')
+  }
+
+  const handleUserCardClick = (id: number) => {
+    switch (id) {
+      case 1:
+        handleMyPlan()
+        break
+      case 2:
+        handleMyCopilot()
+        break
+      case 3:
+        handleSettings()
+        break
+    }
   }
 
   return (
@@ -57,7 +78,7 @@ export default function FooterMenuContent() {
                   imageSrc={item.imageSrc}
                   imageAlt={item.imageAlt}
                   text={t(item.textKey)}
-                  onClick={item.id === 1 ? handlerMyPlan : handlerSettings}
+                  onClick={() => handleUserCardClick(item.id)}
                 />
               ))
             }
@@ -85,11 +106,12 @@ export default function FooterMenuContent() {
       {
         isModalOpen && (
           <Modal
-            motionClassName={`${activeModal === 'Settings' && 'w-2/5 h-4/5 max-lg:w-4/5 max-md:w-full max-sm:w-full max-sm:h-5/6'}`}
+            motionClassName={`${activeModal !== 'MyPlan' && 'w-2/5 h-4/5 max-lg:w-4/5 max-md:w-full max-sm:w-full max-sm:h-5/6'}`}
             onClose={() => setIsModalOpen(false)}
           >
             {activeModal === 'MyPlan' && <ModalPlan setIsModalOpen={setIsModalOpen}/>}
             {activeModal === 'Settings' && <ModalSettings setIsModalOpen={setIsModalOpen}/>}
+            {activeModal === 'MyCopilot' && <ModalCopilot setIsModalOpen={setIsModalOpen}/>}
           </Modal>
         )
       }

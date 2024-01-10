@@ -9,7 +9,8 @@ interface IProps {
 
 export const userData = [
   {id: 1, textKey: 'chatPage.menu.plan', imageSrc: '/user.svg', imageAlt: 'user'},
-  {id: 2, textKey: 'chatPage.menu.settings', imageSrc: '/settings.svg', imageAlt: 'settings'},
+  {id: 2, textKey: 'chatPage.menu.myCopilot', imageSrc: '/robot.svg', imageAlt: 'robot'},
+  {id: 3, textKey: 'chatPage.menu.settings', imageSrc: '/settings.svg', imageAlt: 'settings'},
 ]
 
 export default function UserCard(props: IProps) {

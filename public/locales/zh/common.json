@@ -46,7 +46,12 @@
       "yesterday": "昨天",
       "previous7Days": "过去 7 天",
       "previous30Days": "过去 30 天",
-      "older": "更早之前"
+      "older": "更早之前",
+      "myCopilot": "我的搭档",
+      "createCopilot": "创建新的 AI 搭档",
+      "copilotName": "搭档名字",
+      "copilotPrompt": "人物设定（Prompt）",
+      "copilotTitle": "ChatBox 精选"
     },
     "message": {
       "textAreaPlaceholder": "输入消息...",

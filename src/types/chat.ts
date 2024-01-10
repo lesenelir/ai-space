@@ -41,3 +41,9 @@ export type TImage = {
   id: string
   url: string
 }
+
+export type TMyCopilot = {
+  id: string,
+  copilotName: string,
+  copilotPrompt: string
+}

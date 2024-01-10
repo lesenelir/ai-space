@@ -3,7 +3,7 @@
     "menu": {
       "newChat": "New Chat",
       "search": "Search...",
-      "plan": "My Plan",
+      "plan": "My Premium",
       "settings": "Settings",
       "back": "Go Home",
       "upgradeText": "Upgrade your plan",
@@ -46,7 +46,12 @@
       "yesterday": "Yesterday",
       "previous7Days": "Previous 7 Days",
       "previous30Days": "Previous 30 Days",
-      "older": "Older"
+      "older": "Older",
+      "myCopilot": "My Copilots",
+      "createCopilot": "Create a new Copilot",
+      "copilotName": "copilot name",
+      "copilotPrompt": "copilot prompts",
+      "copilotTitle": "ChatBox Featured"
     },
     "message": {
       "textAreaPlaceholder": "Type a message...",

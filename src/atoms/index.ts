@@ -1,6 +1,8 @@
 import { atom } from 'jotai'
 import { atomWithStorage } from 'jotai/utils'
-import type { TChatItem, TChatMessages, TModel } from '@/types'
+
+import { superCopilots } from '@/utils'
+import { TChatItem, TChatMessages, TModel, TMyCopilot } from '@/types'
 
 // client atoms:
 export const resizableWidthAtom = atomWithStorage<number>('resizableWidth', 320)
@@ -14,9 +16,11 @@ export const maxHistorySizeAtom = atomWithStorage<number>('maxHistorySize', 3)
 // get ignoreLine from localStorage => value: array of the object.
 // object: {key: string, value: string[]} => key: router.query.id uuid, value: [id1, id2, id3 ...]
 export const ignoreLineAtom = atomWithStorage<{key: string, value: string[]}[]>('ignoreLine', [])
+export const myCopilotsAtom = atomWithStorage<TMyCopilot[]>('myCopilots', [])
+export const superCopilotsAtom = atomWithStorage<TMyCopilot[]>('superCopilots', superCopilots)
 
 
-// server atoms:
+// server atoms: need to hydrate from server
 export const isUserSaveOpenAIKeyAtom = atom<boolean>(false) // maintains the user's openAI key status
 export const isUserSaveGeminiKeyAtom = atom<boolean>(false) // maintains the user's gemini key status
 export const userOpenAIKeyAtom = atom<string>('') // maintains the user's openAI key
