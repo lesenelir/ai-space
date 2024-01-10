@@ -179,7 +179,7 @@ export default function FooterHeader(props: IProps) {
 
       <Toaster richColors position={'top-center'}/>
       {/* icons */}
-      <div className={'md:w-[640px] max-md:w-full p-1 flex'}>
+      <div className={'md:max-w-screen-sm w-full max-md:w-full p-1 flex'}>
         {/* microphone */}
         <div
           className={'relative p-2 rounded-md cursor-pointer hover:bg-gray-200 dark:hover:bg-chatpage-message-robot-content-dark'}

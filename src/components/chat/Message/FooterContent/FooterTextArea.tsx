@@ -286,7 +286,7 @@ export default function FooterTextArea(props: IProps) {
   }
 
   return (
-    <div className={'md:w-[640px] max-md:w-full p-1'}>
+    <div className={'md:max-w-screen-sm w-full max-md:w-full p-1'}>
       <form onSubmit={handleFormSubmit} className={'relative'}>
         {
           modelName === 'gpt-4-vision-preview' && previewUrls && (

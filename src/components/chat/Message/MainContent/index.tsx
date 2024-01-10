@@ -102,7 +102,7 @@ export default function MainContent(props: IProps) {
   return (
     <div ref={containerRef} className={'w-full flex-1 overflow-y-auto custom-message-light-scrollbar'}>
       {/* basic content */}
-      <div className={'md:w-[640px] max-md:w-full mx-auto p-3 dark:text-gray-50'}>
+      <div className={'md:max-w-screen-sm max-md:w-full mx-auto p-3 dark:text-gray-50'}>
         <ChatContent
           speakingId={speakingId}
           startSpeaking={startSpeaking}
