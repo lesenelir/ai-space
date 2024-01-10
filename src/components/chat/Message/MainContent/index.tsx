@@ -87,7 +87,7 @@ export default function MainContent(props: IProps) {
   if (!router.query.id) {
     return (
       <div className={'w-full flex-1 overflow-y-auto custom-message-light-scrollbar'}>
-        <div className={'md:w-[640px] max-md:w-full mx-auto p-3 dark:text-gray-50 min-h-full relative'}>
+        <div className={'md:max-w-screen-sm max-md:w-full mx-auto p-3 dark:text-gray-50 min-h-full relative'}>
           <ChatHome
             speakingId={speakingId}
             startSpeaking={startSpeaking}
