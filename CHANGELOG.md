@@ -95,4 +95,4 @@ This changelog provides a detailed record of the updates and improvements made t
 - Abort `/api/chat/sendMessage` api routes and Add`/api/chat/send` api for real time messages.
 - Refactor `/api/RobotMessage` api routes.
 - Add `abort controller` for aborting stream response. When a user switches to another chatItem, the previous chatItem stream response will be aborted.
-
+- Add `Max history size` feature for chat settings and implement the logic for sending the max history size to the model.
