@@ -117,7 +117,7 @@ export default function MainContent(props: IProps) {
         className={`
           max-md:hidden
           fixed right-4 top-20 rounded-md p-1 border dark:border-gray-500 hover-transition-change
-          hover:bg-gray-200/90 dark:hover:bg-gray-500/20
+          hover:bg-gray-300/90 dark:hover:bg-gray-500/20
         `}
         onClick={handleScrollToTop}
       >
@@ -128,7 +128,7 @@ export default function MainContent(props: IProps) {
         className={`
           max-md:hidden
           fixed right-4 bottom-28 rounded-md p-1 border dark:border-gray-500 hover-transition-change
-          hover:bg-gray-200/90 dark:hover:bg-gray-500/20
+          hover:bg-gray-300/90 dark:hover:bg-gray-500/20
         `}
         onClick={handleScrollToBottom}
       >
