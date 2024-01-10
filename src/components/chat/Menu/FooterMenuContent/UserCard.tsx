@@ -14,7 +14,7 @@ export const userData = [
 ]
 
 export default function UserCard(props: IProps) {
-  const {imageSrc, imageAlt, text, onClick} = props
+  const { imageSrc, imageAlt, text, onClick } = props
 
   return (
     <>

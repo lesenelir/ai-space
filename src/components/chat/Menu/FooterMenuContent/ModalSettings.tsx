@@ -1,8 +1,8 @@
 import { useRouter } from 'next/router'
 import { useTranslation } from 'next-i18next'
 
-import XIcon from '@/components/icons/XIcon'
 import Tabs from '@/components/ui/Tabs'
+import XIcon from '@/components/icons/XIcon'
 import {
   GeneralTab,
   ModelTab,
@@ -23,8 +23,8 @@ const tabsData = [
 ]
 
 export default function ModalSettings(props: IProps) {
-  const {setIsModalOpen} = props
-  const {t} = useTranslation('common')
+  const { setIsModalOpen } = props
+  const { t } = useTranslation('common')
   const router = useRouter()
 
   return (

@@ -27,7 +27,7 @@ import {
 } from '@/atoms'
 
 export const GeneralTab = () => {
-  const {t} = useTranslation('common')
+  const { t } = useTranslation('common')
 
   return (
     <div className={'flex gap-1 items-center'}>
@@ -63,10 +63,10 @@ export const ChatSettingsTab = () => {
 
 export const GeneralContent = () => {
   const { setTheme } = useTheme()
+  const { t } = useTranslation('common')
   const router = useRouter()
   const currentLocale = router.locale
   const currentThemeRef = useRef<string>('system')
-  const { t } = useTranslation('common')
 
   const handleLanguageChange = async (e: ChangeEvent<HTMLSelectElement>) => {
     const newLocale = e.target.value
@@ -93,7 +93,7 @@ export const GeneralContent = () => {
           <select
             value={currentLocale}
             onChange={handleLanguageChange}
-            className={'bg-chatpage-message-background-dark cursor-pointer rounded-lg p-2 px-6 focus:outline-none '}
+            className={'bg-chatpage-message-background-dark cursor-pointer rounded-lg py-2 px-6'}
           >
             <option value="zh">{t('chatPage.menu.zh')}</option>
             <option value="en">{t('chatPage.menu.en')}</option>
@@ -104,7 +104,7 @@ export const GeneralContent = () => {
           <select
             value={currentThemeRef.current}
             onChange={handleThemeChange}
-            className={'bg-chatpage-message-background-dark cursor-pointer rounded-lg p-2 px-6'}
+            className={'bg-chatpage-message-background-dark cursor-pointer rounded-lg py-2 px-6'}
           >
             <option value="system">{t('chatPage.menu.system')}</option>
             <option value="light">{t('chatPage.menu.light')}</option>
@@ -148,7 +148,7 @@ export const GeneralContent = () => {
 }
 
 export const ModelContent = () => {
-  const {t} = useTranslation('common')
+  const { t } = useTranslation('common')
   const [userOpenAIKey, setUserOpenAIKey] = useAtom(userOpenAIKeyAtom)
   const [userGeminiKey, setUserGeminiKey] = useAtom(userGeminiKeyAtom)
   const setIsUserSaveOpenAIKey = useSetAtom(isUserSaveOpenAIKeyAtom)

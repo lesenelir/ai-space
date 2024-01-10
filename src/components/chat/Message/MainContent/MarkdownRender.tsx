@@ -17,8 +17,8 @@ interface IProps {
 
 export default function MarkdownRender(props: IProps) {
   const { markdown } = props
-  const [copy, setCopy] = useState<boolean>(false)
   const { t } = useTranslation('common')
+  const [copy, setCopy] = useState<boolean>(false)
 
   const handleCopyClick = (code: string) => {
     navigator.clipboard.writeText(code).then(() => {})

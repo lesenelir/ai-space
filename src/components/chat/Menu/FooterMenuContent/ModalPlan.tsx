@@ -10,8 +10,8 @@ interface IProps {
 }
 
 export default function ModalPlan(props: IProps) {
-  const {setIsModalOpen} = props
-  const {t} = useTranslation('common')
+  const { setIsModalOpen } = props
+  const { t } = useTranslation('common')
   const router = useRouter()
 
   return (

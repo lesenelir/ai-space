@@ -5,7 +5,7 @@ import LZIcon from '@/components/icons/LZIcon'
 import NavbarLi from '@/components/home/FirstContentArea/NavbarLi'
 
 export default function Navbar() {
-  const {userId} = useAuth()
+  const { userId } = useAuth()
   const [isScrolled, setIsScrolled] = useState<boolean>(false)
 
   const handlerScroll = () => {

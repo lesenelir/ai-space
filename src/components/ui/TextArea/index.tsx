@@ -4,7 +4,10 @@ export interface TextareaProps
   extends TextareaHTMLAttributes<HTMLTextAreaElement> {}
 
 const TextArea = forwardRef<HTMLTextAreaElement, TextareaProps>((
-  {className, ...props},
+  {
+    className,
+    ...props
+  },
   ref
 ) => {
   return (

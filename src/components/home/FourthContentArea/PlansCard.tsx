@@ -23,7 +23,7 @@ const plusCard: string[] = [
 ]
 
 export default function PlansCard(props: IProps) {
-  const {main, price, buttonText} = props
+  const { main, price, buttonText } = props
 
   return (
     <>

@@ -13,8 +13,8 @@ interface IProps {
 
 export default function ModalDelete(props: IProps) {
   const { setShowDeleteModal, setMessages } = props
-  const router = useRouter()
   const { t } = useTranslation('common')
+  const router = useRouter()
   const setChatMessages = useSetAtom(chatMessagesAtom)
 
   const handleDeleteConfirm = async () => {

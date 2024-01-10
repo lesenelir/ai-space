@@ -9,7 +9,7 @@ import ChatItemCard from '@/components/chat/Menu/MainMenuContent/ChatItemCard'
 import DatabaseOffIcon from '@/components/icons/DatabaseOffIcon'
 
 export default function MainMenuContent() {
-  const {t} = useTranslation('common')
+  const { t } = useTranslation('common')
   const chatItemLists =  useAtomValue(chatItemsAtom)
   const isSearchActive = useAtomValue(isSearchActiveAtom)
   const searchQueryName = useAtomValue(searchQueryNameAtom)

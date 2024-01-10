@@ -4,7 +4,11 @@ interface IProps
   extends InputHTMLAttributes<HTMLInputElement> {}
 
 const Input = forwardRef<HTMLInputElement, IProps>((
-  {className, type, ...props},
+  {
+    className,
+    type,
+    ...props
+  },
   ref
 ) => {
   return (

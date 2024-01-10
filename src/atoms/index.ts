@@ -2,7 +2,7 @@ import { atom } from 'jotai'
 import { atomWithStorage } from 'jotai/utils'
 
 import { superCopilots } from '@/utils'
-import { TChatItem, TChatMessages, TModel, TMyCopilot } from '@/types'
+import type { TChatItem, TChatMessages, TModel, TMyCopilot } from '@/types'
 
 // client atoms:
 export const resizableWidthAtom = atomWithStorage<number>('resizableWidth', 320)

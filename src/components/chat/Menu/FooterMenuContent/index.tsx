@@ -1,8 +1,8 @@
 import Image from 'next/image'
 import { useRouter } from 'next/router'
+import { useTranslation } from 'next-i18next'
 import { UserButton, useUser } from '@clerk/nextjs'
 import { type MouseEvent, useRef, useState } from 'react'
-import { useTranslation } from 'next-i18next'
 
 import Modal from '@/components/ui/Modal'
 import DropDown from '@/components/ui/DropDown'
@@ -14,10 +14,10 @@ import ModalCopilot from '@/components/chat/Menu/FooterMenuContent/ModalCopilot'
 
 export default function FooterMenuContent() {
   const router = useRouter()
-  const {t} = useTranslation('common')
-  const {user} = useUser()
-  const [isDropDownOpen, setIsDropDownOpen] = useState<boolean>(false)
+  const { user } = useUser()
+  const { t } = useTranslation('common')
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
+  const [isDropDownOpen, setIsDropDownOpen] = useState<boolean>(false)
   const [activeModal, setActiveModal] = useState<string | null>(null)
   const dropDownDivRef = useRef<HTMLDivElement>(null)
   const triggerDivRef = useRef<HTMLDivElement>(null)

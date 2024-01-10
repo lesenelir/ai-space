@@ -147,9 +147,6 @@ export default function FooterTextArea(props: IProps) {
     abortController.current = null
   }
 
-  console.log(chatMessages, 'chatMessages')
-  console.log(messages, 'message')
-
   const handleFormSubmit = async (e: FormEvent<HTMLFormElement> | KeyboardEvent<HTMLTextAreaElement>) => {
     e.preventDefault()
     if (isLoading) return // prevent user from sending multiple requests

@@ -1,6 +1,11 @@
 import { useSetAtom } from 'jotai'
 import { useRouter } from 'next/router'
-import { type KeyboardEvent, type MouseEvent, useRef, useState } from 'react'
+import {
+  type KeyboardEvent,
+  type MouseEvent,
+  useRef,
+  useState
+} from 'react'
 
 import { chatItemsAtom } from '@/atoms'
 import XIcon from '@/components/icons/XIcon'
@@ -18,12 +23,12 @@ interface IProps {
 }
 
 export default function ChatItemCard(props: IProps) {
+  const { text, uuid, isStarred } = props
   const router = useRouter()
-  const {text, uuid, isStarred} = props
+  const setChatItems = useSetAtom(chatItemsAtom)
   const inputRef = useRef<HTMLInputElement>(null)
   const [isEdit, setIsEdit] = useState<boolean>(false)
   const [isDelete, setIsDelete] = useState<boolean>(false)
-  const setChatItems = useSetAtom(chatItemsAtom)
 
   const isCurrentChat = router.query.id === uuid
 

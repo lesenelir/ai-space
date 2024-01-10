@@ -8,7 +8,7 @@ import React, {
   useState
 } from 'react'
 
-import { TMyCopilot } from '@/types'
+import type { TMyCopilot } from '@/types'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { chatItemsAtom, myCopilotsAtom, selectedModelIdAtom, superCopilotsAtom, } from '@/atoms'
 import XIcon from '@/components/icons/XIcon'
@@ -21,9 +21,9 @@ interface IProps {
 }
 
 export default function ModalCopilot(props: IProps) {
-  const {setIsModalOpen} = props
+  const { setIsModalOpen } = props
+  const { t } = useTranslation('common')
   const router = useRouter()
-  const {t} = useTranslation('common')
   const setChatItems = useSetAtom(chatItemsAtom)
   const superCopilot = useAtomValue(superCopilotsAtom)
   const selectedModelId = useAtomValue(selectedModelIdAtom)
