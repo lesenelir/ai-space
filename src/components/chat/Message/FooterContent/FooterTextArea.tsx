@@ -16,8 +16,20 @@ import {
   useRef,
 } from 'react'
 
-import { chatItemsAtom, maxTokensAtom, selectedModelIdAtom, temperatureAtom } from '@/atoms'
-import { saveCompletionRequest, saveUserInputFromHomeRequest, saveUserInputRequest } from '@/utils'
+import {
+  chatItemsAtom,
+  chatMessagesAtom,
+  maxHistorySizeAtom,
+  maxTokensAtom,
+  selectedModelIdAtom,
+  temperatureAtom
+} from '@/atoms'
+import {
+  getChatHistory,
+  saveCompletionRequest,
+  saveUserInputFromHomeRequest,
+  saveUserInputRequest
+} from '@/utils'
 import type { TImage, TMessage } from '@/types'
 import Tooltip from '@/components/ui/Tooltip'
 import LoadingDots from '@/components/common/chat/LoadingDots'
@@ -58,9 +70,11 @@ export default function FooterTextArea(props: IProps) {
   const maxHeight = 200
   const router = useRouter()
   const { t } = useTranslation('common')
-  const temperature  = useAtomValue(temperatureAtom)
   const maxTokens = useAtomValue(maxTokensAtom)
+  const maxHistorySize = useAtomValue(maxHistorySizeAtom)
+  const temperature  = useAtomValue(temperatureAtom)
   const selectedModelId = useAtomValue(selectedModelIdAtom)
+  const chatMessages = useAtomValue(chatMessagesAtom)
   const setChatItems = useSetAtom(chatItemsAtom)
   const [isDisabled, setIsDisabled] = useState<boolean>(true)
   const [deleting, setDeleting] = useState<{[key: string]: boolean}>({})
@@ -133,6 +147,9 @@ export default function FooterTextArea(props: IProps) {
     abortController.current = null
   }
 
+  console.log(chatMessages, 'chatMessages')
+  console.log(messages, 'message')
+
   const handleFormSubmit = async (e: FormEvent<HTMLFormElement> | KeyboardEvent<HTMLTextAreaElement>) => {
     e.preventDefault()
     if (isLoading) return // prevent user from sending multiple requests
@@ -189,25 +206,8 @@ export default function FooterTextArea(props: IProps) {
     }
     setMessages(prev => [...prev, receivedMessage])
 
-    let content
-    if (remoteUrls.length > 0) {
-      const temp = remoteUrls.map(item => ({
-        type: 'image_url',
-        image_url: item.url
-      }))
-
-      content = [
-        {
-          type: 'text',
-          text: value
-        },
-        ...temp
-      ]
-    } else {
-      content = value
-    }
-
     abortController.current = new AbortController()
+    const sendContent = getChatHistory(remoteUrls, value!, messages, maxHistorySize, chatMessages) // context manage
     const options = {
       method: 'POST',
       headers: {
@@ -217,7 +217,7 @@ export default function FooterTextArea(props: IProps) {
         temperature,
         max_tokens: maxTokens,
         model_name: modelName!,
-        content,
+        send_content: sendContent
       }),
       signal: abortController.current.signal
     }

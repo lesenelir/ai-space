@@ -10,12 +10,15 @@ const openai = new OpenAI({
 export const runtime = 'edge'
 
 export default async function handler(req: Request) {
-  const { content, temperature, max_tokens, model_name } = await req.json()
+  const { send_content, temperature, max_tokens, model_name } = await req.json()
+
+  console.log(send_content)
 
   try {
     // Ask OpenAI for a streaming chat completion given the prompt
     const response = await openai.chat.completions.create({
-      messages: [{role: 'user', content}],
+      // messages: [{role: 'user', content}],
+      messages: send_content,
       model: model_name,
       stream: true,
       temperature,
@@ -31,3 +34,24 @@ export default async function handler(req: Request) {
     throw error
   }
 }
+
+// const sendContent = [ // image input
+//   {
+//     role: 'user',
+//     content: 'what is this?'
+//   },
+//   {
+//     role: 'user',
+//     content: [
+//       { type: 'text', text: 'What’s in this image?' },
+//       {
+//         type: 'image_url',
+//         image_url: 'https://pic1'
+//       },
+//       {
+//         type: 'image_url',
+//         image_url: 'https://pic2'
+//       }
+//     ]
+//   }
+// ]

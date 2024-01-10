@@ -1,6 +1,4 @@
-import { useAtom } from 'jotai'
-import { useRouter } from 'next/router'
-import { Toaster, toast } from 'sonner'
+import { useAtomValue } from 'jotai'
 import { useTranslation } from 'next-i18next'
 import {
   type Dispatch,
@@ -31,44 +29,15 @@ interface IProps {
  *
  */
 export default function ChatContent(props: IProps) {
-  const { messages, setMessages, speakingId, startSpeaking, stopSpeaking } = props
+  const { messages, speakingId, startSpeaking, stopSpeaking } = props
   const { t } = useTranslation('common')
-  const router = useRouter()
   const endOfMessagesRef = useRef<HTMLDivElement>(null)
-  const [chatMessages, setChatMessages] = useAtom(chatMessagesAtom)
+  const chatMessages = useAtomValue(chatMessagesAtom)
 
   // update scroll to the bottom when the messages change
   useEffect(() => {
     endOfMessagesRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' })
   }, [messages, chatMessages])
-
-  // fetch chat messages from the database => only fetch when the router.query.id changes
-  // router.push means the content changes based on the client side, it doesn't fetch from the server.
-  // => so, we need to fetch the data from the server when the router.query.id changes.
-  // (router.push is different from the F5, F5 will fetch from the server, but router.push doesn't.)
-  useEffect(() => {
-    const getRequest = async () => {
-      const options = {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ item_uuid: router.query.id })
-      }
-
-      try {
-        const response = await fetch(`/api/chat/getChatMessages`, options)
-        const data = await response.json()
-        setChatMessages(data.chatMessages)
-        setMessages([]) // when the router.query.id changes, we need to clear the messages.
-      } catch (e) {
-        console.error(e)
-        toast.error('get chat messages error')
-      }
-    }
-
-    getRequest().then(() => {})
-  }, [router.query.id, setChatMessages, setMessages])
 
   if (chatMessages.length === 0 && messages.length === 0) {
     return (
@@ -80,8 +49,6 @@ export default function ChatContent(props: IProps) {
 
   return (
     <>
-      <Toaster richColors position={'top-center'}  />
-
       {/*first render to load data from the database*/}
       {
         chatMessages.map(m => (

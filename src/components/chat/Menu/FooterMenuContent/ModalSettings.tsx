@@ -28,7 +28,7 @@ export default function ModalSettings(props: IProps) {
   const router = useRouter()
 
   return (
-    <div className={'w-full h-full flex flex-col text-white overflow-y-auto custom-scrollbar'}>
+    <div className={'w-full h-full flex flex-col text-white'}>
       {/* header */}
       <div className={'h-20 p-4 flex flex-row justify-between rounded-t-md bg-chatpage-menu-hover'}>
         <p className={'font-medium text-2xl'}>{t('chatPage.menu.settings')}</p>

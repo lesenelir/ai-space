@@ -1,9 +1,14 @@
+import { useTheme } from 'next-themes'
 import { Toaster, toast } from 'sonner'
 import { useRouter } from 'next/router'
-import { useTheme } from 'next-themes'
 import { useAtom, useSetAtom } from 'jotai'
 import { useTranslation } from 'next-i18next'
-import { type ChangeEvent, type FormEvent, useEffect, useRef } from 'react'
+import {
+  type ChangeEvent,
+  type FormEvent,
+  useEffect,
+  useRef
+} from 'react'
 
 import Input from '@/components/ui/Input'
 import Button from '@/components/ui/Button'
@@ -14,6 +19,7 @@ import SettingsBoltIcon from '@/components/icons/SettingsBoltIcon'
 import {
   isUserSaveGeminiKeyAtom,
   isUserSaveOpenAIKeyAtom,
+  maxHistorySizeAtom,
   maxTokensAtom,
   temperatureAtom,
   userGeminiKeyAtom,
@@ -249,10 +255,11 @@ export const ChatSettingsContent = () => {
   const { t } = useTranslation('common')
   const [maxTokens, setMaxTokens] = useAtom(maxTokensAtom)
   const [temperature, setTemperature] = useAtom(temperatureAtom)
+  const [maxHistorySize, setMaxHistorySize] = useAtom(maxHistorySizeAtom)
 
   return (
     <div className={'flex flex-col gap-8'}>
-      {/* max tokens */}
+      {/* 1. max tokens */}
       <div className={'flex flex-col gap-2'}>
         {/* words */}
         <div>
@@ -274,11 +281,56 @@ export const ChatSettingsContent = () => {
         />
       </div>
 
-      {/* Temperature */}
+      {/* 2. Max history messages size  */}
+      <div className={'flex flex-col gap-2'}>
+        {/* words */}
+        <div className={'flex gap-2'}>
+          <p className={'h-7'}>{t('chatPage.menu.historyMaxTitle')} {' '}</p>
+          <input
+            type="number"
+            step={'1'}
+            min={'1'}
+            max={'24'}
+            value={maxHistorySize}
+            onChange={(e) => setMaxHistorySize(Number(e.target.value))}
+            required={true}
+            className={'w-20 h-6 p-3 bg-transparent text-gray-50 rounded-md hover:border focus:border focus:outline-none'}
+          />
+        </div>
+
+        <Slider
+          min={1}
+          max={24}
+          step={1}
+          value={maxHistorySize}
+          onChange={(e: ChangeEvent<HTMLInputElement>) => setMaxHistorySize(Number(e.target.value))}
+          className={'w-2/3'}
+        />
+
+        {/* explanation */}
+        <p className={'text-sm'}>
+          {t('chatPage.menu.historyMaxContent')}
+        </p>
+      </div>
+
+      {/* 3. Temperature */}
       <div className={'flex flex-col gap-2'}>
         {/* Words */}
         <div className={'flex flex-col gap-2'}>
-          <p>{t('chatPage.menu.temperature')} {' '} {temperature} </p>
+          {/*<p>{t('chatPage.menu.temperature')} {' '} {temperature} </p>*/}
+          <div className={'flex gap-2'}>
+            <p className={'h-7'}>{t('chatPage.menu.temperature')} {' '}</p>
+            <input
+              type="number"
+              min={'0'}
+              max={'1'}
+              step={'0.1'}
+              value={temperature}
+              onChange={(e) => setTemperature(Number(e.target.value))}
+              required={true}
+              className={'w-20 h-6 p-3 bg-transparent text-gray-50 rounded-md hover:border focus:border focus:outline-none'}
+            />
+          </div>
           <div className={'flex justify-between text-xs w-2/3'}>
             <span>{t('chatPage.menu.precise')}</span>
             <span>{t('chatPage.menu.balanced')}</span>
@@ -296,11 +348,9 @@ export const ChatSettingsContent = () => {
         />
 
         {/* explanation */}
-        <div>
-          <p className={'text-sm'}>
-            {t('chatPage.menu.temperatureContent')}
-          </p>
-        </div>
+        <p className={'text-sm'}>
+          {t('chatPage.menu.temperatureContent')}
+        </p>
       </div>
     </div>
   )
