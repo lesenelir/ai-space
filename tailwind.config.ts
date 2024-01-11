@@ -65,32 +65,44 @@ const config: Config = {
         }
       },
       typography: {
-       DEFAULT: {
-         css: {
-           p: {
-             margin: '0',
-           },
-           ol: {
-             margin: '0',
-           },
-           ul: {
-             margin: '0',
-           },
-           li: {
-             '> p': {
-               margin: '0',
-             },
-             margin: '0',
-           },
-           pre: {
-             margin: '0',
-             backgroundColor: 'transparent',
-           },
-           code: {
-             margin: '0',
-           },
-         }
-       }
+        DEFAULT: {
+          css: {
+            p: {
+              margin: '0',
+            },
+            ol: {
+              margin: '0',
+            },
+            ul: {
+              margin: '0',
+            },
+            li: {
+              '> p': {
+                margin: '0',
+              },
+              margin: '0',
+            },
+            pre: {
+              '>code': {
+                color: '#374151'
+              },
+              margin: '0',
+              backgroundColor: 'transparent',
+            },
+            code: {
+              margin: '0',
+            },
+          }
+        },
+        invert: {
+          css: {
+            pre: {
+              '>code': {
+                color: '#D1D5DB'
+              }
+            }
+          }
+        }
       }
     },
   },
