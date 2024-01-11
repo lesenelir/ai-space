@@ -315,7 +315,7 @@ export default function FooterTextArea(props: IProps) {
         />
         {
           isLoading ? (
-            <Tooltip title={t('chatPage.message.stop')} className={'right-0 bottom-10'}>
+            <Tooltip title={t('chatPage.message.stop')} className={'right-0 bottom-[40px]'}>
               <div
                 className={'absolute bottom-5 right-3 border rounded-lg p-1 cursor-pointer'}
                 onClick={handleCancelStreaming}
@@ -324,7 +324,7 @@ export default function FooterTextArea(props: IProps) {
               </div>
             </Tooltip>
           ) : (
-            <Tooltip title={t('chatPage.message.send')} className={'right-0 bottom-10'}>
+            <Tooltip title={t('chatPage.message.send')} className={'right-0 bottom-[40px]'}>
               <button
                 type={'submit'}
                 disabled={isDisabled}
