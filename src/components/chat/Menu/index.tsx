@@ -1,11 +1,11 @@
 import { useAtom } from 'jotai'
 
 import { isMenuOpenAtom } from '@/atoms'
+import ColumnsIcon from '@/components/icons/ColumnsIcon'
 import ResizableDiv from '@/components/ui/ResizableDiv'
 import HeaderMenuContent from '@/components/chat/Menu/HeaderMenuContent'
 import MainMenuContent from '@/components/chat/Menu/MainMenuContent'
 import FooterMenuContent from '@/components/chat/Menu/FooterMenuContent'
-import ColumnsIcon from '@/components/icons/ColumnsIcon'
 
 export default function Menu() {
   const [isMenuOpen, setIsMenuOpen] = useAtom(isMenuOpenAtom)

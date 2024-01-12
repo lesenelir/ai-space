@@ -4,9 +4,9 @@ import { useTranslation } from 'next-i18next'
 import { isToday, isYesterday, subDays } from 'date-fns'
 
 import { chatItemsAtom, isSearchActiveAtom, searchQueryNameAtom } from '@/atoms'
-import { type TCategorizedChatItems, type TChatItem } from '@/types'
-import ChatItemCard from '@/components/chat/Menu/MainMenuContent/ChatItemCard'
+import type { TCategorizedChatItems, TChatItem } from '@/types'
 import DatabaseOffIcon from '@/components/icons/DatabaseOffIcon'
+import ChatItemCard from '@/components/chat/Menu/MainMenuContent/ChatItemCard'
 
 export default function MainMenuContent() {
   const { t } = useTranslation('common')

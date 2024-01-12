@@ -1,7 +1,7 @@
-import { useAtomValue, useSetAtom } from 'jotai'
-import { useTranslation } from 'next-i18next'
-import { type ChangeEvent, useRef } from 'react'
 import { useRouter } from 'next/router'
+import { useTranslation } from 'next-i18next'
+import { useAtomValue, useSetAtom } from 'jotai'
+import { type ChangeEvent, useRef } from 'react'
 
 import FolderPlusIcon from '@/components/icons/FolderPlusIcon'
 import ColumnsIcon from '@/components/icons/ColumnsIcon'

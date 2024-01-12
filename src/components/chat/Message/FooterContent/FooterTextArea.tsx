@@ -16,6 +16,12 @@ import {
   useRef,
 } from 'react'
 
+import type { TImage, TMessage } from '@/types'
+import Tooltip from '@/components/ui/Tooltip'
+import LoadingDots from '@/components/common/chat/LoadingDots'
+import useGetChatInformation from '@/hooks/useGetChatInformation'
+import ArrowNarrowUpIcon from '@/components/icons/ArrowNarrowUpIcon'
+import PreviewImg from '@/components/chat/Message/FooterContent/PreviewImg'
 import {
   chatItemsAtom,
   chatMessagesAtom,
@@ -31,12 +37,6 @@ import {
   saveUserInputFromHomeRequest,
   saveUserInputRequest
 } from '@/utils'
-import type { TImage, TMessage } from '@/types'
-import Tooltip from '@/components/ui/Tooltip'
-import LoadingDots from '@/components/common/chat/LoadingDots'
-import useGetChatInformation from '@/hooks/useGetChatInformation'
-import ArrowNarrowUpIcon from '@/components/icons/ArrowNarrowUpIcon'
-import PreviewImg from '@/components/chat/Message/FooterContent/PreviewImg'
 
 interface IProps {
   listening: boolean

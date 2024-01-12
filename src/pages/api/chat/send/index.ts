@@ -12,8 +12,6 @@ export const runtime = 'edge'
 export default async function handler(req: Request) {
   const { send_content, temperature, max_tokens, model_name } = await req.json()
 
-  console.log(send_content)
-
   try {
     // Ask OpenAI for a streaming chat completion given the prompt
     const response = await openai.chat.completions.create({
