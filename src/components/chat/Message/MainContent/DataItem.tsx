@@ -17,12 +17,13 @@ import {
   chatMessagesAtom,
   ignoreLineAtom,
   isLoadingAtom,
-  maxHistorySizeAtom, maxTokensAtom,
-  selectedModelIdAtom, temperatureAtom
+  maxTokensAtom,
+  temperatureAtom,
+  maxHistorySizeAtom,
+  selectedModelIdAtom
 } from '@/atoms'
 import { getChatHistoryFromRefresh } from '@/utils/getChatHistoryFromRefresh'
-import { deleteLastChatMessage } from '@/requests'
-import { saveCompletionRequest } from '@/utils'
+import { deleteLastChatMessage, saveCompletionRequest } from '@/requests'
 import type { TMessage } from '@/types'
 import CheckIcon from '@/components/icons/CheckIcon'
 import CopyIcon from '@/components/icons/CopyIcon'

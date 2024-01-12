@@ -16,6 +16,7 @@ import {
   useRef,
 } from 'react'
 
+import { getChatHistory } from '@/utils'
 import type { TImage, TMessage } from '@/types'
 import Tooltip from '@/components/ui/Tooltip'
 import LoadingDots from '@/components/common/chat/LoadingDots'
@@ -32,11 +33,10 @@ import {
   temperatureAtom
 } from '@/atoms'
 import {
-  getChatHistory,
   saveCompletionRequest,
   saveUserInputFromHomeRequest,
   saveUserInputRequest
-} from '@/utils'
+} from '@/requests'
 
 interface IProps {
   listening: boolean
