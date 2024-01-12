@@ -288,64 +288,65 @@ const DataItem =  forwardRef<HTMLDivElement, IProps>((props, ref) => {
         {/* Footer content */}
         {/* When isLastElement equals true,  */}
         {
-          <div className={'w-full h-[20px] my-1'}>
-            <div className={'hidden group-hover/icons:flex gap-1'}>
-              {copy[data.id] ? (
-                <CheckIcon width={16} height={16} className={'text-green-600 p-1'}/>
-              ) : (
-                <CopyIcon
-                  width={16}
-                  height={16}
-                  className={'rounded-md p-1 hover:cursor-pointer hover:bg-gray-200 dark:hover:bg-chatpage-message-robot-content-dark'}
-                  onClick={() => handleCopyClick(data.content, String(data.id))}
-                />
-              )}
+          (data.role !== 'assistant' || !isLastElement || (isLastElement && !isLoading)) && (
+            <div className={'w-full h-[20px] my-1'}>
+              <div className={'hidden group-hover/icons:flex gap-1'}>
+                {copy[data.id] ? (
+                  <CheckIcon width={16} height={16} className={'text-green-600 p-1'}/>
+                ) : (
+                  <CopyIcon
+                    width={16}
+                    height={16}
+                    className={'rounded-md p-1 hover:cursor-pointer hover:bg-gray-200 dark:hover:bg-chatpage-message-robot-content-dark'}
+                    onClick={() => handleCopyClick(data.content, String(data.id))}
+                  />
+                )}
 
-              {
-                data.role === 'assistant' && isLastElement && !isLoading && (
-                  <div
-                    className={'cursor-pointer p-1 rounded-md hover:bg-gray-200 dark:hover:bg-chatpage-message-robot-content-dark'}
-                    onClick={handleRefresh}
-                  >
-                    <RefreshIcon width={16} height={16}/>
-                  </div>
-                )
-              }
-
-              <div className={'cursor-pointer p-1 rounded-md hover:bg-gray-200 dark:hover:bg-chatpage-message-robot-content-dark'}>
                 {
-                  speakingId === data.id ? (
-                    <PlayerPauseIcon
-                      width={16}
-                      height={16}
-                      onClick={stopSpeaking}
-                    />
-                  ) : (
-                    <VolumeIcon
-                      width={16}
-                      height={16}
-                      onClick={() => startSpeaking(data.id, data.content, rateId)}
-                    />
+                  data.role === 'assistant' && isLastElement && !isLoading && router.query.id && (
+                    <div
+                      className={'cursor-pointer p-1 rounded-md hover:bg-gray-200 dark:hover:bg-chatpage-message-robot-content-dark'}
+                      onClick={handleRefresh}
+                    >
+                      <RefreshIcon width={16} height={16}/>
+                    </div>
                   )
                 }
-              </div>
 
-              <div
-                className={'flex gap-1 cursor-pointer p-1 rounded-md hover:bg-gray-200 dark:hover:bg-chatpage-message-robot-content-dark'}
-                onClick={handleChangeRate}
-              >
-                <PlayerStationIcon width={16} height={16}/>
-                <span className={'text-xs'}>{rateId}x</span>
-              </div>
+                <div className={'cursor-pointer p-1 rounded-md hover:bg-gray-200 dark:hover:bg-chatpage-message-robot-content-dark'}>
+                  {
+                    speakingId === data.id ? (
+                      <PlayerPauseIcon
+                        width={16}
+                        height={16}
+                        onClick={stopSpeaking}
+                      />
+                    ) : (
+                      <VolumeIcon
+                        width={16}
+                        height={16}
+                        onClick={() => startSpeaking(data.id, data.content, rateId)}
+                      />
+                    )
+                  }
+                </div>
 
-              <div
-                className={'flex gap-1 p-1 rounded-md hover:bg-gray-200 dark:hover:bg-chatpage-message-robot-content-dark'}>
-                <SpeedIcon width={16} height={16}/>
-                {/* If the data costTokens is null, it means that this is the messages array render.  */}
-                <span className={'text-xs'}>{data.costTokens || enc.encode(data.content).length} tokens</span>
+                <div
+                  className={'flex gap-1 cursor-pointer p-1 rounded-md hover:bg-gray-200 dark:hover:bg-chatpage-message-robot-content-dark'}
+                  onClick={handleChangeRate}
+                >
+                  <PlayerStationIcon width={16} height={16}/>
+                  <span className={'text-xs'}>{rateId}x</span>
+                </div>
+
+                <div className={'flex gap-1 p-1 rounded-md hover:bg-gray-200 dark:hover:bg-chatpage-message-robot-content-dark'}>
+                  <SpeedIcon width={16} height={16}/>
+                  {/* If the data costTokens is null, it means that this is the messages array render.  */}
+                  <span className={'text-xs'}>{data.costTokens || enc.encode(data.content).length} tokens</span>
+                </div>
               </div>
             </div>
-          </div>
+          )
         }
       </div>
 
