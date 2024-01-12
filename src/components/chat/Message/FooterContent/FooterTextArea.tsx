@@ -51,7 +51,7 @@ interface IProps {
   setRemoteUrls: Dispatch<SetStateAction<TImage[]>>
   setUploading: Dispatch<SetStateAction<{[p: string]: boolean}>>
   abortController: MutableRefObject<AbortController | null>
-  abortControllers: MutableRefObject<{[p: string]: AbortController}>
+  abortImageController: MutableRefObject<{[p: string]: AbortController}>
 }
 
 export default function FooterTextArea(props: IProps) {
@@ -64,7 +64,7 @@ export default function FooterTextArea(props: IProps) {
     uploading,
     setUploading,
     setRemoteUrls,
-    abortControllers,
+    abortImageController,
     remoteUrls,
     setMessages,
     messages,
@@ -83,9 +83,9 @@ export default function FooterTextArea(props: IProps) {
   const [deleting, setDeleting] = useState<{[key: string]: boolean}>({})
   const [isComposing, setIsComposing] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useAtom(isLoadingAtom)
-  // const [isLoading, setIsLoading] = useState<boolean>(false)
   const { modelName } = useGetChatInformation(router.query.id as string | undefined, selectedModelId)
   const textAreaRef = useRef<HTMLTextAreaElement>(null)
+  // const [isLoading, setIsLoading] = useState<boolean>(false)
   // const abortController = useRef<AbortController | null>(null)
   // const textAreaRef = ref as MutableRefObject<HTMLTextAreaElement>
 
@@ -300,7 +300,7 @@ export default function FooterTextArea(props: IProps) {
               setRemoteUrls={setRemoteUrls}
               setUploading={setUploading}
               setPreviewUrls={setPreviewUrls}
-              abortControllers={abortControllers}
+              abortImageController={abortImageController}
             />
           )
         }
@@ -319,7 +319,7 @@ export default function FooterTextArea(props: IProps) {
         />
         {
           isLoading ? (
-            <Tooltip title={t('chatPage.message.stop')} className={'right-0 bottom-[40px]'}>
+            <Tooltip title={t('chatPage.message.stop')} className={'right-0 bottom-10'}>
               <div
                 className={'absolute bottom-5 right-3 border rounded-lg p-1 cursor-pointer'}
                 onClick={handleCancelStreaming}
@@ -328,7 +328,7 @@ export default function FooterTextArea(props: IProps) {
               </div>
             </Tooltip>
           ) : (
-            <Tooltip title={t('chatPage.message.send')} className={'right-0 bottom-[40px]'}>
+            <Tooltip title={t('chatPage.message.send')} className={'right-0 bottom-10'}>
               <button
                 type={'submit'}
                 disabled={isDisabled}

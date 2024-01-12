@@ -13,7 +13,7 @@ interface IProps {
   setRemoteUrls: Dispatch<SetStateAction<TImage[]>>
   setDeleting: Dispatch<SetStateAction<{[p: string]: boolean}>>
   setUploading: Dispatch<SetStateAction<{[p: string]: boolean}>>
-  abortControllers: MutableRefObject<{[p: string]: AbortController}>
+  abortImageController: MutableRefObject<{[p: string]: AbortController}>
 }
 
 export default function PreviewImg(props: IProps) {
@@ -21,7 +21,7 @@ export default function PreviewImg(props: IProps) {
     previewUrls,
     setPreviewUrls,
     uploading,
-    abortControllers,
+    abortImageController,
     setRemoteUrls,
     setUploading,
     deleting,
@@ -32,8 +32,8 @@ export default function PreviewImg(props: IProps) {
   const removePreviewImg = async (id: string) => {
     if (uploading[id]) {
       // uploadImage aren't yet finished, cancel uploadImage.
-      abortControllers.current[id].abort()
-      delete abortControllers.current[id]
+      abortImageController.current[id].abort()
+      delete abortImageController.current[id]
       setUploading(prev => ({...prev, [id]: false}))
     } else {
       // uploadImage are finished, delete image in cloudinary.

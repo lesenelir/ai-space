@@ -39,7 +39,7 @@ interface IProps {
   setRemoteUrls: Dispatch<SetStateAction<TImage[]>>
   setPreviewUrls: Dispatch<SetStateAction<TImage[]>>
   setUploading: Dispatch<SetStateAction<{[p: string]: boolean}>>
-  abortControllers: MutableRefObject<{[p: string]: AbortController}>
+  abortImageController: MutableRefObject<{[p: string]: AbortController}>
 }
 
 export default function FooterHeader(props: IProps) {
@@ -52,7 +52,7 @@ export default function FooterHeader(props: IProps) {
     setPreviewUrls,
     setUploading,
     setRemoteUrls,
-    abortControllers
+    abortImageController
   } = props
   const router = useRouter()
   const { t } = useTranslation('common')
@@ -143,7 +143,7 @@ export default function FooterHeader(props: IProps) {
     // update images urls to cloudinary
     const uploadTask = [...files].map(async (file, index) => {
       const controller = new AbortController() // cancel upload (abort)
-      abortControllers.current[mergedPreviewUrls[start + index].id] = controller
+      abortImageController.current[mergedPreviewUrls[start + index].id] = controller
 
       try {
         const item = await uploadImage(file, mergedPreviewUrls[start + index].id, controller)

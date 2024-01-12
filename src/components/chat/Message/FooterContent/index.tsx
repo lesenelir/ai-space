@@ -26,7 +26,7 @@ export default function FooterContent(props: IProps) {
   const [remoteUrls, setRemoteUrls] = useState<TImage[]>([])
   const [previewUrls, setPreviewUrls] = useState<TImage[]>([])
   const [uploading, setUploading] = useState<{[key: string]: boolean}>({})
-  const abortControllers = useRef<{[key: string]: AbortController}>({})
+  const abortImageController = useRef<{[key: string]: AbortController}>({})
   // const ref = useRef<HTMLTextAreaElement>(null) // or this way: create ref in FooterTextArea.tsx
 
   // when router.query.id changes, reset remoteUrls, previewUrls, uploading
@@ -48,7 +48,7 @@ export default function FooterContent(props: IProps) {
         setRemoteUrls={setRemoteUrls}
         setPreviewUrls={setPreviewUrls}
         resetTranscript={resetTranscript}
-        abortControllers={abortControllers}
+        abortImageController={abortImageController}
       />
 
       {/* footer main content area: textarea */}
@@ -66,7 +66,7 @@ export default function FooterContent(props: IProps) {
         setPreviewUrls={setPreviewUrls}
         abortController={abortController}
         resetTranscript={resetTranscript}
-        abortControllers={abortControllers}
+        abortImageController={abortImageController}
       />
     </div>
   )
