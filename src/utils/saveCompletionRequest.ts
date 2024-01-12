@@ -1,7 +1,8 @@
 export const saveCompletionRequest = async (
   completion: string,
   modelName: string,
-  itemUuid: string | undefined, data: any
+  itemUuid: string | undefined,
+  data?: any
 ) => {
   try {
     const options = {

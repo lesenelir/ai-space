@@ -1,7 +1,13 @@
 import { useAtom } from 'jotai'
 import { Toaster, toast } from 'sonner'
 import { useTranslation } from 'next-i18next'
-import { type FormEvent, useRef} from 'react'
+import {
+  type Dispatch,
+  type FormEvent,
+  type SetStateAction,
+  type MutableRefObject,
+  useRef
+} from 'react'
 
 import { isUserSaveOpenAIKeyAtom, userOpenAIKeyAtom } from '@/atoms'
 import type { TMessage } from '@/types'
@@ -13,11 +19,13 @@ interface IProps {
   messages: TMessage[]
   speakingId: string | null
   stopSpeaking: () => void
+  setMessages: Dispatch<SetStateAction<TMessage[]>>
+  abortController: MutableRefObject<AbortController | null>
   startSpeaking: (id: string, content: string, rate: number) => void
 }
 
 export default function ChatHome(props: IProps) {
-  const { messages, speakingId, startSpeaking, stopSpeaking } = props
+  const { messages, setMessages, speakingId, startSpeaking, stopSpeaking, abortController } = props
   const { t } = useTranslation('common')
   const endOfMessagesRef = useRef<HTMLDivElement>(null)
   const [userOpenAIKey, setUserOpenAIKey] = useAtom(userOpenAIKeyAtom)
@@ -46,7 +54,7 @@ export default function ChatHome(props: IProps) {
   return (
     <>
       <div>
-        {messages.map(m => (
+        {messages.map((m, index) => (
           <DataItem
             key={m.id}
             ref={endOfMessagesRef}
@@ -56,9 +64,13 @@ export default function ChatHome(props: IProps) {
               content: m.messageContent,
               imageUrls: m.imageUrls
             }}
+            messages={messages}
             speakingId={speakingId}
-            startSpeaking={startSpeaking}
+            setMessages={setMessages}
             stopSpeaking={stopSpeaking}
+            startSpeaking={startSpeaking}
+            abortController={abortController}
+            isLastElement={index === messages.length - 1}
           />
         ))}
       </div>

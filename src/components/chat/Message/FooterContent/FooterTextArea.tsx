@@ -1,7 +1,7 @@
 import { v4 as uuid } from 'uuid'
 import { useRouter } from 'next/router'
 import { useTranslation } from 'next-i18next'
-import { useAtomValue, useSetAtom } from 'jotai'
+import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import SpeechRecognition from 'react-speech-recognition'
 import {
   type ChangeEvent,
@@ -19,6 +19,7 @@ import {
 import {
   chatItemsAtom,
   chatMessagesAtom,
+  isLoadingAtom,
   maxHistorySizeAtom,
   maxTokensAtom,
   selectedModelIdAtom,
@@ -49,6 +50,7 @@ interface IProps {
   setPreviewUrls: Dispatch<SetStateAction<TImage[]>>
   setRemoteUrls: Dispatch<SetStateAction<TImage[]>>
   setUploading: Dispatch<SetStateAction<{[p: string]: boolean}>>
+  abortController: MutableRefObject<AbortController | null>
   abortControllers: MutableRefObject<{[p: string]: AbortController}>
 }
 
@@ -65,7 +67,8 @@ export default function FooterTextArea(props: IProps) {
     abortControllers,
     remoteUrls,
     setMessages,
-    messages
+    messages,
+    abortController
   } = props
   const maxHeight = 200
   const router = useRouter()
@@ -79,10 +82,11 @@ export default function FooterTextArea(props: IProps) {
   const [isDisabled, setIsDisabled] = useState<boolean>(true)
   const [deleting, setDeleting] = useState<{[key: string]: boolean}>({})
   const [isComposing, setIsComposing] = useState<boolean>(false)
-  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [isLoading, setIsLoading] = useAtom(isLoadingAtom)
+  // const [isLoading, setIsLoading] = useState<boolean>(false)
   const { modelName } = useGetChatInformation(router.query.id as string | undefined, selectedModelId)
   const textAreaRef = useRef<HTMLTextAreaElement>(null)
-  const abortController = useRef<AbortController | null>(null)
+  // const abortController = useRef<AbortController | null>(null)
   // const textAreaRef = ref as MutableRefObject<HTMLTextAreaElement>
 
   // when the transcript changes, set the value of the textarea.
@@ -128,7 +132,7 @@ export default function FooterTextArea(props: IProps) {
     if (abortController.current) {
       abortController.current?.abort()
     }
-  }, [router.query.id])
+  }, [abortController, router.query.id])
 
   const handleComposition = (e: CompositionEvent) => {
     if (e.type === 'compositionstart') {

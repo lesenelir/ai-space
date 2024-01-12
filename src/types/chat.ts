@@ -47,3 +47,12 @@ export type TMyCopilot = {
   copilotName: string,
   copilotPrompt: string
 }
+
+export type TSendContent = {
+  role: string
+  content: string | {
+    type: string
+    text?: string
+    image_url?: string
+  }[]
+}

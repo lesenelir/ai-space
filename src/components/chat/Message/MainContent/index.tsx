@@ -3,6 +3,7 @@ import { useRouter } from 'next/router'
 import {
   type Dispatch,
   type SetStateAction,
+  type MutableRefObject,
   useEffect,
   useRef,
   useState
@@ -17,11 +18,12 @@ import ChatContent from '@/components/chat/Message/MainContent/ChatContent'
 interface IProps {
   messages: TMessage[]
   setMessages: Dispatch<SetStateAction<TMessage[]>>
+  abortController: MutableRefObject<AbortController | null>
 }
 
 export default function MainContent(props: IProps) {
   const router = useRouter()
-  const { messages, setMessages } = props
+  const { messages, setMessages, abortController } = props
   const containerRef = useRef<HTMLDivElement>(null)
   const [speakingId, setSpeakingId] = useState<string | null>(null)
 
@@ -89,10 +91,12 @@ export default function MainContent(props: IProps) {
       <div className={'w-full flex-1 overflow-y-auto custom-message-light-scrollbar'}>
         <div className={'md:max-w-screen-sm max-md:w-full mx-auto p-3 dark:text-gray-50 min-h-full relative'}>
           <ChatHome
-            speakingId={speakingId}
-            startSpeaking={startSpeaking}
-            stopSpeaking={stopSpeaking}
             messages={messages}
+            speakingId={speakingId}
+            setMessages={setMessages}
+            stopSpeaking={stopSpeaking}
+            startSpeaking={startSpeaking}
+            abortController={abortController}
           />
         </div>
       </div>
@@ -104,11 +108,12 @@ export default function MainContent(props: IProps) {
       {/* basic content */}
       <div className={'md:max-w-screen-sm max-md:w-full mx-auto p-3 dark:text-gray-50'}>
         <ChatContent
-          speakingId={speakingId}
-          startSpeaking={startSpeaking}
-          stopSpeaking={stopSpeaking}
           messages={messages}
+          speakingId={speakingId}
           setMessages={setMessages}
+          stopSpeaking={stopSpeaking}
+          startSpeaking={startSpeaking}
+          abortController={abortController}
         />
       </div>
 

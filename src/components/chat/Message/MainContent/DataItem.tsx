@@ -1,15 +1,34 @@
 import Image from 'next/image'
-import { useAtom, useAtomValue } from 'jotai'
+import { v4 as uuid } from 'uuid'
 import { useUser } from '@clerk/nextjs'
 import { useRouter } from 'next/router'
+import { useAtom, useAtomValue } from 'jotai'
 import { encodingForModel } from 'js-tiktoken'
-import { forwardRef, Fragment, useState } from 'react'
+import {
+  type Dispatch,
+  type SetStateAction,
+  type MutableRefObject,
+  forwardRef,
+  Fragment,
+  useState,
+} from 'react'
 
-import { ignoreLineAtom, selectedModelIdAtom } from '@/atoms'
+import {
+  chatMessagesAtom,
+  ignoreLineAtom,
+  isLoadingAtom,
+  maxHistorySizeAtom, maxTokensAtom,
+  selectedModelIdAtom, temperatureAtom
+} from '@/atoms'
+import { getChatHistoryFromRefresh } from '@/utils/getChatHistoryFromRefresh'
+import { deleteLastChatMessage } from '@/requests'
+import { saveCompletionRequest } from '@/utils'
+import type { TMessage } from '@/types'
 import CheckIcon from '@/components/icons/CheckIcon'
 import CopyIcon from '@/components/icons/CopyIcon'
 import SpeedIcon from '@/components/icons/SpeedIcon'
 import VolumeIcon from '@/components/icons/VolumeIcon'
+import RefreshIcon from '@/components/icons/RefreshIcon'
 import PlayerPauseIcon from '@/components/icons/PlayerPauseIcon'
 import PlayerStationIcon from '@/components/icons/PlayerStationIcon'
 import RenderModelIcon from '@/components/common/chat/RenderModelIcon'
@@ -34,20 +53,38 @@ interface IProps {
     costTokens?: number // chatMessages
     imageUrls?: string[] // chatMessages
   }
+  messages: TMessage[]
+  isLastElement: boolean
   speakingId: string | null
-  startSpeaking: (id: string, content: string, rate: number) => void
   stopSpeaking: () => void
+  setMessages: Dispatch<SetStateAction<TMessage[]>>
+  abortController: MutableRefObject<AbortController | null>
+  startSpeaking: (id: string, content: string, rate: number) => void
 }
 
 const DataItem =  forwardRef<HTMLDivElement, IProps>((props, ref) => {
-  const { data, speakingId, startSpeaking, stopSpeaking } = props
+  const {
+    data,
+    speakingId,
+    startSpeaking,
+    stopSpeaking,
+    isLastElement,
+    messages,
+    setMessages,
+    abortController
+  } = props
   const { user } = useUser()
   const router = useRouter()
+  const maxTokens = useAtomValue(maxTokensAtom)
+  const temperature  = useAtomValue(temperatureAtom)
+  const maxHistorySize = useAtomValue(maxHistorySizeAtom)
+  const [isLoading, setIsLoading] = useAtom(isLoadingAtom)
   const selectedModelId =  useAtomValue(selectedModelIdAtom)
   const [ignoreLine, setIgnoreLine] = useAtom(ignoreLineAtom)
+  const [chatMessages, setChatMessages] = useAtom(chatMessagesAtom)
   const [rateId, setRateId] = useState<number>(1)
   const [copy, setCopy] = useState<{[key: string]: boolean}>({}) // key: message id, value: boolean
-  const { currentChatModel } = useGetChatInformation(router.query.id as string | undefined, selectedModelId)
+  const { currentChatModel, modelName } = useGetChatInformation(router.query.id as string | undefined, selectedModelId)
 
   const handleCopyClick = (code: string, id: string) => {
     navigator.clipboard.writeText(code).then(() => {})
@@ -94,6 +131,92 @@ const DataItem =  forwardRef<HTMLDivElement, IProps>((props, ref) => {
       }).filter(item => item.value.length > 0) // delete whole item if value is empty
     })
   }
+
+  const handleRefresh = async () => {
+    if (speakingId) stopSpeaking()
+    setRateId(1)
+
+    // 1. delete the last message in the database
+    await deleteLastChatMessage(router.query.id as string)
+
+    // 2. sync the last deleting message in the frontend
+    if (messages.length > 0) {
+      setMessages(prev => prev.length > 0 ? prev.slice(0, prev.length - 1) : prev)
+    } else {
+      setChatMessages(prev => prev.length > 0 ? prev.slice(0, prev.length - 1) : prev)
+    }
+
+    // 3. send api
+    setIsLoading(true)
+    const receivedMessage: TMessage = {
+      id: uuid(),
+      messageContent: '',
+      messageRole: 'assistant',
+      imageUrls: [],
+    }
+    setMessages(prev => [...prev, receivedMessage])
+
+    abortController.current = new AbortController()
+    const sendContent = getChatHistoryFromRefresh(
+      modelName === 'gpt-4-vision-preview',
+      maxHistorySize,
+      messages.length > 0 ? messages.slice(0, messages.length - 1) : [], // the messages' state is async, so we need to delete the last element
+      chatMessages // chatMessages must not be empty
+    )
+
+    console.log(sendContent, 'asdkajskd')
+
+    const options = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        temperature,
+        max_tokens: maxTokens,
+        model_name: modelName!,
+        send_content: sendContent
+      }),
+      signal: abortController.current.signal
+    }
+
+    const res = await fetch('/api/chat/send', options)
+    if (!res.ok || !res.body) return
+    let completion = ''
+
+    try {
+      const reader = res.body.getReader()
+      const decoder = new TextDecoder()
+      while (true) {
+        const { done, value } = await reader.read()
+        const text = decoder.decode(value)
+        completion += text
+        receivedMessage.messageContent += text
+        setMessages(prev => prev.map(item => item.id === receivedMessage.id ? receivedMessage : item))
+
+        if (done) {
+          try {
+            await saveCompletionRequest(completion, modelName!, router.query.id as string)
+          } catch (e) {
+            console.log('save response error', e)
+          }
+          break
+        }
+      }
+    } catch (e) {
+      // stream interrupted, save the response to the database.
+      await saveCompletionRequest(completion, modelName!, router.query.id as string | undefined, data)
+    }
+    abortController.current = null
+    setIsLoading(false)
+  }
+
+  // setMessages(prev => {
+  //   if (isLastElement) {
+  //     return prev.slice(0, prev.length - 1)
+  //   }
+  //   return prev
+  // })
 
   return (
     <>
@@ -171,52 +294,71 @@ const DataItem =  forwardRef<HTMLDivElement, IProps>((props, ref) => {
         </div>
 
         {/* Footer content */}
-        <div className={'w-full h-[20px] my-1'}>
-          <div className={'hidden group-hover/icons:flex gap-1'}>
-            {copy[data.id] ? (
-              <CheckIcon width={16} height={16} className={'text-green-600 p-1'}/>
-            ) : (
-              <CopyIcon
-                width={16}
-                height={16}
-                className={'rounded-md p-1 hover:cursor-pointer hover:bg-gray-200 dark:hover:bg-chatpage-message-robot-content-dark'}
-                onClick={() => handleCopyClick(data.content, String(data.id))}
-              />
-            )}
-
-            <div className={'cursor-pointer p-1 rounded-md hover:bg-gray-200 dark:hover:bg-chatpage-message-robot-content-dark'}>
-              {
-                speakingId === data.id ? (
-                  <PlayerPauseIcon
-                    width={16}
-                    height={16}
-                    onClick={stopSpeaking}
-                  />
+        {/* When isLastElement equals true,  */}
+        {
+          (data.role !== 'assistant' || !isLastElement || (isLastElement && !isLoading)) && (
+            <div className={'w-full h-[20px] my-1'}>
+              <div className={'hidden group-hover/icons:flex gap-1'}>
+                {copy[data.id] ? (
+                  <CheckIcon width={16} height={16} className={'text-green-600 p-1'}/>
                 ) : (
-                  <VolumeIcon
+                  <CopyIcon
                     width={16}
                     height={16}
-                    onClick={() => startSpeaking(data.id, data.content, rateId)}
+                    className={'rounded-md p-1 hover:cursor-pointer hover:bg-gray-200 dark:hover:bg-chatpage-message-robot-content-dark'}
+                    onClick={() => handleCopyClick(data.content, String(data.id))}
                   />
-                )
-              }
-            </div>
+                )}
 
-            <div
-              className={'flex gap-1 cursor-pointer p-1 rounded-md hover:bg-gray-200 dark:hover:bg-chatpage-message-robot-content-dark'}
-              onClick={handleChangeRate}
-            >
-              <PlayerStationIcon width={16} height={16}/>
-              <span className={'text-xs'}>{rateId}x</span>
-            </div>
+                {
+                  isLastElement && !isLoading && (
+                    <div
+                      className={'cursor-pointer p-1 rounded-md hover:bg-gray-200 dark:hover:bg-chatpage-message-robot-content-dark'}
+                      onClick={handleRefresh}
+                    >
+                      <RefreshIcon width={16} height={16}/>
+                    </div>
+                  )
+                }
 
-            <div className={'flex gap-1 p-1 rounded-md hover:bg-gray-200 dark:hover:bg-chatpage-message-robot-content-dark'}>
-              <SpeedIcon width={16} height={16}/>
-              {/* If the data costTokens is null, it means that this is the messages array render.  */}
-              <span className={'text-xs'}>{data.costTokens || enc.encode(data.content).length} tokens</span>
+                <div
+                  className={'cursor-pointer p-1 rounded-md hover:bg-gray-200 dark:hover:bg-chatpage-message-robot-content-dark'}
+                >
+                  {
+                    speakingId === data.id ? (
+                      <PlayerPauseIcon
+                        width={16}
+                        height={16}
+                        onClick={stopSpeaking}
+                      />
+                    ) : (
+                      <VolumeIcon
+                        width={16}
+                        height={16}
+                        onClick={() => startSpeaking(data.id, data.content, rateId)}
+                      />
+                    )
+                  }
+                </div>
+
+                <div
+                  className={'flex gap-1 cursor-pointer p-1 rounded-md hover:bg-gray-200 dark:hover:bg-chatpage-message-robot-content-dark'}
+                  onClick={handleChangeRate}
+                >
+                  <PlayerStationIcon width={16} height={16}/>
+                  <span className={'text-xs'}>{rateId}x</span>
+                </div>
+
+                <div
+                  className={'flex gap-1 p-1 rounded-md hover:bg-gray-200 dark:hover:bg-chatpage-message-robot-content-dark'}>
+                  <SpeedIcon width={16} height={16}/>
+                  {/* If the data costTokens is null, it means that this is the messages array render.  */}
+                  <span className={'text-xs'}>{data.costTokens || enc.encode(data.content).length} tokens</span>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
+          )
+        }
       </div>
 
       {/* IgnoreLine */}
@@ -230,7 +372,7 @@ const DataItem =  forwardRef<HTMLDivElement, IProps>((props, ref) => {
                 <IgnoreLine onDelete={() => handleDeleteIgnoreLine(item.key, data.id)}/>
               </Fragment>
             )
-        ))
+          ))
       }
     </>
   )

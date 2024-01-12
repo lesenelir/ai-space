@@ -1,13 +1,4 @@
-import { TChatMessages, TImage, TMessage } from '@/types'
-
-type TSendContent = {
-  role: string
-  content: string | {
-    type: string
-    text?: string
-    image_url?: string
-  }[]
-}
+import type { TChatMessages, TImage, TMessage, TSendContent } from '@/types'
 
 const createTextContent = (text: string): TSendContent => {
   return {

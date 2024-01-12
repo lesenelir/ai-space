@@ -1,7 +1,7 @@
 import { useSetAtom } from 'jotai'
 import { toast, Toaster } from 'sonner'
 import { useRouter } from 'next/router'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 import type { TMessage } from '@/types'
 import { chatMessagesAtom } from '@/atoms'
@@ -11,8 +11,9 @@ import FooterContent from '@/components/chat/Message/FooterContent'
 
 export default function Message() {
   const router = useRouter()
-  const [messages, setMessages] = useState<TMessage[]>([]) // real time messages
   const setChatMessages = useSetAtom(chatMessagesAtom)
+  const [messages, setMessages] = useState<TMessage[]>([]) // real time messages
+  const abortController = useRef<AbortController | null>(null)
 
   const getRequest = useCallback(async () => {
     const options = {
@@ -51,11 +52,10 @@ export default function Message() {
   return (
     <>
       <Toaster richColors position={'top-center'}/>
-      <div
-        className={'flex-1 w-full flex flex-col bg-gray-50 dark:bg-chatpage-message-background-dark dark:text-chatpage-message-text-dark'}>
+      <div className={'flex-1 w-full flex flex-col bg-gray-50 dark:bg-chatpage-message-background-dark dark:text-chatpage-message-text-dark'}>
         <HeaderContent/>
-        <MainContent messages={messages} setMessages={setMessages}/>
-        <FooterContent messages={messages} setMessages={setMessages}/>
+        <MainContent messages={messages} setMessages={setMessages} abortController={abortController}/>
+        <FooterContent messages={messages} setMessages={setMessages} abortController={abortController}/>
       </div>
     </>
   )

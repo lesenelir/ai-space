@@ -2,6 +2,7 @@ import { useAtomValue } from 'jotai'
 import { useTranslation } from 'next-i18next'
 import {
   type Dispatch,
+  type MutableRefObject,
   type SetStateAction,
   useEffect,
   useRef
@@ -13,9 +14,10 @@ import DataItem from '@/components/chat/Message/MainContent/DataItem'
 
 interface IProps {
   messages: TMessage[]
-  speakingId: string | null
   stopSpeaking: () => void
+  speakingId: string | null
   setMessages: Dispatch<SetStateAction<TMessage[]>>
+  abortController: MutableRefObject<AbortController | null>
   startSpeaking: (id: string, content: string, rate: number) => void
 }
 
@@ -29,10 +31,10 @@ interface IProps {
  *
  */
 export default function ChatContent(props: IProps) {
-  const { messages, speakingId, startSpeaking, stopSpeaking } = props
+  const { messages, speakingId, startSpeaking, stopSpeaking, setMessages, abortController } = props
   const { t } = useTranslation('common')
-  const endOfMessagesRef = useRef<HTMLDivElement>(null)
   const chatMessages = useAtomValue(chatMessagesAtom)
+  const endOfMessagesRef = useRef<HTMLDivElement>(null)
 
   // update scroll to the bottom when the messages change
   useEffect(() => {
@@ -51,7 +53,7 @@ export default function ChatContent(props: IProps) {
     <>
       {/*first render to load data from the database*/}
       {
-        chatMessages.map(m => (
+        chatMessages.map((m, index) => (
           <DataItem
             key={m.id}
             ref={endOfMessagesRef}
@@ -62,16 +64,20 @@ export default function ChatContent(props: IProps) {
               costTokens: m.costTokens,
               imageUrls: m.imageUrls,
             }}
+            messages={messages}
             speakingId={speakingId}
-            startSpeaking={startSpeaking}
+            setMessages={setMessages}
             stopSpeaking={stopSpeaking}
+            startSpeaking={startSpeaking}
+            abortController={abortController}
+            isLastElement={messages.length === 0 && index === chatMessages.length - 1}
           />
         ))
       }
 
       {/* Real time  */}
       {
-        messages.map(m => (
+        messages.map((m, index) => (
           <DataItem
             key={m.id}
             ref={endOfMessagesRef}
@@ -81,9 +87,13 @@ export default function ChatContent(props: IProps) {
               content: m.messageContent,
               imageUrls: m.imageUrls,
             }}
+            messages={messages}
             speakingId={speakingId}
-            startSpeaking={startSpeaking}
+            setMessages={setMessages}
             stopSpeaking={stopSpeaking}
+            startSpeaking={startSpeaking}
+            abortController={abortController}
+            isLastElement={index === messages.length - 1}
           />
         ))
       }

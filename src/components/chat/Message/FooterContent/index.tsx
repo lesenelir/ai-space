@@ -2,6 +2,7 @@ import { useRouter } from 'next/router'
 import { useSpeechRecognition } from 'react-speech-recognition'
 import {
   type Dispatch,
+  type MutableRefObject,
   type SetStateAction,
   useEffect,
   useRef,
@@ -15,10 +16,11 @@ import FooterTextArea from '@/components/chat/Message/FooterContent/FooterTextAr
 interface IProps {
   messages: TMessage[]
   setMessages: Dispatch<SetStateAction<TMessage[]>>
+  abortController: MutableRefObject<AbortController | null>
 }
 
 export default function FooterContent(props: IProps) {
-  const { messages, setMessages } = props
+  const { messages, setMessages, abortController } = props
   const router = useRouter()
   const { transcript, listening, resetTranscript } = useSpeechRecognition()
   const [remoteUrls, setRemoteUrls] = useState<TImage[]>([])
@@ -39,13 +41,13 @@ export default function FooterContent(props: IProps) {
       {/* icons */}
       <FooterHeader
         messages={messages}
-        setMessages={setMessages}
         listening={listening}
+        setMessages={setMessages}
         previewUrls={previewUrls}
-        resetTranscript={resetTranscript}
-        setPreviewUrls={setPreviewUrls}
         setUploading={setUploading}
         setRemoteUrls={setRemoteUrls}
+        setPreviewUrls={setPreviewUrls}
+        resetTranscript={resetTranscript}
         abortControllers={abortControllers}
       />
 
@@ -53,16 +55,17 @@ export default function FooterContent(props: IProps) {
       {/* ref={ref}; does not forward ref */}
       <FooterTextArea
         messages={messages}
-        setMessages={setMessages}
         listening={listening}
-        transcript={transcript}
-        resetTranscript={resetTranscript}
-        previewUrls={previewUrls}
-        setPreviewUrls={setPreviewUrls}
-        remoteUrls={remoteUrls}
-        setRemoteUrls={setRemoteUrls}
         uploading={uploading}
+        transcript={transcript}
+        remoteUrls={remoteUrls}
+        setMessages={setMessages}
+        previewUrls={previewUrls}
         setUploading={setUploading}
+        setRemoteUrls={setRemoteUrls}
+        setPreviewUrls={setPreviewUrls}
+        abortController={abortController}
+        resetTranscript={resetTranscript}
         abortControllers={abortControllers}
       />
     </div>
