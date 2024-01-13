@@ -98,3 +98,4 @@ This changelog provides a detailed record of the updates and improvements made t
 - Add `Max history size` feature for chat settings and implement the logic for sending the max history size to the model.
 - Add `My Copilots` featured.
 - Add `Refesh the latest reply` feature.
+- Add `Generate chat title` feature.
