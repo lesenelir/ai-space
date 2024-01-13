@@ -24,6 +24,7 @@ import DropDown from '@/components/ui/DropDown'
 import DotsIcon from '@/components/icons/DotsIcon'
 import LinkIcon from '@/components/icons/LinkIcon'
 import useOutsideClick from '@/hooks/useOutsideClick'
+import RefreshIcon from '@/components/icons/RefreshIcon'
 import PlayerRecordIcon from '@/components/icons/PlayerRecord'
 import MicrophoneIcon from '@/components/icons/MicrophoneIcon'
 import useGetChatInformation from '@/hooks/useGetChatInformation'
@@ -59,9 +60,10 @@ export default function FooterHeader(props: IProps) {
   const { browserSupportsSpeechRecognition } = useSpeechRecognition()
   const chatMessages = useAtomValue(chatMessagesAtom)
   const selectedModelId = useAtomValue(selectedModelIdAtom)
+  const [disabled, setDisabled] = useState<boolean>(true)
   const [isDropDownOpen, setIsDropDownOpen] = useState<boolean>(false)
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false)
-  const [disabled, setDisabled] = useState<boolean>(true)
+  const [generatingChatTitle, setGeneratingChatTitle] = useState<boolean>(false)
   const dropDownDivRef = useRef<HTMLDivElement>(null)
   const triggerDivRef = useRef<HTMLDivElement>(null)
   const hiddenUploadImageRef = useRef<HTMLInputElement>(null)
@@ -223,32 +225,47 @@ export default function FooterHeader(props: IProps) {
         {/* more */}
         {
           router.query.id && (
-            <div
-              ref={triggerDivRef}
-              className={'relative p-2 rounded-md cursor-pointer hover:bg-gray-200 dark:hover:bg-chatpage-message-robot-content-dark'}
-              onClick={() => setIsDropDownOpen(!isDropDownOpen)}
-            >
-              {
-                isDropDownOpen && (
-                  <DropDown
-                    ref={dropDownDivRef}
-                    className={`w-48 bottom-7 left-0 ${disabled && 'pointer-events-none'}`}
-                    motionClassName={`
-                      bg-gray-50 border
-                      dark:bg-chatpage-message-background-dark dark:border-gray-500 dark:text-chatpage-message-text-dark
-                    `}
-                    motionAnimation={{
-                      initial: {opacity: 0, y: '20%'},
-                      animate: {opacity: 1, y: 0},
-                    }}
-                  >
-                    <FooterMoreIconsData disabled={disabled} messages={messages} setShowDeleteModal={setShowDeleteModal}/>
-                  </DropDown>
-                )
-              }
-              {/* more */}
-              <DotsIcon width={16} height={16}/>
-            </div>
+            generatingChatTitle ? (
+              <div
+                className={'relative p-2 rounded-md hover:bg-gray-200 dark:hover:bg-chatpage-message-robot-content-dark'}
+              >
+                <Tooltip title={t('chatPage.message.generating')} className={'w-28 left-0 flex justify-center'}>
+                  <RefreshIcon width={16} height={16} className={'animate-spinReverse'}/>
+                </Tooltip>
+              </div>
+            ) : (
+              <div
+                ref={triggerDivRef}
+                className={'relative p-2 rounded-md cursor-pointer hover:bg-gray-200 dark:hover:bg-chatpage-message-robot-content-dark'}
+                onClick={() => setIsDropDownOpen(!isDropDownOpen)}
+              >
+                {
+                  isDropDownOpen && (
+                    <DropDown
+                      ref={dropDownDivRef}
+                      className={`w-48 bottom-7 left-0 ${disabled && 'pointer-events-none'}`}
+                      motionClassName={`
+                        bg-gray-50 border
+                        dark:bg-chatpage-message-background-dark dark:border-gray-500 dark:text-chatpage-message-text-dark
+                      `}
+                      motionAnimation={{
+                        initial: {opacity: 0, y: '20%'},
+                        animate: {opacity: 1, y: 0},
+                      }}
+                    >
+                      <FooterMoreIconsData
+                        disabled={disabled}
+                        messages={messages}
+                        setShowDeleteModal={setShowDeleteModal}
+                        setGeneratingChatTitle={setGeneratingChatTitle}
+                      />
+                    </DropDown>
+                  )
+                }
+                {/* more */}
+                <DotsIcon width={16} height={16}/>
+              </div>
+            )
           )
         }
       </div>

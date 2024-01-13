@@ -25,12 +25,21 @@ const config: Config = {
           '0%': { opacity: '1' },
           '50%': { opacity: '0' },
           '100%': { opacity: '1' },
+        },
+        spinReverse: {
+          from : {
+            transform: 'rotate(360deg)',
+          },
+          to: {
+            transform: 'rotate(0deg)',
+          }
         }
       },
       animation: {
         blink: 'blink 1.4s infinite both',
         record: 'record 1.5s infinite both',
         slowSpin: 'spin 2s linear infinite',
+        spinReverse: 'spinReverse 1.5s linear infinite',
       },
       colors: {
         homepage: {

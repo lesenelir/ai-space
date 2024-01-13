@@ -22,8 +22,8 @@ import {
   maxHistorySizeAtom,
   selectedModelIdAtom
 } from '@/atoms'
-import { getChatHistoryFromRefresh } from '@/utils/getChatHistoryFromRefresh'
 import { deleteLastChatMessage, saveCompletionRequest } from '@/requests'
+import { getCurrentChatHistory } from '@/utils/getCurrentChatHistory'
 import type { TMessage } from '@/types'
 import CheckIcon from '@/components/icons/CheckIcon'
 import CopyIcon from '@/components/icons/CopyIcon'
@@ -158,7 +158,7 @@ const DataItem =  forwardRef<HTMLDivElement, IProps>((props, ref) => {
     setMessages(prev => [...prev, receivedMessage])
 
     abortController.current = new AbortController()
-    const sendContent = getChatHistoryFromRefresh(
+    const sendContent = getCurrentChatHistory(
       modelName === 'gpt-4-vision-preview',
       maxHistorySize,
       messages.length > 0 ? messages.slice(0, messages.length - 1) : [], // the messages' state is async, so we need to delete the last element

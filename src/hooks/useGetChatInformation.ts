@@ -4,7 +4,7 @@ import { useAtomValue } from 'jotai'
 import { chatItemsAtom, modelsAtom } from '@/atoms'
 import { getModelName } from '@/utils/modelName'
 
-export default function useGetChatInformation(urlUuid: string | undefined, selectId:number) {
+export default function useGetChatInformation(urlUuid: string | undefined, selectId: number) {
   const chatItemLists =  useAtomValue(chatItemsAtom)
   const models = useAtomValue(modelsAtom)
 

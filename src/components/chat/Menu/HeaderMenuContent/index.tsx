@@ -29,7 +29,9 @@ export default function HeaderMenuContent() {
     try {
       const response = await fetch('/api/chat/newChat', options)
       const data = (await response.json()).chatItems
+      const newChatItem = data[data.length - 1]
       setChatItems(data)
+      await router.push(`/chat/${newChatItem.itemUuid}`)
     } catch (e) {
       console.error(e)
     }

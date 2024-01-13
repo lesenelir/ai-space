@@ -1,6 +1,6 @@
 import type { TChatMessages, TMessage, TSendContent } from '@/types'
 
-export const getChatHistoryFromRefresh = (
+export const getCurrentChatHistory = (
   isImageInput: boolean,
   maxHistorySize: number,
   messages: TMessage[],

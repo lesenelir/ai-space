@@ -64,6 +64,8 @@
       "copy": "copy",
       "copied": "copied",
       "voiceInput": "voice input",
+      "generatorChatTitle": "create chat title",
+      "generating": "generating title",
       "ignoreMessages": "Ignore Messages",
       "deleteMessages": "Delete Messages",
       "ignoreMessagesContent": "Ignored above messages",
