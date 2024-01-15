@@ -1,22 +1,59 @@
 # AI-Space
 
-- login
-    - clerk login https://clerk.com/docs/quickstarts/nextjs
+## Introduction
 
-  
-如果要新添加 model 类别：
-- 在数据库中，手动添加新的类别，后期可以写一个脚本来为数据库自动注入模型的数据给 Model Table 中
-- selectedModelIdAtom 初始值 必须 依赖于 modelsAtom 的第一个值 id
+This project is a chat application that uses various AI models to chat with users. 
+The application is built with Next.js Pages Router and Tailwind CSS.
 
-
-TODO：
-- stop 的时候，捕获 TCP 错误，针对这个错误，将所生成的所有 token 存入数据库
+Tech Stack: Next.js (Pages Router) + React + TypeScript + Tailwind CSS + Jotai + AI + Prisma + MySQL (Client side storage will be added in the future)
 
 
-增加 model 步骤：
-- 数据库中 添加 新的 model
-- 修改 `RenderModelIcon` 组件
-- Select 组件中，修改 `models.map` 方法
-- 修改 `utils/modelName` 方法
-- 修改发送请求的部分
+## Features
 
+- Frontend
+  -[x] Website UI/UX accomplished with Tailwindcss, such as Home Page, Chat Page, etc
+  -[x] Composed several UI components, such as Modal, Tabs, Tooltip components, etc
+  -[x] Integrate clerk for login authentication 
+  -[x] Home page animation 
+  -[x] Dark mode and Light mode
+  -[x] Mobile support
+  -[x] I18n Internationalization
+  -[x] Copy to clipboard 
+  -[x] Markdown converted to html string and code highlighted
+  -[x] Integrate stackblitz for previewing code
+  -[x] Speech synthesis and speech recognition
+  -[x] Images uploaded to Cloudinary and previewed
+  -[x] Maintain the token consumption of each chat
+  -[x] Using Jotai for global state management
+  -[x] SSR to prefetch data, and hydrate the prefetched data on the client side 
+  -[ ] Create and save screenshot 
+
+- Backend
+  -[x] Integrate mysql database and save the chat data to the server
+  -[x] Create database tables and restful api routes for data persistence
+
+> This project aims to build a full stack application, so I decided to save data to the server.
+> 
+> Maybe I will add client side storage in the future.
+
+- OpenAI
+  - [x] Integrate OpenAI API and add GPT-3.5 GPT-4 GPT-vision models
+  - [x] Integrate vercel ai sdk for requesting openai api and implement the stream response
+  - [x] Maintain the messages' array state on my own instead of using vercel ai sdk useChat hook
+  - [x] Add maxTokens and temperature parameters to openai backend api
+  - [x] Maintain the max history size parameter for chat context management 
+  - [x] Add my copilots (system message) feature
+  - [x] Add refresh the latest reply feature
+  - [x] Add generate chat title feature
+
+
+## Inspirations
+
+- [https://openai.com/chatgpt](https://openai.com/chatgpt)
+- [https://chat.openai.com](https://chat.openai.com)
+- [https://chatkit.app](https://chatkit.app)
+- [https://web.chatboxai.app](https://web.chatboxai.app)
+
+
+## License
+Code is licensed under [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0)
