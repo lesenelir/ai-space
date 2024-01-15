@@ -32,6 +32,10 @@ Tech Stack: Next.js (Pages Router) + React + TypeScript + Tailwind CSS + Jotai +
   - [x] Integrate mysql database and save the chat data to the server
   - [x] Create database tables and restful api routes for data persistence
 
+![tables logo](/public/docs/dark.png#gh-dark-mode-only)
+![tables logo](/public/docs/light.png#gh-light-mode-only)
+
+
 > This project aims to build a full stack application, so I decided to save data to the server.
 > 
 > Maybe I will add client side storage in the future.
