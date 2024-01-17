@@ -1,0 +1,27 @@
+version: '3.7'
+services:
+  app:
+    container_name: ai-space
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - DATABASE_URL=mysql://user:password@db:3306/ai-space
+    depends_on:
+      - db
+    volumes:
+      - .:/app
+      - /app/node_modules
+  db:
+    container_name: ai-space-db
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_DATABASE: ai-space
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: password
+    volumes:
+      - db-data:/var/lib/mysql
+volumes:
+  db-data:

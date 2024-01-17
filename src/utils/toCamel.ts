@@ -1,6 +1,6 @@
-import { Prisma } from '@prisma/client'
+import { JsonValue } from '@prisma/client/runtime/library'
 
-type AnyObject = { [key: string]: string | number | boolean | Date | Prisma.JsonValue}
+type AnyObject = { [key: string]: string | number | boolean | Date | JsonValue}
 
 export function toCamelCase(str: string): string {
   return str.split('_').map((part, index) => {
