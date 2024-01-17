@@ -63,7 +63,7 @@ export default function ChatPage(props: IProps) {
     <>
       <Head>
         <title>{currentChatName}</title>
-        <meta name='description' content='Lesenelir OpenAI Project'/>
+        <meta name='description' content='Lesenelir OpenAI Chat Project'/>
         <link rel='icon' href={`/favicon.ico`}/>
       </Head>
 

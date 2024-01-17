@@ -77,5 +77,14 @@
       "confirm": "确认",
       "upload": "上传图片"
     }
+  },
+  "dallPage": {
+    "dall": "DALL·E",
+    "history": "历史记录",
+    "theme": "主题",
+    "language": "语言",
+    "goHome": "返回主页",
+    "en": "英文 / English",
+    "zh": "中文"
   }
 }

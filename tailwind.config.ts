@@ -58,6 +58,9 @@ const config: Config = {
           'message-text-strong-dark': '#ECECF1',
           'message-robot-content-dark': '#444652',
         },
+        dallpage: {
+          'dark-background': '#202123',
+        },
         openai: {
           'b-0': '#235354',
           't-0': '#FFFFDF',

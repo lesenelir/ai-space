@@ -2,13 +2,14 @@ interface IProps {
   width: number
   height: number
   className?: string
+  onClick?: () => void
 }
 
 export default function LZIcon(props: IProps) {
-  const {width, height, className} = props
+  const {width, height, className, onClick} = props
 
   return (
-    <div className={className}>
+    <div className={className} onClick={onClick}>
       <svg width={width} height={height} viewBox="0 0 512 512" fill="none" stroke="currentColor" xmlns="http://www.w3.org/2000/svg">
         <path d="M273 417C281.612 419.918 289.012 421.382 298 423" strokeWidth="20"
               strokeLinecap="round"/>

@@ -76,5 +76,14 @@
       "confirm": "Confirm",
       "upload": "upload image"
     }
+  },
+  "dallPage": {
+    "dall": "DALL·E",
+    "history": "History",
+    "theme": "Theme",
+    "language": "Language",
+    "goHome": "Go Home",
+    "en": "English",
+    "zh": "中文 / Chinese"
   }
 }
