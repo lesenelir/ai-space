@@ -1,7 +1,8 @@
+import clsx from 'clsx'
 import { useRouter } from 'next/router'
 import { useTranslation } from 'next-i18next'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
-import { type Dispatch, type SetStateAction } from 'react'
+import { type Dispatch, type SetStateAction, useMemo } from 'react'
 
 import {
   chatItemsAtom,
@@ -99,41 +100,31 @@ export default function FooterMoreIconsData(props: IProps) {
     setGeneratingChatTitle(false)
   }
 
+  const normalDivClass = useMemo(() => (
+    clsx(
+      'flex items-center gap-2 p-2 rounded-lg text-sm hover:bg-gray-200/60',
+      'dark:hover:bg-chatpage-message-robot-content-dark',
+      disabled && 'opacity-40'
+    )
+  ), [disabled])
+
   return (
     <div>
       {/* generator chat title */}
-      <div
-        className={`
-          flex items-center gap-2 p-2 rounded-lg text-sm hover:bg-gray-200/60
-          dark:hover:bg-chatpage-message-robot-content-dark
-          ${disabled && 'opacity-40'}
-        `}
-        onClick={handleGeneratorChatTitle}
-      >
+      <div className={normalDivClass} onClick={handleGeneratorChatTitle}>
         <TIcon width={16} height={16}/>
         {t('chatPage.message.generatorChatTitle')}
       </div>
 
       {/* ignore messages */}
-      <div
-        className={`
-          flex items-center gap-2 p-2 rounded-lg text-sm hover:bg-gray-200/60
-          dark:hover:bg-chatpage-message-robot-content-dark
-          ${disabled && 'opacity-40'}
-        `}
-        onClick={handleAddIgnoreLine}
-      >
+      <div className={normalDivClass} onClick={handleAddIgnoreLine}>
         <SeparatorIcon width={16} height={16}/>
         {t('chatPage.message.ignoreMessages')}
       </div>
 
       {/* clear messages */}
       <div
-        className={`
-          flex items-center gap-2 p-2 rounded-lg text-sm text-rose-600 hover:bg-gray-200/60
-          dark:text-red-500  dark:hover:bg-chatpage-message-robot-content-dark
-          ${disabled && 'opacity-40'}
-        `}
+        className={clsx(normalDivClass, 'text-rose-600 dark:text-red-500')}
         onClick={() => setShowDeleteModal(true)}
       >
         <MessageClearIcon width={16} height={16}/>

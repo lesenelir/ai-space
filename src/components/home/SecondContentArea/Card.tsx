@@ -1,3 +1,4 @@
+import clsx from 'clsx'
 import Link from 'next/link'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
@@ -17,9 +18,7 @@ export default function Card(props: IProps) {
 
   return (
     <motion.div
-      className={`
-        w-1/3 md:w-2/5 max-md:w-full
-      `}
+      className={'w-1/3 md:w-2/5 max-md:w-full'}
       initial={{ opacity: 0, y: -40 }}
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.4, duration: 1.6 }}
@@ -35,10 +34,10 @@ export default function Card(props: IProps) {
 
         <Link
           href={href}
-          className={`
-            underline underline-offset-4 cursor-pointer
-            transition duration-300 ease-in-out hover:decoration-slate-400
-          `}
+          className={clsx(
+            'underline underline-offset-4 cursor-pointer',
+            'transition duration-300 ease-in-out hover:decoration-slate-400'
+          )}
         >
           Learn more
         </Link>

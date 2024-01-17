@@ -1,3 +1,4 @@
+import clsx from 'clsx'
 import { useAtomValue } from 'jotai'
 
 import { isMenuOpenAtom } from '@/atoms'
@@ -10,10 +11,10 @@ export default function HeaderContent() {
 
   return (
     <div
-      className={`
-        w-full h-[66px] p-3 border-b mb-1 flex justify-between items-center 
-        dark:bg-chatpage-message-background-dark dark:border-b-gray-500
-      `}
+      className={clsx(
+        'w-full h-[66px] p-3 border-b mb-1 flex justify-between items-center',
+        'dark:bg-chatpage-message-background-dark dark:border-b-gray-500'
+      )}
     >
       {/* left icon */}
       <div className={`${isMenuOpen ? '' : 'ml-12'} text-black dark:text-white`}>

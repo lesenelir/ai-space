@@ -1,3 +1,4 @@
+import clsx from 'clsx'
 import { Ephesis } from 'next/font/google'
 
 import Card from '@/components/home/SecondContentArea/Card'
@@ -37,10 +38,10 @@ const cardData = [
 export default function SecondContentArea() {
   return (
     <div
-      className={`
-        w-full min-h-[90vh] lg:px-32 px-8 py-4 max-sm:px-4
-        text-homepage-second-text bg-homepage-second-background
-      `}
+      className={clsx(
+        'w-full min-h-[90vh] lg:px-32 px-8 py-4 max-sm:px-4',
+        'text-homepage-second-text bg-homepage-second-background'
+      )}
       id={'research'}
     >
       <div className={'border border-homepage-second-text mt-12 mb-6'}/>

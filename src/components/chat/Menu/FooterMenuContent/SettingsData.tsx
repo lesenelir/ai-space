@@ -1,3 +1,4 @@
+import clsx from 'clsx'
 import { useTheme } from 'next-themes'
 import { Toaster, toast } from 'sonner'
 import { useRouter } from 'next/router'
@@ -7,6 +8,7 @@ import {
   type ChangeEvent,
   type FormEvent,
   useEffect,
+  useMemo,
   useRef
 } from 'react'
 
@@ -84,6 +86,14 @@ export const GeneralContent = () => {
     currentThemeRef.current = localStorage.getItem('theme') || 'system'
   }, [])
 
+
+  const exportImportClass = useMemo(() => (
+    clsx(
+      'border border-gray-500 rounded-md p-1 text-sm disabled:cursor-not-allowed',
+      'bg-chatpage-message-background-dark !disabled:hover:bg-gray-500/10 transition-change'
+    )
+  ), [])
+
   return (
     <div className={'flex flex-col gap-8'}>
       {/* header */}
@@ -123,22 +133,10 @@ export const GeneralContent = () => {
         </div>
 
         <div className={'flex gap-4'}>
-          <button
-            disabled={true}
-            className={`
-              border border-gray-500 rounded-md p-1 text-sm disabled:cursor-not-allowed 
-              bg-chatpage-message-background-dark !disabled:hover:bg-gray-500/10 transition-change
-            `}
-          >
+          <button disabled={true} className={exportImportClass}>
             {t('chatPage.menu.importData')}
           </button>
-          <button
-            disabled={true}
-            className={`
-              border border-gray-500 rounded-md p-1 text-sm disabled:cursor-not-allowed 
-              bg-chatpage-message-background-dark !disabled:hover:bg-gray-500/10 transition-change
-            `}
-          >
+          <button disabled={true} className={exportImportClass}>
             {t('chatPage.menu.exportData')}
           </button>
         </div>

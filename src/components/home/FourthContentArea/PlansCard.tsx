@@ -1,3 +1,4 @@
+import clsx from 'clsx'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 
@@ -28,23 +29,23 @@ export default function PlansCard(props: IProps) {
   return (
     <>
       <motion.div
-        className={`
-          border md:w-1/2 max-md:w-full text-white p-4 pb-12 flex flex-col gap-4
-          transform transition-all duration-400 hover:custom-hover-effect
-        `}
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         transition={{ delay: 0.6, duration: 1.6 }}
         viewport={{ once: true }}
+        className={clsx(
+          'border md:w-1/2 max-md:w-full text-white p-4 pb-12 flex flex-col gap-4',
+          'transform transition-all duration-400 hover:custom-hover-effect'
+        )}
       >
         <h1 className={'text-4xl'}>{main}</h1>
         <h2 className={'text-xl'}>{price}</h2>
         <div
-          className={`
-            border w-2/5 h-12 flex items-center justify-center
-            cursor-pointer transition duration-300 ease-in-out 
-            hover:bg-black hover:text-white
-          `}
+          className={clsx(
+            'border w-2/5 h-12 flex items-center justify-center',
+            'cursor-pointer transition duration-300 ease-in-out',
+            'hover:bg-black hover:text-white'
+          )}
         >
           <Link href={'/chat'}>
             {buttonText}

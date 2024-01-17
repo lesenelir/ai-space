@@ -1,5 +1,6 @@
+import clsx from 'clsx'
 import Link from 'next/link'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import Typewriter, { TypewriterClass } from 'typewriter-effect'
 
 import Navbar from '@/components/home/FirstContentArea/Navbar'
@@ -45,13 +46,24 @@ export default function FirstContentArea() {
     }
   }, [textIndex])
 
+  const cliClassName = useMemo(() => (
+    clsx(
+      'w-[100px] p-2 rounded-lg border flex justify-between items-center',
+      'transition duration-300 ease-in-out',
+      'hover:bg-black hover:text-white hover:cursor-pointer',
+      `bg-canvas-b-${colorIndex}`,
+      `text-canvas-t-${colorIndex}`
+    )
+  ), [colorIndex])
+
   return (
     <>
       <div
-        className={`
-          w-full min-h-screen flex flex-col 
-          bg-openai-b-${colorIndex} text-openai-t-${colorIndex}
-        `}
+        className={clsx(
+          'w-full min-h-screen flex flex-col',
+          `bg-openai-b-${colorIndex}`,
+          `text-openai-t-${colorIndex}`
+        )}
       >
         {/* Navbar */}
         <Navbar/>
@@ -92,26 +104,12 @@ export default function FirstContentArea() {
 
           {/* Entry */}
           <ul className={'list-none flex flex-row gap-4 m-6'}>
-            <li
-              className={`
-                w-[100px] p-2 rounded-lg border flex justify-between items-center 
-                bg-canvas-b-${colorIndex} text-canvas-t-${colorIndex}
-                transition duration-300 ease-in-out 
-                hover:bg-black hover:text-white hover:cursor-pointer
-              `}
-            >
+            <li className={cliClassName}>
               <Link href={'/chat'}>ChatGPT</Link>
               <ArrowUpRightIcon width={20} height={20}/>
             </li>
 
-            <li
-              className={`
-                w-[100px] p-2 rounded-lg border flex justify-between items-center 
-                bg-canvas-b-${colorIndex} text-canvas-t-${colorIndex}
-                transition duration-300 ease-in-out
-                hover:bg-black hover:text-white hover:cursor-pointer                 
-              `}
-            >
+            <li className={cliClassName}>
               <Link href={'/dall'}>DALL-E</Link>
               <ArrowUpRightIcon width={20} height={20}/>
             </li>

@@ -1,3 +1,4 @@
+import clsx from 'clsx'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { useTranslation } from 'next-i18next'
@@ -106,7 +107,9 @@ export default function FooterMenuContent() {
       {
         isModalOpen && (
           <Modal
-            motionClassName={`${activeModal !== 'MyPlan' && 'w-2/5 h-4/5 max-lg:w-4/5 max-md:w-full max-sm:w-full max-sm:h-5/6'}`}
+            motionClassName={clsx(
+              activeModal !== 'MyPlan' && 'w-2/5 h-4/5 max-lg:w-4/5 max-md:w-full max-sm:w-full max-sm:h-5/6',
+            )}
             onClose={() => setIsModalOpen(false)}
           >
             {activeModal === 'MyPlan' && <ModalPlan setIsModalOpen={setIsModalOpen}/>}
@@ -117,12 +120,12 @@ export default function FooterMenuContent() {
       }
 
       <div
-        className={`
-        w-full h-[48px] flex items-center gap-4 p-2 rounded-lg 
-        cursor-pointer transition-change hover:bg-gray-500/10
-      `}
         ref={triggerDivRef}
         onClick={() => setIsDropDownOpen(!isDropDownOpen)}
+        className={clsx(
+          'w-full h-[48px] flex items-center gap-4 p-2 rounded-lg',
+          'cursor-pointer transition-change hover:bg-gray-500/10'
+        )}
       >
         <div onClick={(e: MouseEvent) => e.stopPropagation()}>
           <UserButton afterSignOutUrl={'/'}/>

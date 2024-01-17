@@ -1,3 +1,4 @@
+import clsx from 'clsx'
 import { v4 as uuid } from 'uuid'
 import { useRouter } from 'next/router'
 import { useTranslation } from 'next-i18next'
@@ -16,13 +17,6 @@ import {
   useRef,
 } from 'react'
 
-import { getChatHistory } from '@/utils'
-import type { TImage, TMessage } from '@/types'
-import Tooltip from '@/components/ui/Tooltip'
-import LoadingDots from '@/components/common/chat/LoadingDots'
-import useGetChatInformation from '@/hooks/useGetChatInformation'
-import ArrowNarrowUpIcon from '@/components/icons/ArrowNarrowUpIcon'
-import PreviewImg from '@/components/chat/Message/FooterContent/PreviewImg'
 import {
   chatItemsAtom,
   chatMessagesAtom,
@@ -37,6 +31,13 @@ import {
   saveUserInputFromHomeRequest,
   saveUserInputRequest
 } from '@/requests'
+import { getChatHistory } from '@/utils'
+import type { TImage, TMessage } from '@/types'
+import Tooltip from '@/components/ui/Tooltip'
+import LoadingDots from '@/components/common/chat/LoadingDots'
+import useGetChatInformation from '@/hooks/useGetChatInformation'
+import ArrowNarrowUpIcon from '@/components/icons/ArrowNarrowUpIcon'
+import PreviewImg from '@/components/chat/Message/FooterContent/PreviewImg'
 
 interface IProps {
   listening: boolean
@@ -308,10 +309,10 @@ export default function FooterTextArea(props: IProps) {
           ref={textAreaRef}
           required={true}
           placeholder={t('chatPage.message.textAreaPlaceholder')}
-          className={`
-            resize-none w-full py-1 pl-3 pr-11 text-sm custom-message-light-scrollbar bg-transparent rounded-xl
-            dark:bg-chatpage-message-background-dark focus:outline-none dark:border-gray-500
-          `}
+          className={clsx(
+            'resize-none w-full py-1 pl-3 pr-11 text-sm custom-message-light-scrollbar bg-transparent rounded-xl',
+            'dark:bg-chatpage-message-background-dark focus:outline-none dark:border-gray-500'
+          )}
           onChange={handleChange}
           onKeyDown={handleKeyDown}
           onCompositionStart={handleComposition}
@@ -332,11 +333,11 @@ export default function FooterTextArea(props: IProps) {
               <button
                 type={'submit'}
                 disabled={isDisabled}
-                className={`
-                  absolute bottom-4 right-3 border rounded-lg p-1 
-                  hover:bg-gray-200/80 hover-transition-change dark:hover:bg-gray-500/10
-                  disabled:opacity-50 disabled:cursor-not-allowed
-                `}
+                className={clsx(
+                  'absolute bottom-4 right-3 border rounded-lg p-1',
+                  'hover:bg-gray-200/80 hover-transition-change dark:hover:bg-gray-500/10',
+                  'disabled:opacity-50 disabled:cursor-not-allowed'
+                )}
               >
                 <ArrowNarrowUpIcon
                   width={20}

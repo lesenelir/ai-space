@@ -1,3 +1,4 @@
+import clsx from 'clsx'
 import { franc } from 'franc-min'
 import { useRouter } from 'next/router'
 import {
@@ -6,7 +7,7 @@ import {
   type MutableRefObject,
   useEffect,
   useRef,
-  useState
+  useState, useMemo
 } from 'react'
 
 import type { TMessage } from '@/types'
@@ -86,6 +87,14 @@ export default function MainContent(props: IProps) {
     })
   }
 
+  const buttonClass = useMemo(() => (
+    clsx(
+      'max-md:hidden',
+      'rounded-md p-1 border dark:border-gray-500 hover-transition-change',
+      'hover:bg-gray-300/90 dark:hover:bg-gray-500/20',
+    )
+  ), [])
+
   if (!router.query.id) {
     return (
       <div className={'w-full flex-1 overflow-y-auto custom-message-light-scrollbar'}>
@@ -119,25 +128,17 @@ export default function MainContent(props: IProps) {
 
       {/* scroll button */}
       <button
-        className={`
-          max-md:hidden
-          fixed right-4 top-20 rounded-md p-1 border dark:border-gray-500 hover-transition-change
-          hover:bg-gray-300/90 dark:hover:bg-gray-500/20
-        `}
+        className={clsx(buttonClass, 'fixed right-4 top-20')}
         onClick={handleScrollToTop}
       >
-        <ChevronUpIcon width={16} height={16} className={''}/>
+        <ChevronUpIcon width={16} height={16}/>
       </button>
 
       <button
-        className={`
-          max-md:hidden
-          fixed right-4 bottom-28 rounded-md p-1 border dark:border-gray-500 hover-transition-change
-          hover:bg-gray-300/90 dark:hover:bg-gray-500/20
-        `}
+        className={clsx(buttonClass, 'fixed right-4 bottom-28')}
         onClick={handleScrollToBottom}
       >
-        <ChevronDownIcon width={16} height={16} className={''}/>
+        <ChevronDownIcon width={16} height={16}/>
       </button>
     </div>
   )

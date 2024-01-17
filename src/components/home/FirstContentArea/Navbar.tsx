@@ -1,3 +1,4 @@
+import clsx from 'clsx'
 import { useEffect, useState } from 'react'
 import { useAuth, UserButton } from '@clerk/nextjs'
 
@@ -27,10 +28,10 @@ export default function Navbar() {
   return (
     <>
       <nav
-        className={`
-          h-22 lg:px-32 px-8 py-4 max-sm:px-4 flex flex-row justify-between
-          ${isScrolled ? 'bg-black text-white fixed right-0 left-0 top-0 z-50' : ''}
-        `}
+        className={clsx(
+          'h-22 lg:px-32 px-8 py-4 max-sm:px-4 flex flex-row justify-between',
+          isScrolled && 'bg-black text-white fixed right-0 left-0 top-0 z-50'
+        )}
       >
         {/* left: main content + icon */}
         <div className={'flex flex-row'}>

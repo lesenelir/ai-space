@@ -1,3 +1,4 @@
+import clsx from 'clsx'
 import { useAtom } from 'jotai'
 
 import { isMenuOpenAtom } from '@/atoms'
@@ -19,10 +20,10 @@ export default function Menu() {
           <ResizableDiv
             minWidth={300}
             maxWidth={520}
-            className={`
-              w-full h-full p-3 text-chatpage-menu-text bg-chatpage-menu-background
-              max-md:fixed max-md:top-0 max-md:left-0 z-10 max-md:h-full
-            `}
+            className={clsx(
+              'w-full h-full p-3 text-chatpage-menu-text bg-chatpage-menu-background',
+              'max-md:fixed max-md:top-0 max-md:left-0 z-10 max-md:h-full',
+            )}
           >
             <div className={'relative w-full h-full flex flex-col'}>
               {/* HeaderMenuContent: new chat + create folder icon + scalability icon */}
@@ -40,10 +41,10 @@ export default function Menu() {
             <ColumnsIcon
               width={24}
               height={24}
-              className={`
-                border p-2 rounded-lg cursor-pointer hover:bg-gray-200 
-                hover-transition-change dark:border-gray-500 dark:hover:bg-gray-500/10
-              `}
+              className={clsx(
+                'border p-2 rounded-lg cursor-pointer hover:bg-gray-200',
+                'hover-transition-change dark:border-gray-500 dark:hover:bg-gray-500/10',
+              )}
               onClick={toggleOpen}
             />
           </div>

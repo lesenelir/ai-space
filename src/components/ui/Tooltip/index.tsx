@@ -1,3 +1,4 @@
+import clsx from 'clsx'
 import { motion } from 'framer-motion'
 import { forwardRef, ReactNode, useState } from 'react'
 
@@ -34,11 +35,11 @@ const Tooltip = forwardRef<HTMLDivElement, IProps>((
               duration: 0.3,
             },
           }}
-          className={`
-            absolute bottom-full mb-2 px-2 py-1  text-xs rounded-md shadow-sm z-50
-            bg-gray-950 text-gray-50
-            ${className}
-          `}
+          className={clsx(
+            'absolute bottom-full mb-2 px-2 py-1  text-xs rounded-md shadow-sm z-50',
+            'bg-gray-950 text-gray-50',
+            className
+          )}
         >
           {title}
         </motion.div>

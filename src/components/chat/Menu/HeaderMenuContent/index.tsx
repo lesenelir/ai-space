@@ -1,3 +1,4 @@
+import clsx from 'clsx'
 import { useRouter } from 'next/router'
 import { useTranslation } from 'next-i18next'
 import { useAtomValue, useSetAtom } from 'jotai'
@@ -59,10 +60,10 @@ export default function HeaderMenuContent() {
       {/* first content */}
       <div className={'w-full h-[48px] flex gap-2 mb-2'}>
         <span
-          className={`
-            text-xl font-extrabold inline-flex items-center cursor-pointer
-            text-transparent bg-clip-text bg-gradient-to-r from-lime-500 to-orange-300
-          `}
+          className={clsx(
+            'text-xl font-extrabold inline-flex items-center cursor-pointer',
+            'text-transparent bg-clip-text bg-gradient-to-r from-lime-500 to-orange-300'
+          )}
           onClick={async () => await router.push('/chat')}
         >
           Chat
@@ -70,10 +71,10 @@ export default function HeaderMenuContent() {
 
         {/* new chat */}
         <div
-          className={`
-            min-w-[100px] w-5/6 font-light menu-first-content-item 
-            transition-change cursor-pointer hover:bg-gray-500/10
-          `}
+          className={clsx(
+            'min-w-[100px] w-5/6 font-light menu-first-content-item',
+            'transition-change cursor-pointer hover:bg-gray-500/10'
+          )}
           onClick={handleNewChat}
         >
           {t('chatPage.menu.newChat')}
@@ -81,18 +82,13 @@ export default function HeaderMenuContent() {
 
         <div className={'flex-1 flex justify-between gap-2 ml-auto'}>
           {/* create file folder */}
-          <div className={`
-            menu-first-content-item transition-change 
-            cursor-pointer hover:bg-gray-500/10
-          `}>
+          <div className={clsx('menu-first-content-item transition-change cursor-pointer hover:bg-gray-500/10')}>
             <FolderPlusIcon width={24} height={24}/>
           </div>
 
           {/* scalability */}
           <div
-            className={`
-              menu-first-content-item transition-change cursor-pointer hover:bg-gray-500/10
-            `}
+            className={'menu-first-content-item transition-change cursor-pointer hover:bg-gray-500/10'}
             onClick={() => setIsMenuOpen(pre => !pre)}
           >
             <ColumnsIcon width={24} height={24}/>
@@ -105,10 +101,10 @@ export default function HeaderMenuContent() {
         ref={inputRef}
         type="text"
         placeholder={t('chatPage.menu.search')}
-        className={`
-          w-full h-[48px] menu-first-content-item bg-chatpage-menu-background
-          focus:outline-none focus:ring-2 focus:ring-gray-400 focus:border-transparent
-        `}
+        className={clsx(
+          'w-full h-[48px] menu-first-content-item bg-chatpage-menu-background',
+          'focus:outline-none focus:ring-2 focus:ring-gray-400 focus:border-transparent'
+        )}
         onChange={handleSearchChange}
         onFocus={handleSearchFocus}
         onBlur={handleSearchBlur}

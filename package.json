@@ -19,13 +19,14 @@
     "coverage": "vitest run --coverage"
   },
   "dependencies": {
-    "@clerk/nextjs": "^4.27.2",
+    "@clerk/nextjs": "^4.29.3",
     "@prisma/client": "5.7.0",
     "@stackblitz/sdk": "^1.9.0",
     "@vercel/analytics": "^1.1.1",
     "ai": "^2.2.30",
     "cloudinary": "^1.41.1",
     "cloudinary-build-url": "^0.2.4",
+    "clsx": "^2.1.0",
     "date-fns": "^2.30.0",
     "framer-motion": "^10.16.14",
     "franc-min": "^6.1.0",

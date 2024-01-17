@@ -1,3 +1,4 @@
+import clsx from 'clsx'
 import Image from 'next/image'
 import type { Dispatch, MutableRefObject, SetStateAction } from 'react'
 
@@ -87,13 +88,13 @@ export default function PreviewImg(props: IProps) {
               )
             }
             <span
-              className={`
-                absolute top-0 right-0 w-1/4 h-1/4 -mt-1.5 -mr-1.5 z-50 rounded-full
-                opacity-0 group-hover/icons:opacity-100 bg-zinc-500 text-gray-100 
-                hover:bg-gray-900 hover:text-gray-100
-                border dark:border-gray-500
-                inline-flex justify-center items-center
-              `}
+              className={clsx(
+                'absolute top-0 right-0 w-1/4 h-1/4 -mt-1.5 -mr-1.5 z-50 rounded-full',
+                'opacity-0 group-hover/icons:opacity-100 bg-zinc-500 text-gray-100',
+                'hover:bg-gray-900 hover:text-gray-100',
+                'border dark:border-gray-500',
+                'inline-flex justify-center items-center'
+              )}
               onClick={() => removePreviewImg(item.id)}
             >
               x

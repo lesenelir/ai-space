@@ -28,7 +28,7 @@ export default function FirstFooter() {
         </div>
 
         <p className={`mt-1 underline underline-offset-4 cursor-pointer`}>
-          <a href={'https://github.com/lesenelir'} target={'_blank'} rel={'noopener noreferrer'}>
+          <a href={'https://lesenelir.me'} target={'_blank'} rel={'noopener noreferrer'}>
             Find the author
           </a>
         </p>

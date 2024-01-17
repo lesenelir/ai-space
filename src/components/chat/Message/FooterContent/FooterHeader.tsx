@@ -1,3 +1,4 @@
+import clsx from 'clsx'
 import { v4 as uuid } from 'uuid'
 import { useAtomValue } from 'jotai'
 import { toast, Toaster } from 'sonner'
@@ -226,9 +227,7 @@ export default function FooterHeader(props: IProps) {
         {
           router.query.id && (
             generatingChatTitle ? (
-              <div
-                className={'relative p-2 rounded-md hover:bg-gray-200 dark:hover:bg-chatpage-message-robot-content-dark'}
-              >
+              <div className={'relative p-2 rounded-md hover:bg-gray-200 dark:hover:bg-chatpage-message-robot-content-dark'}>
                 <Tooltip title={t('chatPage.message.generating')} className={'w-28 left-0 flex justify-center'}>
                   <RefreshIcon width={16} height={16} className={'animate-spinReverse'}/>
                 </Tooltip>
@@ -244,10 +243,10 @@ export default function FooterHeader(props: IProps) {
                     <DropDown
                       ref={dropDownDivRef}
                       className={`w-48 bottom-7 left-0 ${disabled && 'pointer-events-none'}`}
-                      motionClassName={`
-                        bg-gray-50 border
-                        dark:bg-chatpage-message-background-dark dark:border-gray-500 dark:text-chatpage-message-text-dark
-                      `}
+                      motionClassName={clsx(
+                        'bg-gray-50 border',
+                        'dark:bg-chatpage-message-background-dark dark:border-gray-500 dark:text-chatpage-message-text-dark'
+                      )}
                       motionAnimation={{
                         initial: {opacity: 0, y: '20%'},
                         animate: {opacity: 1, y: 0},

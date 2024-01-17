@@ -9,15 +9,16 @@ import prisma from '@/utils/db.server'
 import Menu from '@/components/chat/Menu'
 import Message from '@/components/chat/Message'
 import type { TChatItem, TChatMessages, TModel } from '@/types'
-import {
-  chatItemsAtom, chatMessagesAtom,
-  isUserSaveGeminiKeyAtom,
-  isUserSaveOpenAIKeyAtom,
-  modelsAtom,
-  userGeminiKeyAtom,
-  userOpenAIKeyAtom
-} from '@/atoms'
 import { toCamelArr } from '@/utils/toCamel'
+import {
+  modelsAtom,
+  chatItemsAtom,
+  chatMessagesAtom,
+  userGeminiKeyAtom,
+  userOpenAIKeyAtom,
+  isUserSaveOpenAIKeyAtom,
+  isUserSaveGeminiKeyAtom,
+} from '@/atoms'
 
 interface IProps {
   chatItems: TChatItem[]

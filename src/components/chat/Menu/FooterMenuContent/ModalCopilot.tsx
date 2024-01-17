@@ -1,3 +1,4 @@
+import clsx from 'clsx'
 import { v4 as uuid } from 'uuid'
 import { useRouter } from 'next/router'
 import { useTranslation } from 'next-i18next'
@@ -151,7 +152,10 @@ export default function ModalCopilot(props: IProps) {
           {
             !showCreateCopilot ? (
               <div
-                className={'flex items-center gap-2 p-2 border border-gray-500 rounded-md w-fit cursor-pointer hover:bg-gray-500/10 hover-transition-change'}
+                className={clsx(
+                  'flex items-center gap-2 p-2 border border-gray-500 rounded-md',
+                  'w-fit cursor-pointer hover:bg-gray-500/10 hover-transition-change'
+                )}
                 onClick={() => setShowCreateCopilot(true)}
               >
                 <CirclePlusIcon width={20} height={20}/>
@@ -171,7 +175,10 @@ export default function ModalCopilot(props: IProps) {
                     required={true}
                     onKeyDown={handleKeyDown}
                     placeholder={t('chatPage.menu.copilotName')}
-                    className={'flex-1 bg-transparent border border-gray-500 rounded-md p-1 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:border-transparent'}
+                    className={clsx(
+                      'flex-1 bg-transparent border border-gray-500 rounded-md p-1',
+                      'focus:outline-none focus:ring-2 focus:ring-gray-400 focus:border-transparent'
+                    )}
                   />
                 </label>
 
@@ -184,7 +191,10 @@ export default function ModalCopilot(props: IProps) {
                     required={true}
                     onKeyDown={handleKeyDown}
                     placeholder={t('chatPage.menu.copilotPrompt')}
-                    className={'flex-1 bg-transparent border border-gray-500 rounded-md p-1 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:border-transparent'}
+                    className={clsx(
+                      'flex-1 bg-transparent border border-gray-500 rounded-md p-1',
+                      'focus:outline-none focus:ring-2 focus:ring-gray-400 focus:border-transparent'
+                    )}
                   />
                 </label>
 
@@ -217,7 +227,10 @@ export default function ModalCopilot(props: IProps) {
                   myCopilots.map(item => (
                     <div
                       key={item.id}
-                      className={'w-40 flex gap-2 p-2 group border border-gray-500 rounded-md cursor-pointer hover:bg-gray-500/10 hover-transition-change'}
+                      className={clsx(
+                        'w-40 flex gap-2 p-2 group border border-gray-500 rounded-md cursor-pointer',
+                        'hover:bg-gray-500/10 hover-transition-change',
+                      )}
                       onClick={() => handleMyCopilotClick(item.id)}
                     >
                       <p className={'text-sm w-4/5 truncate'}>{item.copilotName}</p>

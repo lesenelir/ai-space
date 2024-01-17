@@ -1,3 +1,4 @@
+import clsx from 'clsx'
 import Image from 'next/image'
 import { v4 as uuid } from 'uuid'
 import { useUser } from '@clerk/nextjs'
@@ -214,11 +215,11 @@ const DataItem =  forwardRef<HTMLDivElement, IProps>((props, ref) => {
     <>
       <div key={data.id} className={'group/icons mb-4'}>
         <div
-          className={`
-            flex flex-col gap-3 p-2 rounded-lg 
-            bg-gray-200/90 dark:bg-chatpage-message-robot-content-dark
-            text-[#374151] dark:text-chatpage-message-text-dark 
-          `}
+          className={clsx(
+            'flex flex-col gap-3 p-2 rounded-lg',
+            'bg-gray-200/90 dark:bg-chatpage-message-robot-content-dark',
+            'text-[#374151] dark:text-chatpage-message-text-dark',
+          )}
         >
           {/* avatar + name */}
           <div className={'flex gap-2'}>

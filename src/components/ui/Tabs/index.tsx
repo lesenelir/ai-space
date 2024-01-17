@@ -1,3 +1,4 @@
+import clsx from 'clsx'
 import { forwardRef, ReactNode, useImperativeHandle, useState } from 'react'
 
 interface ITab {
@@ -36,7 +37,10 @@ const Tabs = forwardRef<TabsHandle, IProps>((
               key={tab.key}
             >
               <button
-                className={`px-4 py-2 font-medium text-sm rounded-t-md hover:bg-gray-500/10 transition-change ${activeTab === tab.key ? 'bg-gray-500/10' : ''}`}
+                className={clsx(
+                  'px-4 py-2 font-medium text-sm rounded-t-md hover:bg-gray-500/10 transition-change',
+                  activeTab === tab.key && 'bg-gray-500/10'
+                )}
                 onClick={() => setActiveTab(tab.key)}
               >
                 {tab.title}

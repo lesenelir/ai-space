@@ -1,3 +1,4 @@
+import clsx from 'clsx'
 import { useRouter } from 'next/router'
 import { useAtom, useAtomValue } from 'jotai'
 import { Fragment, useEffect, useMemo, useRef, useState } from 'react'
@@ -58,11 +59,10 @@ export default function Select() {
       {
         !router.query.id && (
           <div
-            className={`
-              w-fit relative flex gap-3 p-2 cursor-pointer rounded-lg
-              border border-gray-200 hover:bg-gray-200/80 hover-transition-change
-              dark:border-gray-500 dark:hover:bg-gray-500/10
-            `}
+            className={clsx(
+              'w-fit relative flex gap-3 p-2 cursor-pointer rounded-lg border border-gray-200',
+              'hover:bg-gray-200/80 hover-transition-change dark:border-gray-500 dark:hover:bg-gray-500/10'
+            )}
             ref={wrapperRef}
             onClick={() => setIsDropDownOpen(!isDropDownOpen)}
           >
@@ -80,10 +80,10 @@ export default function Select() {
               isDropDownOpen && (
                 <DropDown
                   className={'absolute left-0 top-10 w-72 rounded-md z-10'}
-                  motionClassName={`
-                    w-full bg-gray-50 border border-gray-200 rounded-md p-2
-                    dark:bg-chatpage-message-background-dark dark:border-gray-500
-                  `}
+                  motionClassName={clsx(
+                    'w-full bg-gray-50 border border-gray-200 rounded-md p-2',
+                    'dark:bg-chatpage-message-background-dark dark:border-gray-500'
+                  )}
                   motionAnimation={{
                     initial: {opacity: 0, y: '-20%'},
                     animate: {opacity: 1, y: 0},
@@ -107,9 +107,10 @@ export default function Select() {
                     <Fragment key={item.id}>
                       {item.id === 4 ? (
                         <div
-                          className={`
-                            cursor-pointer p-2 rounded-md hover-transition-change text-sm flex gap-2 pointer-events-none
-                          `}
+                          className={clsx(
+                            'flex gap-2 pointer-events-none',
+                            'cursor-pointer p-2 rounded-md text-sm hover-transition-change'
+                          )}
                         >
                           {/*{renderModelIcon(item.id)} /!* Picture icon *!/*/}
                           <RenderModelIcon id={item.id} width={16} height={16}/>
@@ -117,10 +118,10 @@ export default function Select() {
                         </div>
                       ) : (
                         <div
-                          className={`
-                            cursor-pointer p-2 rounded-md hover-transition-change text-sm flex gap-2
-                            hover:bg-gray-200/80 dark:hover:bg-gray-500/10 dark:text-gray-50 items-center
-                          `}
+                          className={clsx(
+                            'cursor-pointer p-2 rounded-md hover-transition-change text-sm flex gap-2',
+                            'hover:bg-gray-200/80 dark:hover:bg-gray-500/10 dark:text-gray-50 items-center'
+                          )}
                           onClick={() => handleSelect(item)}
                         >
                           {/*{renderModelIcon(item.id)} /!* Picture icon *!/*/}
