@@ -129,7 +129,7 @@ export default function MainContent() {
           type={'submit'}
           disabled={surpriseLoading || generateLoading}
           className={clsx(
-            'min-w-fit h-10 md:rounded-r-md flex gap-2 items-center disabled:cursor-not-allowed',
+            'min-w-fit h-10 md:rounded-r-md flex gap-2 justify-center items-center disabled:cursor-not-allowed',
             'bg-gray-50 text-gray-500 hover:opacity-80 hover-transition-change',
             'border p-2 dark:border-gray-500 dark:bg-neutral-900 dark:text-white',
             'max-md:rounded-b-md max-md:w-full max-md:bg-white',
