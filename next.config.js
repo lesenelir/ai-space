@@ -10,6 +10,8 @@ const nextConfig = {
       { protocol: 'https', hostname: 'images.clerk.dev' },
       { protocol: 'http', hostname: 'res.cloudinary.com' },
       { protocol: 'https', hostname: 'res.cloudinary.com' },
+      { protocol: 'http', hostname: 'oaidalleapiprodscus.blob.core.windows.net' },
+      { protocol: 'https', hostname: 'oaidalleapiprodscus.blob.core.windows.net' },
     ]
   }
 }

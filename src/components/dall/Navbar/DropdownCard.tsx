@@ -22,7 +22,7 @@ export default function DropdownCard() {
         'w-64 fixed z-10 rounded-xl drop-shadow-sm border bg-white',
         'lg:right-48 lg:top-10',
         'md:right-24 md:top-10',
-        'max-md:w-full max-md:right-0 max-md:bottom-0',
+        'max-md:w-full max-md:right-0 max-md:bottom-0 max-md:rounded-b-none',
         'dark:bg-neutral-900 dark:border-gray-500'
       )}
     >

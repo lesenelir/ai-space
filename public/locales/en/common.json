@@ -84,6 +84,12 @@
     "language": "Language",
     "goHome": "Go Home",
     "en": "English",
-    "zh": "中文 / Chinese"
+    "zh": "中文 / Chinese",
+    "description": "Start with a detailed description",
+    "surprise": "Surprise me",
+    "surprising": "Surprising",
+    "placeholder": "An Impressionist oil painting of a flower ...",
+    "generate": "Generate",
+    "generating": "Generating"
   }
 }

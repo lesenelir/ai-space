@@ -85,6 +85,12 @@
     "language": "语言",
     "goHome": "返回主页",
     "en": "英文 / English",
-    "zh": "中文"
+    "zh": "中文",
+    "description": "从详细的描述开始",
+    "surprise": "惊喜",
+    "surprising": "制造惊喜中...",
+    "placeholder": "一幅印象派的花朵油画 ...",
+    "generate": "生成",
+    "generating": "生成图片中..."
   }
 }
