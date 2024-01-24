@@ -242,7 +242,10 @@ export default function FooterHeader(props: IProps) {
                   isDropDownOpen && (
                     <DropDown
                       ref={dropDownDivRef}
-                      className={`w-48 bottom-7 left-0 ${disabled && 'pointer-events-none'}`}
+                      className={clsx(
+                        'w-48 bottom-7 left-0',
+                        disabled && 'pointer-events-none'
+                      )}
                       motionClassName={clsx(
                         'bg-gray-50 border',
                         'dark:bg-chatpage-message-background-dark dark:border-gray-500 dark:text-chatpage-message-text-dark'

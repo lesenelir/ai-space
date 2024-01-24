@@ -115,7 +115,10 @@ export default function MainContent(props: IProps) {
   return (
     <div ref={containerRef} className={'w-full flex-1 overflow-y-auto custom-message-light-scrollbar'}>
       {/* basic content */}
-      <div className={'md:max-w-screen-sm max-md:w-full mx-auto p-3 dark:text-gray-50'}>
+      <div
+        id={'chat-content'}
+        className={'md:max-w-screen-sm max-md:w-full mx-auto p-3 dark:text-gray-50 dark:bg-chatpage-message-background-dark'}
+      >
         <ChatContent
           messages={messages}
           speakingId={speakingId}

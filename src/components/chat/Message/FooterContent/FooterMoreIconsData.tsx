@@ -1,5 +1,7 @@
 import clsx from 'clsx'
+import html2canvas from 'html2canvas'
 import { useRouter } from 'next/router'
+import { Toaster, toast } from 'sonner'
 import { useTranslation } from 'next-i18next'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { type Dispatch, type SetStateAction, useMemo } from 'react'
@@ -15,6 +17,8 @@ import { getCurrentChatHistory } from '@/utils'
 import type { TMessage } from '@/types'
 import TIcon from '@/components/icons/TIcon'
 import SeparatorIcon from '@/components/icons/SeparatorIcon'
+import ScreenshotIcon from '@/components/icons/ScreenshotIcon'
+import PhotoShareIcon from '@/components/icons/PhotoShareIcon'
 import MessageClearIcon from '@/components/icons/MessageClearIcon'
 import useGetChatInformation from '@/hooks/useGetChatInformation'
 
@@ -100,6 +104,47 @@ export default function FooterMoreIconsData(props: IProps) {
     setGeneratingChatTitle(false)
   }
 
+  const handleViewScreenshot = () => {
+    const chatContent = document.getElementById('chat-content')!
+
+    const asyncWork = html2canvas(chatContent)
+    toast.promise(asyncWork, {
+      loading: 'Generating screenshot...',
+      success: (canvas) => {
+        canvas.toBlob(blob => {
+          if (blob) {
+            const url = URL.createObjectURL(blob)
+            window.open(url, '_blank')
+          }
+        }, 'image/png')
+        return 'Screenshot generated successfully'
+      },
+      error: 'Failed to generate screenshot'
+    })
+  }
+
+  const handleSaveScreenshot = () => {
+    const chatContent = document.getElementById('chat-content')!
+
+    const asyncWork = html2canvas(chatContent)
+    toast.promise(asyncWork, {
+      loading: 'Generating screenshot...',
+      success: (canvas) => {
+        canvas.toBlob(blob => {
+          if (blob) {
+            const url = URL.createObjectURL(blob)
+            const a = document.createElement('a')
+            a.href = url
+            a.download = 'chat-screenshot.png'
+            a.click()
+          }
+        }, 'image/png')
+        return 'Screenshot saved successfully'
+      },
+      error: 'Failed to save screenshot'
+    })
+  }
+
   const normalDivClass = useMemo(() => (
     clsx(
       'flex items-center gap-2 p-2 rounded-lg text-sm hover:bg-gray-200/60',
@@ -110,10 +155,24 @@ export default function FooterMoreIconsData(props: IProps) {
 
   return (
     <div>
+      <Toaster richColors position={'top-center'}/>
+
       {/* generator chat title */}
       <div className={normalDivClass} onClick={handleGeneratorChatTitle}>
         <TIcon width={16} height={16}/>
         {t('chatPage.message.generatorChatTitle')}
+      </div>
+
+      {/* View Screenshot */}
+      <div className={normalDivClass} onClick={handleViewScreenshot}>
+        <ScreenshotIcon width={16} height={16}/>
+        {t('chatPage.message.viewScreenshot')}
+      </div>
+
+      {/* Save Screenshot */}
+      <div className={normalDivClass} onClick={handleSaveScreenshot}>
+        <PhotoShareIcon width={16} height={16}/>
+        {t('chatPage.message.saveScreenshot')}
       </div>
 
       {/* ignore messages */}

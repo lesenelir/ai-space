@@ -30,6 +30,7 @@
     "date-fns": "^2.30.0",
     "framer-motion": "^10.16.14",
     "franc-min": "^6.1.0",
+    "html2canvas": "^1.4.1",
     "jotai": "^2.6.0",
     "js-tiktoken": "^1.0.8",
     "next": "14.0.3",
