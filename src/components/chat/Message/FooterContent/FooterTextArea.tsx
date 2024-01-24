@@ -23,8 +23,11 @@ import {
   isLoadingAtom,
   maxHistorySizeAtom,
   maxTokensAtom,
+  previewUrlsAtom,
+  remoteUrlsAtom,
   selectedModelIdAtom,
-  temperatureAtom
+  temperatureAtom,
+  uploadingAtom
 } from '@/atoms'
 import {
   saveCompletionRequest,
@@ -32,7 +35,7 @@ import {
   saveUserInputRequest
 } from '@/requests'
 import { getChatHistory } from '@/utils'
-import type { TImage, TMessage } from '@/types'
+import type { TMessage } from '@/types'
 import Tooltip from '@/components/ui/Tooltip'
 import LoadingDots from '@/components/common/chat/LoadingDots'
 import useGetChatInformation from '@/hooks/useGetChatInformation'
@@ -42,15 +45,9 @@ import PreviewImg from '@/components/chat/Message/FooterContent/PreviewImg'
 interface IProps {
   listening: boolean
   transcript: string
-  remoteUrls: TImage[]
   messages: TMessage[]
   resetTranscript: () => void
-  uploading: {[key: string]: boolean}
-  previewUrls: {id: string, url: string}[]
   setMessages: Dispatch<SetStateAction<TMessage[]>>
-  setPreviewUrls: Dispatch<SetStateAction<TImage[]>>
-  setRemoteUrls: Dispatch<SetStateAction<TImage[]>>
-  setUploading: Dispatch<SetStateAction<{[p: string]: boolean}>>
   abortController: MutableRefObject<AbortController | null>
   abortImageController: MutableRefObject<{[p: string]: AbortController}>
 }
@@ -60,13 +57,7 @@ export default function FooterTextArea(props: IProps) {
     transcript,
     listening,
     resetTranscript,
-    previewUrls,
-    setPreviewUrls,
-    uploading,
-    setUploading,
-    setRemoteUrls,
     abortImageController,
-    remoteUrls,
     setMessages,
     messages,
     abortController
@@ -80,15 +71,15 @@ export default function FooterTextArea(props: IProps) {
   const selectedModelId = useAtomValue(selectedModelIdAtom)
   const chatMessages = useAtomValue(chatMessagesAtom)
   const setChatItems = useSetAtom(chatItemsAtom)
+  const uploading = useAtomValue(uploadingAtom)
+  const [remoteUrls, setRemoteUrls] = useAtom(remoteUrlsAtom)
+  const [previewUrls, setPreviewUrls] = useAtom(previewUrlsAtom)
   const [isDisabled, setIsDisabled] = useState<boolean>(true)
   const [deleting, setDeleting] = useState<{[key: string]: boolean}>({})
   const [isComposing, setIsComposing] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useAtom(isLoadingAtom)
   const { modelName } = useGetChatInformation(router.query.id as string | undefined, selectedModelId)
   const textAreaRef = useRef<HTMLTextAreaElement>(null)
-  // const [isLoading, setIsLoading] = useState<boolean>(false)
-  // const abortController = useRef<AbortController | null>(null)
-  // const textAreaRef = ref as MutableRefObject<HTMLTextAreaElement>
 
   // when the transcript changes, set the value of the textarea.
   useEffect(() => {
@@ -295,12 +286,6 @@ export default function FooterTextArea(props: IProps) {
             <PreviewImg
               deleting={deleting}
               setDeleting={setDeleting}
-              uploading={uploading}
-              remoteUrls={remoteUrls}
-              previewUrls={previewUrls}
-              setRemoteUrls={setRemoteUrls}
-              setUploading={setUploading}
-              setPreviewUrls={setPreviewUrls}
               abortImageController={abortImageController}
             />
           )

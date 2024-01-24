@@ -1,3 +1,4 @@
+import clsx from 'clsx'
 import { useSetAtom } from 'jotai'
 import { toast, Toaster } from 'sonner'
 import { useRouter } from 'next/router'
@@ -14,6 +15,7 @@ export default function Message() {
   const setChatMessages = useSetAtom(chatMessagesAtom)
   const [messages, setMessages] = useState<TMessage[]>([]) // real time messages
   const abortController = useRef<AbortController | null>(null)
+  const abortImageController = useRef<{[key: string]: AbortController}>({})
 
   const getRequest = useCallback(async () => {
     const options = {
@@ -52,10 +54,25 @@ export default function Message() {
   return (
     <>
       <Toaster richColors position={'top-center'}/>
-      <div className={'flex-1 w-full flex flex-col bg-gray-50 dark:bg-chatpage-message-background-dark dark:text-chatpage-message-text-dark'}>
+      <div
+        className={clsx(
+          'flex-1 w-full flex flex-col bg-gray-50',
+          'dark:bg-chatpage-message-background-dark dark:text-chatpage-message-text-dark'
+        )}
+      >
         <HeaderContent/>
-        <MainContent messages={messages} setMessages={setMessages} abortController={abortController}/>
-        <FooterContent messages={messages} setMessages={setMessages} abortController={abortController}/>
+        <MainContent
+          messages={messages}
+          setMessages={setMessages}
+          abortController={abortController}
+          abortImageController={abortImageController}
+        />
+        <FooterContent
+          messages={messages}
+          setMessages={setMessages}
+          abortController={abortController}
+          abortImageController={abortImageController}
+        />
       </div>
     </>
   )

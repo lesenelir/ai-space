@@ -1,34 +1,26 @@
 import clsx from 'clsx'
 import Image from 'next/image'
+import { useAtom } from 'jotai'
 import type { Dispatch, MutableRefObject, SetStateAction } from 'react'
 
-import type { TImage } from '@/types'
+import { previewUrlsAtom, remoteUrlsAtom, uploadingAtom } from '@/atoms'
 import LoadingSpinner from '@/components/common/chat/LoadingSpinner'
 
 interface IProps {
-  previewUrls: TImage[]
-  remoteUrls: TImage[]
-  uploading: {[key: string]: boolean}
   deleting: {[key: string]: boolean}
-  setPreviewUrls: Dispatch<SetStateAction<TImage[]>>
-  setRemoteUrls: Dispatch<SetStateAction<TImage[]>>
   setDeleting: Dispatch<SetStateAction<{[p: string]: boolean}>>
-  setUploading: Dispatch<SetStateAction<{[p: string]: boolean}>>
   abortImageController: MutableRefObject<{[p: string]: AbortController}>
 }
 
 export default function PreviewImg(props: IProps) {
   const {
-    previewUrls,
-    setPreviewUrls,
-    uploading,
     abortImageController,
-    setRemoteUrls,
-    setUploading,
     deleting,
     setDeleting,
-    remoteUrls
   } = props
+  const [uploading, setUploading] = useAtom(uploadingAtom)
+  const [remoteUrls, setRemoteUrls] = useAtom(remoteUrlsAtom)
+  const [previewUrls, setPreviewUrls] = useAtom(previewUrlsAtom)
 
   const removePreviewImg = async (id: string) => {
     if (uploading[id]) {

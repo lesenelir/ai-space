@@ -1,9 +1,10 @@
 import clsx from 'clsx'
 import Image from 'next/image'
 import { franc } from 'franc-min'
-import { useAtomValue } from 'jotai'
+import { v4 as uuid } from 'uuid'
 import { useRouter } from 'next/router'
 import { useTranslation } from 'next-i18next'
+import { useAtomValue, useSetAtom } from 'jotai'
 import React, {
   type Dispatch,
   type SetStateAction,
@@ -11,30 +12,39 @@ import React, {
   useEffect,
   useRef,
   useState,
-  useMemo
+  useMemo,
 } from 'react'
 
-import { isMenuOpenAtom, selectedModelIdAtom } from '@/atoms'
-import type { TMessage } from '@/types'
+import { isMenuOpenAtom, previewUrlsAtom, selectedModelIdAtom } from '@/atoms'
+import type { TImage, TMessage } from '@/types'
+import useUploadHandler from '@/hooks/useUploadHandler'
 import ChevronUpIcon from '@/components/icons/ChevronUpIcon'
 import ChevronDownIcon from '@/components/icons/ChevronDownIcon'
+import useGetChatInformation from '@/hooks/useGetChatInformation'
 import ChatHome from '@/components/chat/Message/MainContent/ChatHome'
 import ChatContent from '@/components/chat/Message/MainContent/ChatContent'
-import useGetChatInformation from '@/hooks/useGetChatInformation'
 
 interface IProps {
   messages: TMessage[]
   setMessages: Dispatch<SetStateAction<TMessage[]>>
   abortController: MutableRefObject<AbortController | null>
+  abortImageController: MutableRefObject<{[p: string]: AbortController}>
 }
 
 export default function MainContent(props: IProps) {
-  const { messages, setMessages, abortController } = props
+  const {
+    messages,
+    setMessages,
+    abortController,
+    abortImageController
+  } = props
   const { t } = useTranslation('common')
   const router = useRouter()
   const isMenuOpen = useAtomValue(isMenuOpenAtom)
+  const setPreviewUrls = useSetAtom(previewUrlsAtom)
   const selectedModelId = useAtomValue(selectedModelIdAtom)
   const containerRef = useRef<HTMLDivElement>(null)
+  const handleUploadSubmit = useUploadHandler(abortImageController)
   const [isDragging, setIsDragging] = useState<boolean>(false)
   const [speakingId, setSpeakingId] = useState<string | null>(null)
   const { modelName } = useGetChatInformation(router.query.id as string, selectedModelId)
@@ -106,7 +116,7 @@ export default function MainContent(props: IProps) {
 
   const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault()
-    // when a user drags over the chat content, set the isDragOver to false
+    // when a user drags leave the chat content, set the isDragOver to false
     setIsDragging(false)
   }
 
@@ -115,17 +125,26 @@ export default function MainContent(props: IProps) {
     if (modelName !== 'gpt-4-vision-preview') return
 
     setIsDragging(false)
-
     // only gpt-4-vision-preview model can upload images
     // when in gpt-4-vision-preview model, we can upload images
-    const files = e.dataTransfer.files
+    const [files, len] = [e.dataTransfer.files, e.dataTransfer.files.length]
+    const newPreviews: TImage[] = []
+    if (len === 0) return
 
-    if (files.length > 0) {
+    for (let i = 0; i < len; i++) {
+      const file = files[i]
+      if (!file.type.match('image.*')) continue
 
-
+      const reader = new FileReader()
+      reader.onload = () => {
+        newPreviews.push({id: uuid(), url: reader.result as string})
+        if (newPreviews.length === files.length) {
+          setPreviewUrls(prev => [...prev, ...newPreviews])
+          handleUploadSubmit(files, newPreviews)
+        }
+      }
+      reader.readAsDataURL(file)
     }
-
-    console.log(files)
   }
 
   const buttonClass = useMemo(() => (

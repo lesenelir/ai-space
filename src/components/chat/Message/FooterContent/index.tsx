@@ -1,3 +1,4 @@
+import { useSetAtom } from 'jotai'
 import { useRouter } from 'next/router'
 import { useSpeechRecognition } from 'react-speech-recognition'
 import {
@@ -5,11 +6,14 @@ import {
   type MutableRefObject,
   type SetStateAction,
   useEffect,
-  useRef,
-  useState
 } from 'react'
 
-import type { TImage, TMessage } from '@/types'
+import {
+  previewUrlsAtom,
+  remoteUrlsAtom,
+  uploadingAtom
+} from '@/atoms'
+import type { TMessage } from '@/types'
 import FooterHeader from '@/components/chat/Message/FooterContent/FooterHeader'
 import FooterTextArea from '@/components/chat/Message/FooterContent/FooterTextArea'
 
@@ -17,17 +21,16 @@ interface IProps {
   messages: TMessage[]
   setMessages: Dispatch<SetStateAction<TMessage[]>>
   abortController: MutableRefObject<AbortController | null>
+  abortImageController: MutableRefObject<{[p: string]: AbortController}>
 }
 
 export default function FooterContent(props: IProps) {
-  const { messages, setMessages, abortController } = props
+  const { messages, setMessages, abortController, abortImageController } = props
   const router = useRouter()
+  const setRemoteUrls = useSetAtom(remoteUrlsAtom)
+  const setPreviewUrls = useSetAtom(previewUrlsAtom)
+  const setUploading = useSetAtom(uploadingAtom)
   const { transcript, listening, resetTranscript } = useSpeechRecognition()
-  const [remoteUrls, setRemoteUrls] = useState<TImage[]>([])
-  const [previewUrls, setPreviewUrls] = useState<TImage[]>([])
-  const [uploading, setUploading] = useState<{[key: string]: boolean}>({})
-  const abortImageController = useRef<{[key: string]: AbortController}>({})
-  // const ref = useRef<HTMLTextAreaElement>(null) // or this way: create ref in FooterTextArea.tsx
 
   // when router.query.id changes, reset remoteUrls, previewUrls, uploading
   useEffect(() => {
@@ -43,27 +46,16 @@ export default function FooterContent(props: IProps) {
         messages={messages}
         listening={listening}
         setMessages={setMessages}
-        previewUrls={previewUrls}
-        setUploading={setUploading}
-        setRemoteUrls={setRemoteUrls}
-        setPreviewUrls={setPreviewUrls}
         resetTranscript={resetTranscript}
         abortImageController={abortImageController}
       />
 
       {/* footer main content area: textarea */}
-      {/* ref={ref}; does not forward ref */}
       <FooterTextArea
         messages={messages}
         listening={listening}
-        uploading={uploading}
         transcript={transcript}
-        remoteUrls={remoteUrls}
         setMessages={setMessages}
-        previewUrls={previewUrls}
-        setUploading={setUploading}
-        setRemoteUrls={setRemoteUrls}
-        setPreviewUrls={setPreviewUrls}
         abortController={abortController}
         resetTranscript={resetTranscript}
         abortImageController={abortImageController}

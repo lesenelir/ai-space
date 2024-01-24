@@ -2,7 +2,7 @@ import { atom } from 'jotai'
 import { atomWithStorage } from 'jotai/utils'
 
 import { superCopilots } from '@/utils'
-import type { TChatItem, TChatMessages, TModel, TMyCopilot } from '@/types'
+import type { TChatItem, TChatMessages, TImage, TModel, TMyCopilot } from '@/types'
 
 // client atoms:
 export const resizableWidthAtom = atomWithStorage<number>('resizableWidth', 320)
@@ -19,6 +19,10 @@ export const maxHistorySizeAtom = atomWithStorage<number>('maxHistorySize', 3)
 export const ignoreLineAtom = atomWithStorage<{key: string, value: string[]}[]>('ignoreLine', [])
 export const myCopilotsAtom = atomWithStorage<TMyCopilot[]>('myCopilots', [])
 export const superCopilotsAtom = atomWithStorage<TMyCopilot[]>('superCopilots', superCopilots)
+// upload Image
+export const remoteUrlsAtom = atom<TImage[]>([])
+export const previewUrlsAtom = atom<TImage[]>([])
+export const uploadingAtom = atom<{[key: string]: boolean}>({})
 
 
 // server atoms: need to hydrate from server
