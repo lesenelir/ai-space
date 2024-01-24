@@ -6,9 +6,11 @@ npm-debug.log
 .next
 
 # typescript build output
+# .env
 dist
 
 # pwa
+.idea
 sw.js
 sw.js.*
 workbox-*.js

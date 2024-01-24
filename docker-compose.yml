@@ -2,26 +2,33 @@ version: '3.7'
 services:
   app:
     container_name: ai-space
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
       - "3000:3000"
-    environment:
-      - DATABASE_URL=mysql://user:password@db:3306/ai-space
+    command: sh -c "npx prisma migrate deploy && pnpm start"
     depends_on:
       - db
-    volumes:
-      - .:/app
-      - /app/node_modules
+    networks:
+      - ai-space-network
   db:
     container_name: ai-space-db
     image: mysql:8.0
     restart: always
     environment:
-      MYSQL_DATABASE: ai-space
-      MYSQL_USER: user
-      MYSQL_PASSWORD: password
-      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    ports:
+      - "3307:3306"
     volumes:
       - db-data:/var/lib/mysql
+    networks:
+      - ai-space-network
 volumes:
   db-data:
+networks:
+  ai-space-network:
+    driver: bridge
