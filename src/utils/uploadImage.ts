@@ -1,3 +1,4 @@
+// upload single file to server
 export async function uploadImage(file: File, id: string, controller: AbortController) {
   const formData = new FormData()
 

@@ -80,7 +80,10 @@ export default function PreviewImg(props: IProps) {
               unoptimized={true}
               placeholder={'blur'}
               blurDataURL={item.url}
-              className={`rounded-xl object-cover ${uploading[item.id] && 'opacity-40'}`}
+              className={clsx(
+                'rounded-xl object-cover',
+                uploading[item.id] && 'opacity-40',
+              )}
             />
             {
               (uploading[item.id] || deleting[item.id]) && (
