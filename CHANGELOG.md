@@ -99,3 +99,13 @@ This changelog provides a detailed record of the updates and improvements made t
 - Add `My Copilots` featured.
 - Add `Refesh the latest reply` feature.
 - Add `Generate chat title` feature.
+
+
+### v0.0.7
+
+- Add `docker-compose` for dockerized the project.
+- Integrated `clsx` for className management.
+- Complete `dall-E` page for generating images.
+- Integrated `html2canvas` for generating screenshot.
+
+
