@@ -16,11 +16,10 @@ import React, {
 } from 'react'
 
 import { isMenuOpenAtom, previewUrlsAtom, selectedModelIdAtom } from '@/atoms'
+import { useGetChatInformation, useUploadHandler } from '@/hooks'
 import type { TImage, TMessage } from '@/types'
-import useUploadHandler from '@/hooks/useUploadHandler'
 import ChevronUpIcon from '@/components/icons/ChevronUpIcon'
 import ChevronDownIcon from '@/components/icons/ChevronDownIcon'
-import useGetChatInformation from '@/hooks/useGetChatInformation'
 import ChatHome from '@/components/chat/Message/MainContent/ChatHome'
 import ChatContent from '@/components/chat/Message/MainContent/ChatContent'
 

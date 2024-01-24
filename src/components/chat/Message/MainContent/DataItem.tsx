@@ -25,6 +25,7 @@ import {
 } from '@/atoms'
 import { deleteLastChatMessage, saveCompletionRequest } from '@/requests'
 import { getCurrentChatHistory } from '@/utils/getCurrentChatHistory'
+import { useGetChatInformation } from '@/hooks'
 import type { TMessage } from '@/types'
 import CheckIcon from '@/components/icons/CheckIcon'
 import CopyIcon from '@/components/icons/CopyIcon'
@@ -35,7 +36,6 @@ import PlayerPauseIcon from '@/components/icons/PlayerPauseIcon'
 import PlayerStationIcon from '@/components/icons/PlayerStationIcon'
 import RenderModelIcon from '@/components/common/chat/RenderModelIcon'
 import IgnoreLine from '@/components/chat/Message/MainContent/IgnoreLine'
-import useGetChatInformation from '@/hooks/useGetChatInformation'
 import MarkdownRender from '@/components/chat/Message/MainContent/MarkdownRender'
 
 /**

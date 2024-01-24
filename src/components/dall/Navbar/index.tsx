@@ -4,8 +4,8 @@ import { UserButton } from '@clerk/nextjs'
 import { useTranslation } from 'next-i18next'
 import { useMemo, useRef, useState } from 'react'
 
+import { useOutsideClick } from '@/hooks'
 import LZIcon from '@/components/icons/LZIcon'
-import useOutsideClick from '@/hooks/useOutsideClick'
 import DropdownCard from '@/components/dall/Navbar/DropdownCard'
 
 export default function Navbar() {

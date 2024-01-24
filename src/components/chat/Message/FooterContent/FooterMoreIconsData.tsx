@@ -13,6 +13,7 @@ import {
   maxHistorySizeAtom,
   selectedModelIdAtom
 } from '@/atoms'
+import { useGetChatInformation } from '@/hooks'
 import { getCurrentChatHistory } from '@/utils'
 import type { TMessage } from '@/types'
 import TIcon from '@/components/icons/TIcon'
@@ -20,7 +21,6 @@ import SeparatorIcon from '@/components/icons/SeparatorIcon'
 import ScreenshotIcon from '@/components/icons/ScreenshotIcon'
 import PhotoShareIcon from '@/components/icons/PhotoShareIcon'
 import MessageClearIcon from '@/components/icons/MessageClearIcon'
-import useGetChatInformation from '@/hooks/useGetChatInformation'
 
 interface IProps {
   disabled: boolean
