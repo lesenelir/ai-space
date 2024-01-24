@@ -1,20 +1,26 @@
 import clsx from 'clsx'
+import Image from 'next/image'
 import { franc } from 'franc-min'
+import { useAtomValue } from 'jotai'
 import { useRouter } from 'next/router'
-import {
+import { useTranslation } from 'next-i18next'
+import React, {
   type Dispatch,
   type SetStateAction,
   type MutableRefObject,
   useEffect,
   useRef,
-  useState, useMemo
+  useState,
+  useMemo
 } from 'react'
 
+import { isMenuOpenAtom, selectedModelIdAtom } from '@/atoms'
 import type { TMessage } from '@/types'
 import ChevronUpIcon from '@/components/icons/ChevronUpIcon'
 import ChevronDownIcon from '@/components/icons/ChevronDownIcon'
 import ChatHome from '@/components/chat/Message/MainContent/ChatHome'
 import ChatContent from '@/components/chat/Message/MainContent/ChatContent'
+import useGetChatInformation from '@/hooks/useGetChatInformation'
 
 interface IProps {
   messages: TMessage[]
@@ -23,10 +29,15 @@ interface IProps {
 }
 
 export default function MainContent(props: IProps) {
-  const router = useRouter()
   const { messages, setMessages, abortController } = props
+  const { t } = useTranslation('common')
+  const router = useRouter()
+  const isMenuOpen = useAtomValue(isMenuOpenAtom)
+  const selectedModelId = useAtomValue(selectedModelIdAtom)
   const containerRef = useRef<HTMLDivElement>(null)
+  const [isDragging, setIsDragging] = useState<boolean>(false)
   const [speakingId, setSpeakingId] = useState<string | null>(null)
+  const { modelName } = useGetChatInformation(router.query.id as string, selectedModelId)
 
   useEffect(() => {
     if (containerRef.current) {
@@ -87,6 +98,36 @@ export default function MainContent(props: IProps) {
     })
   }
 
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault()
+    // when a user drags over the chat content, set the isDragOver to true
+    setIsDragging(true)
+  }
+
+  const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault()
+    // when a user drags over the chat content, set the isDragOver to false
+    setIsDragging(false)
+  }
+
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault()
+    if (modelName !== 'gpt-4-vision-preview') return
+
+    setIsDragging(false)
+
+    // only gpt-4-vision-preview model can upload images
+    // when in gpt-4-vision-preview model, we can upload images
+    const files = e.dataTransfer.files
+
+    if (files.length > 0) {
+
+
+    }
+
+    console.log(files)
+  }
+
   const buttonClass = useMemo(() => (
     clsx(
       'max-md:hidden',
@@ -113,11 +154,53 @@ export default function MainContent(props: IProps) {
   }
 
   return (
-    <div ref={containerRef} className={'w-full flex-1 overflow-y-auto custom-message-light-scrollbar'}>
+    <div
+      ref={containerRef}
+      className={clsx(
+        'relative',
+        'w-full flex-1 overflow-y-auto custom-message-light-scrollbar',
+      )}
+      onDragLeave={handleDragLeave}
+      onDragOver={handleDragOver}
+      onDrop={handleDrop}
+    >
+      {/* onDrag */}
+      {
+        isDragging && (
+          <div
+            className={clsx(
+              'bg-gray-50/90 fixed w-full h-full z-30',
+              'dark:bg-chatpage-message-background-dark/90',
+            )}
+          >
+            <div className={clsx(
+              'p-3 flex flex-col items-center gap-4 opacity-100',
+              isMenuOpen && '-translate-x-56',
+            )}>
+              <Image
+                src={'/dragImg.svg'}
+                alt={'drag image'}
+                width={250}
+                height={250}
+              />
+              <h1 className={'text-3xl font-bold text-black dark:text-white'}>
+                {t('chatPage.message.addPictures')}
+              </h1>
+              <p className={'text-lg text-black dark:text-white self-center'}>
+                {t('chatPage.message.dropPictures')}
+              </p>
+            </div>
+          </div>
+        )
+      }
+
       {/* basic content */}
       <div
         id={'chat-content'}
-        className={'md:max-w-screen-sm max-md:w-full mx-auto p-3 dark:text-gray-50 dark:bg-chatpage-message-background-dark'}
+        className={clsx(
+          'md:max-w-screen-sm max-md:w-full mx-auto p-3',
+          'dark:text-gray-50 dark:bg-chatpage-message-background-dark'
+        )}
       >
         <ChatContent
           messages={messages}

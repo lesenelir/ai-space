@@ -22,7 +22,7 @@ export default function Menu() {
             maxWidth={520}
             className={clsx(
               'w-full h-full p-3 text-chatpage-menu-text bg-chatpage-menu-background',
-              'max-md:fixed max-md:top-0 max-md:left-0 z-10 max-md:h-full',
+              'max-md:fixed max-md:top-0 max-md:left-0 z-50 max-md:h-full',
             )}
           >
             <div className={'relative w-full h-full flex flex-col'}>

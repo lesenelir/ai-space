@@ -76,7 +76,9 @@
       "deleteContent": "This action cannot be undone.",
       "cancel": "Cancel",
       "confirm": "Confirm",
-      "upload": "upload image"
+      "upload": "upload image",
+      "addPictures": "Add pictures",
+      "dropPictures": "Drop any pictures here.."
     }
   },
   "dallPage": {
