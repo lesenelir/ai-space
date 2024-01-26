@@ -14,7 +14,7 @@ import {
   type MutableRefObject,
   useState,
   useEffect,
-  useRef,
+  forwardRef
 } from 'react'
 
 import {
@@ -52,7 +52,10 @@ interface IProps {
   abortImageController: MutableRefObject<{[p: string]: AbortController}>
 }
 
-export default function FooterTextArea(props: IProps) {
+const FooterTextArea = forwardRef<HTMLTextAreaElement, IProps>((
+  props,
+  ref
+) => {
   const {
     transcript,
     listening,
@@ -79,7 +82,7 @@ export default function FooterTextArea(props: IProps) {
   const [isComposing, setIsComposing] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useAtom(isLoadingAtom)
   const { modelName } = useGetChatInformation(router.query.id as string | undefined, selectedModelId)
-  const textAreaRef = useRef<HTMLTextAreaElement>(null)
+  const textAreaRef = ref as MutableRefObject<HTMLTextAreaElement>
 
   // when the transcript changes, set the value of the textarea.
   useEffect(() => {
@@ -336,4 +339,6 @@ export default function FooterTextArea(props: IProps) {
       </form>
     </div>
   )
-}
+})
+
+export default FooterTextArea

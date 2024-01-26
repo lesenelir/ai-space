@@ -16,6 +16,7 @@ export default function Message() {
   const [messages, setMessages] = useState<TMessage[]>([]) // real time messages
   const abortController = useRef<AbortController | null>(null)
   const abortImageController = useRef<{[key: string]: AbortController}>({})
+  const textAreaRef = useRef<HTMLTextAreaElement>(null)
 
   const getRequest = useCallback(async () => {
     const options = {
@@ -62,12 +63,14 @@ export default function Message() {
       >
         <HeaderContent/>
         <MainContent
+          ref={textAreaRef}
           messages={messages}
           setMessages={setMessages}
           abortController={abortController}
           abortImageController={abortImageController}
         />
         <FooterContent
+          ref={textAreaRef}
           messages={messages}
           setMessages={setMessages}
           abortController={abortController}

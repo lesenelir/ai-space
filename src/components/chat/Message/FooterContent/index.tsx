@@ -5,10 +5,12 @@ import {
   type Dispatch,
   type MutableRefObject,
   type SetStateAction,
-  useEffect,
+  forwardRef,
+  useEffect
 } from 'react'
 
 import {
+  nextQuestionsAtom,
   previewUrlsAtom,
   remoteUrlsAtom,
   uploadingAtom
@@ -24,12 +26,21 @@ interface IProps {
   abortImageController: MutableRefObject<{[p: string]: AbortController}>
 }
 
-export default function FooterContent(props: IProps) {
-  const { messages, setMessages, abortController, abortImageController } = props
+const FooterContent = forwardRef<HTMLTextAreaElement, IProps>((
+  props,
+  ref
+) => {
+  const {
+    messages,
+    setMessages,
+    abortController,
+    abortImageController
+  } = props
   const router = useRouter()
   const setRemoteUrls = useSetAtom(remoteUrlsAtom)
   const setPreviewUrls = useSetAtom(previewUrlsAtom)
   const setUploading = useSetAtom(uploadingAtom)
+  const nextQuestions = useSetAtom(nextQuestionsAtom)
   const { transcript, listening, resetTranscript } = useSpeechRecognition()
 
   // when router.query.id changes, reset remoteUrls, previewUrls, uploading
@@ -37,6 +48,7 @@ export default function FooterContent(props: IProps) {
     setRemoteUrls([])
     setPreviewUrls([])
     setUploading({})
+    nextQuestions([])
   }, [router.query.id])
 
   return (
@@ -52,6 +64,7 @@ export default function FooterContent(props: IProps) {
 
       {/* footer main content area: textarea */}
       <FooterTextArea
+        ref={ref}
         messages={messages}
         listening={listening}
         transcript={transcript}
@@ -62,4 +75,6 @@ export default function FooterContent(props: IProps) {
       />
     </div>
   )
-}
+})
+
+export default FooterContent

@@ -10,9 +10,12 @@ import {
   chatItemsAtom,
   ignoreLineAtom,
   chatMessagesAtom,
+  nextQuestionsAtom,
   maxHistorySizeAtom,
-  selectedModelIdAtom
+  selectedModelIdAtom,
+  isQuestionLoadingAtom,
 } from '@/atoms'
+import { generateChatTitle, generateQuestions } from '@/requests'
 import { useGetChatInformation } from '@/hooks'
 import { getCurrentChatHistory } from '@/utils'
 import type { TMessage } from '@/types'
@@ -21,6 +24,7 @@ import SeparatorIcon from '@/components/icons/SeparatorIcon'
 import ScreenshotIcon from '@/components/icons/ScreenshotIcon'
 import PhotoShareIcon from '@/components/icons/PhotoShareIcon'
 import MessageClearIcon from '@/components/icons/MessageClearIcon'
+import MessageQuestionIcon from '@/components/icons/MessageQuestionIcon'
 
 interface IProps {
   disabled: boolean
@@ -34,6 +38,8 @@ export default function FooterMoreIconsData(props: IProps) {
   const router = useRouter()
   const { t } = useTranslation('common')
   const setChatItems = useSetAtom(chatItemsAtom)
+  const setNextQuestions = useSetAtom(nextQuestionsAtom)
+  const setIsQuestionLoading = useSetAtom(isQuestionLoadingAtom)
   const chatMessages = useAtomValue(chatMessagesAtom)
   const maxHistorySize = useAtomValue(maxHistorySizeAtom)
   const selectedModelId =  useAtomValue(selectedModelIdAtom)
@@ -66,7 +72,7 @@ export default function FooterMoreIconsData(props: IProps) {
     }
   }
 
-  const handleGeneratorChatTitle = async () => {
+  const handleGenerateChatTitle = async () => {
     const sendContent = getCurrentChatHistory(
       modelName === 'gpt-4-vision-preview',
       maxHistorySize,
@@ -82,26 +88,48 @@ export default function FooterMoreIconsData(props: IProps) {
         'The final output should not contain quotes.'
     })
 
-    const options = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        send_content: sendContent,
-        model_name: modelName,
-        item_uuid: router.query.id! as string,
-      })
-    }
     setGeneratingChatTitle(true)
     try {
-      const response = await fetch('/api/chat/generatorChatTitle', options)
-      const data = (await response.json()).chatItems
+      const response = await generateChatTitle(sendContent, modelName!, router.query.id! as string)
+      const data = (await response?.json()).chatItems
       setChatItems(data)
     } catch (e) {
       console.log('generator chat title error: ', e)
+      toast.error('Failed to generate chat title')
     }
     setGeneratingChatTitle(false)
+  }
+
+  const handleGenerateFollowQuestions = async () => {
+    const sendContent = getCurrentChatHistory(
+      modelName === 'gpt-4-vision-preview',
+      2,
+      messages.length > 0 ? messages : [],
+      chatMessages // chatMessages must not be empty
+    )
+
+    sendContent.push({
+      role: 'system',
+      content:
+        'Please analyze potential follow-up questions from the user\'s perspective based on the conversation contents. ' +
+        'The final output should not contain quotes.' +
+        'The follow-up questions should be in the language most used in the conversation. ' +
+        'Additionally, the follow-up questions should be as concise as possible.' +
+        'Please output the questions directly. The format of the question is separated by \n'
+    })
+
+    setIsQuestionLoading(true)
+    try {
+      // const response = await
+      const response = await generateQuestions(sendContent, modelName!)
+      const data = (await response?.json())
+      const questions = data.questions.trim().split('\n')
+      setNextQuestions(questions)
+    } catch (e) {
+      console.log('generate follow questions error: ', e)
+      toast.error('Failed to generate follow questions')
+    }
+    setIsQuestionLoading(false)
   }
 
   const handleViewScreenshot = () => {
@@ -156,11 +184,16 @@ export default function FooterMoreIconsData(props: IProps) {
   return (
     <div>
       <Toaster richColors position={'top-center'}/>
-
-      {/* generator chat title */}
-      <div className={normalDivClass} onClick={handleGeneratorChatTitle}>
+      {/* generate chat title */}
+      <div className={normalDivClass} onClick={handleGenerateChatTitle}>
         <TIcon width={16} height={16}/>
-        {t('chatPage.message.generatorChatTitle')}
+        {t('chatPage.message.generateChatTitle')}
+      </div>
+
+      {/* generate follow questions  */}
+      <div className={normalDivClass} onClick={handleGenerateFollowQuestions}>
+        <MessageQuestionIcon width={16} height={16}/>
+        {t('chatPage.message.generateQuestions')}
       </div>
 
       {/* View Screenshot */}

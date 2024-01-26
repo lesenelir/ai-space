@@ -4,7 +4,7 @@ import { franc } from 'franc-min'
 import { v4 as uuid } from 'uuid'
 import { useRouter } from 'next/router'
 import { useTranslation } from 'next-i18next'
-import { useAtomValue, useSetAtom } from 'jotai'
+import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import React, {
   type Dispatch,
   type SetStateAction,
@@ -13,11 +13,19 @@ import React, {
   useRef,
   useState,
   useMemo,
+  forwardRef,
 } from 'react'
 
-import { isMenuOpenAtom, previewUrlsAtom, selectedModelIdAtom } from '@/atoms'
+import {
+  isMenuOpenAtom,
+  previewUrlsAtom,
+  nextQuestionsAtom,
+  selectedModelIdAtom,
+  isQuestionLoadingAtom
+} from '@/atoms'
 import { useGetChatInformation, useUploadHandler } from '@/hooks'
 import type { TImage, TMessage } from '@/types'
+import RefreshIcon from '@/components/icons/RefreshIcon'
 import ChevronUpIcon from '@/components/icons/ChevronUpIcon'
 import ChevronDownIcon from '@/components/icons/ChevronDownIcon'
 import ChatHome from '@/components/chat/Message/MainContent/ChatHome'
@@ -30,7 +38,10 @@ interface IProps {
   abortImageController: MutableRefObject<{[p: string]: AbortController}>
 }
 
-export default function MainContent(props: IProps) {
+const MainContent = forwardRef<HTMLTextAreaElement, IProps>((
+  props,
+  ref
+) => {
   const {
     messages,
     setMessages,
@@ -42,17 +53,28 @@ export default function MainContent(props: IProps) {
   const isMenuOpen = useAtomValue(isMenuOpenAtom)
   const setPreviewUrls = useSetAtom(previewUrlsAtom)
   const selectedModelId = useAtomValue(selectedModelIdAtom)
+  const isQuestionLoading = useAtomValue(isQuestionLoadingAtom)
+  const [nextQuestions, setNextQuestions] = useAtom(nextQuestionsAtom)
   const containerRef = useRef<HTMLDivElement>(null)
   const handleUploadSubmit = useUploadHandler(abortImageController)
   const [isDragging, setIsDragging] = useState<boolean>(false)
   const [speakingId, setSpeakingId] = useState<string | null>(null)
   const { modelName } = useGetChatInformation(router.query.id as string, selectedModelId)
+  // ref may be a function, so we need to assert it to a MutableRefObject
+  const textAreaRef = ref as MutableRefObject<HTMLTextAreaElement> // (instance: HTMLTextAreaElement | null) => void
 
   useEffect(() => {
     if (containerRef.current) {
       containerRef.current.scrollTop = containerRef.current?.scrollHeight
     }
   }, [router.query.id])
+
+  useEffect(() => {
+    containerRef.current?.scrollTo({
+      top: containerRef.current.scrollHeight,
+      behavior: 'smooth'
+    })
+  }, [isQuestionLoading])
 
   const startSpeaking = (id: string, content: string, rate: number) => {
     const languageMap : {[key: string]: string} = {
@@ -146,6 +168,11 @@ export default function MainContent(props: IProps) {
     }
   }
 
+  const handleClickQuestion = async (question: string) => {
+    setNextQuestions([])
+    textAreaRef.current.value = question
+  }
+
   const buttonClass = useMemo(() => (
     clsx(
       'max-md:hidden',
@@ -191,10 +218,12 @@ export default function MainContent(props: IProps) {
               'dark:bg-chatpage-message-background-dark/90',
             )}
           >
-            <div className={clsx(
-              'p-3 flex flex-col items-center gap-4 opacity-100',
-              isMenuOpen && '-translate-x-56',
-            )}>
+            <div
+              className={clsx(
+                'p-3 flex flex-col items-center gap-4 opacity-100',
+                isMenuOpen && '-translate-x-56',
+              )}
+            >
               <Image
                 src={'/dragImg.svg'}
                 alt={'drag image'}
@@ -228,6 +257,41 @@ export default function MainContent(props: IProps) {
           startSpeaking={startSpeaking}
           abortController={abortController}
         />
+
+        {
+          isQuestionLoading && (
+            <div className={'flex flex-col items-center pb-3'}>
+              <div className={'flex gap-2'}>
+                <RefreshIcon width={16} height={16} className={'animate-spinReverse'}/>
+                <p className={'text-xs'}>{t('chatPage.message.generatingQuestions')}</p>
+              </div>
+            </div>
+          )
+        }
+
+        {
+          !isQuestionLoading && nextQuestions.length > 0 && (
+            <div className={'flex flex-col gap-3 items-center px-3 pb-3'}>
+              <p className={'text-sm'}>{t('chatPage.message.suggestQuestions')}</p>
+              {
+                nextQuestions.slice(0, 5).map((question, index) => (
+                  <div
+                    key={index}
+                    className={clsx(
+                      'rounded-xl py-1.5 px-3 border dark:border-gray-500 cursor-pointer hover-transition-change',
+                      'hover:bg-gray-200/60 dark:hover:bg-chatpage-message-robot-content-dark',
+                    )}
+                  >
+                    <p className={'text-xs'} onClick={() => handleClickQuestion(question)}>
+                      {question}
+                    </p>
+                  </div>
+                ))
+              }
+            </div>
+          )
+        }
+
       </div>
 
       {/* scroll button */}
@@ -246,4 +310,6 @@ export default function MainContent(props: IProps) {
       </button>
     </div>
   )
-}
+})
+
+export default MainContent

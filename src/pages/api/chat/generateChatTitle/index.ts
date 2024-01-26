@@ -13,7 +13,7 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY || ''
 })
 
-const handleGeneratorChatTitle = async (req: NextApiRequest, res: NextApiResponse) => {
+const handleGenerateChatTitle = async (req: NextApiRequest, res: NextApiResponse) => {
   const { userId } = getAuth(req)
   const { send_content, item_uuid, model_name } = req.body
 
@@ -56,5 +56,5 @@ const handleGeneratorChatTitle = async (req: NextApiRequest, res: NextApiRespons
     return res.status(500).json({ error: e })}
 }
 
-router.post(handleGeneratorChatTitle)
+router.post(handleGenerateChatTitle)
 export default router.handler()

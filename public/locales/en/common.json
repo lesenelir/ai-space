@@ -64,7 +64,8 @@
       "copy": "copy",
       "copied": "copied",
       "voiceInput": "voice input",
-      "generatorChatTitle": "create chat title",
+      "generateQuestions": "create questions",
+      "generateChatTitle": "create chat title",
       "saveScreenshot": "save screenshot",
       "viewScreenshot": "view screenshot",
       "generating": "generating title",
@@ -78,7 +79,9 @@
       "confirm": "Confirm",
       "upload": "upload image",
       "addPictures": "Add pictures",
-      "dropPictures": "Drop any pictures here.."
+      "dropPictures": "Drop any pictures here..",
+      "generatingQuestions": "Generating follow up questions ...",
+      "suggestQuestions": "Suggested Follow-up Questions"
     }
   },
   "dallPage": {

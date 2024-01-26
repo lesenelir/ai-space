@@ -64,7 +64,8 @@
       "copy": "复制",
       "copied": "已复制",
       "voiceInput": "语音输入",
-      "generatorChatTitle": "生成聊天标题",
+      "generateQuestions": "生成推荐问题",
+      "generateChatTitle": "生成聊天标题",
       "saveScreenshot": "保存聊天截图",
       "viewScreenshot": "查看聊天截图",
       "generating": "生成聊天标题中",
@@ -79,7 +80,9 @@
       "confirm": "确认",
       "upload": "上传图片",
       "addPictures": "添加图片",
-      "dropPictures": "在这里拖放任何图片.."
+      "dropPictures": "在这里拖放任何图片..",
+      "generatingQuestions": "正在生成推荐问题...",
+      "suggestQuestions": "推荐问题"
     }
   },
   "dallPage": {

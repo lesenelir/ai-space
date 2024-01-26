@@ -23,7 +23,9 @@ export const superCopilotsAtom = atomWithStorage<TMyCopilot[]>('superCopilots', 
 export const remoteUrlsAtom = atom<TImage[]>([])
 export const previewUrlsAtom = atom<TImage[]>([])
 export const uploadingAtom = atom<{[key: string]: boolean}>({})
-
+// questions
+export const nextQuestionsAtom = atom<string[]>([])
+export const isQuestionLoadingAtom = atom<boolean>(false)
 
 // server atoms: need to hydrate from server
 export const isUserSaveOpenAIKeyAtom = atom<boolean>(false) // maintains the user's openAI key status
