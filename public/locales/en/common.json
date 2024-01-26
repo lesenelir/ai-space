@@ -51,7 +51,11 @@
       "createCopilot": "Create a new Copilot",
       "copilotName": "copilot name",
       "copilotPrompt": "copilot prompts",
-      "copilotTitle": "ChatBox Featured"
+      "copilotTitle": "ChatBox Featured",
+      "aiTools": "AI Tools",
+      "text2Speech": "Text to Speech",
+      "summarize": "Summarize",
+      "translate": "Translate"
     },
     "message": {
       "textAreaPlaceholder": "Type a message...",
