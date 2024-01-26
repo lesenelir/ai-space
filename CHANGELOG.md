@@ -108,4 +108,4 @@ This changelog provides a detailed record of the updates and improvements made t
 - Complete `dall-E` page for generating images.
 - Integrated `html2canvas` for generating screenshot.
 - Drag and drop `image` to the chat input box for uploading image.
-
+- Add `generate follow-up questions` feature.
