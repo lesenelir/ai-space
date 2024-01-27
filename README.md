@@ -26,7 +26,7 @@ Tech Stack: Next.js (Pages Router) + React + TypeScript + Tailwind CSS + Jotai +
   - [x] Maintain the token consumption of each chat
   - [x] Using Jotai for global state management
   - [x] SSR to prefetch data, and hydrate the prefetched data on the client side 
-  - [ ] Create and save screenshot 
+  - [x] Create and save screenshot 
 
 - Backend
   - [x] Integrate mysql database and save the chat data to the server
@@ -49,6 +49,8 @@ Tech Stack: Next.js (Pages Router) + React + TypeScript + Tailwind CSS + Jotai +
   - [x] Add my copilots (system message) feature
   - [x] Add refresh the latest reply feature
   - [x] Add generate chat title feature
+  - [x] Add generate follow-up questions feature
+  - [x] Integrate dall-E model for generating images
 
 
 ## Inspirations
