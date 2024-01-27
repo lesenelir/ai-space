@@ -1,4 +1,6 @@
 import Head from 'next/head'
+import type { GetServerSideProps } from 'next'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 import FirstContentArea from '@/components/home/FirstContentArea'
 import SecondContentArea from '@/components/home/SecondContentArea'
@@ -34,3 +36,12 @@ export default function Home() {
     </>
   )
 }
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  return {
+    props: {
+      ...(await serverSideTranslations(ctx.locale!, ['common'])),
+    }
+  }
+}
+
