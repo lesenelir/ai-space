@@ -77,4 +77,6 @@ const FooterContent = forwardRef<HTMLTextAreaElement, IProps>((
   )
 })
 
+FooterContent.displayName = 'FooterContent'
+
 export default FooterContent

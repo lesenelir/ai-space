@@ -341,4 +341,6 @@ const FooterTextArea = forwardRef<HTMLTextAreaElement, IProps>((
   )
 })
 
+FooterTextArea.displayName = 'FooterTextArea'
+
 export default FooterTextArea

@@ -312,4 +312,6 @@ const MainContent = forwardRef<HTMLTextAreaElement, IProps>((
   )
 })
 
+MainContent.displayName = 'MainContent'
+
 export default MainContent
