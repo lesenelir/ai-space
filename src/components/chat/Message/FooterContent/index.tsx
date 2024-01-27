@@ -49,7 +49,7 @@ const FooterContent = forwardRef<HTMLTextAreaElement, IProps>((
     setPreviewUrls([])
     setUploading({})
     nextQuestions([])
-  }, [router.query.id])
+  }, [nextQuestions, router.query.id, setPreviewUrls, setRemoteUrls, setUploading])
 
   return (
     <div className={'w-full flex flex-col items-center border-t dark:border-t-gray-500'}>

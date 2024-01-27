@@ -104,7 +104,7 @@ const FooterTextArea = forwardRef<HTMLTextAreaElement, IProps>((
       setIsDisabled(!hasText)
     }
 
-  }, [deleting, uploading])
+  }, [deleting, textAreaRef, uploading])
 
   // when the router.query.id changes,
   // reset the textarea value and focus on it and set deleting state to {} empty.
@@ -120,7 +120,7 @@ const FooterTextArea = forwardRef<HTMLTextAreaElement, IProps>((
     }
 
     setDeleting({})
-  }, [resetTranscript, router.query.id])
+  }, [resetTranscript, router.query.id, textAreaRef])
 
   // when the router.query.id changes, cancel the fetch request if it is still running.
   useEffect(() => {
