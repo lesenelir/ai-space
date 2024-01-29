@@ -8,7 +8,7 @@ import { useOutsideClick } from '@/hooks'
 import DropDown from '@/components/ui/DropDown'
 import ChevronUpIcon from '@/components/icons/ChevronUpIcon'
 import ChevronDownIcon from '@/components/icons/ChevronDownIcon'
-import RenderModelIcon from '@/components/common/chat/RenderModelIcon'
+import RenderModelIcon from '@/components/common/RenderModelIcon'
 import { chatItemsAtom, modelsAtom, selectedModelIdAtom } from '@/atoms'
 
 export default function Select() {

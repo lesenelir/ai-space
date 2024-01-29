@@ -38,7 +38,7 @@ import { getChatHistory } from '@/utils'
 import type { TMessage } from '@/types'
 import { useGetChatInformation } from '@/hooks'
 import Tooltip from '@/components/ui/Tooltip'
-import LoadingDots from '@/components/common/chat/LoadingDots'
+import LoadingDots from '@/components/common/LoadingDots'
 import ArrowNarrowUpIcon from '@/components/icons/ArrowNarrowUpIcon'
 import PreviewImg from '@/components/chat/Message/FooterContent/PreviewImg'
 

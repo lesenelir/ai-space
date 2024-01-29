@@ -4,7 +4,7 @@ import { useAtom } from 'jotai'
 import type { Dispatch, MutableRefObject, SetStateAction } from 'react'
 
 import { previewUrlsAtom, remoteUrlsAtom, uploadingAtom } from '@/atoms'
-import LoadingSpinner from '@/components/common/chat/LoadingSpinner'
+import LoadingSpinner from '@/components/common/LoadingSpinner'
 
 interface IProps {
   deleting: {[key: string]: boolean}

@@ -34,7 +34,7 @@ import VolumeIcon from '@/components/icons/VolumeIcon'
 import RefreshIcon from '@/components/icons/RefreshIcon'
 import PlayerPauseIcon from '@/components/icons/PlayerPauseIcon'
 import PlayerStationIcon from '@/components/icons/PlayerStationIcon'
-import RenderModelIcon from '@/components/common/chat/RenderModelIcon'
+import RenderModelIcon from '@/components/common/RenderModelIcon'
 import IgnoreLine from '@/components/chat/Message/MainContent/IgnoreLine'
 import MarkdownRender from '@/components/chat/Message/MainContent/MarkdownRender'
 

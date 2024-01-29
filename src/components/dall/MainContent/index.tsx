@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 import { useTranslation } from 'next-i18next'
 import { type FormEvent, useRef, useState } from 'react'
 
-import LoadingDots from '@/components/common/chat/LoadingDots'
+import LoadingDots from '@/components/common/LoadingDots'
 import ShowImages from '@/components/dall/MainContent/ShowImages'
 
 export default function MainContent() {

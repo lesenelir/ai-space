@@ -1,3 +1,3 @@
-export * from './chat/RenderModelIcon'
-export * from './chat/LoadingSpinner'
-export * from './chat/LoadingDots'
+export * from './RenderModelIcon'
+export * from './LoadingSpinner'
+export * from './LoadingDots'
