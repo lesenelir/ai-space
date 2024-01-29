@@ -2,9 +2,9 @@ import clsx from 'clsx'
 import { useAtomValue } from 'jotai'
 
 import { isMenuOpenAtom } from '@/atoms'
+import I18Change from '@/components/common/I18Change'
+import ThemeChange from '@/components/common/ThemeChange'
 import Select from '@/components/chat/Message/HeaderContent/Select'
-import I18Change from '@/components/chat/Message/HeaderContent/I18Change'
-import ThemeChange from '@/components/chat/Message/HeaderContent/ThemeChange'
 
 export default function HeaderContent() {
   const isMenuOpen = useAtomValue(isMenuOpenAtom)

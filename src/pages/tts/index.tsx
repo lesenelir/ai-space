@@ -2,6 +2,9 @@ import Head from 'next/head'
 import type { GetServerSideProps } from 'next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
+import TTSMenu from '@/components/tts/TTSMenu'
+import TTSMessage from '@/components/tts/TTSMessage'
+
 export default function TTSPage() {
   return (
     <>
@@ -11,8 +14,9 @@ export default function TTSPage() {
         <link rel='icon' href={`/favicon.ico`}/>
       </Head>
 
-      <div className={'w-full min-h-screen bg-gray-100 dark:bg-dallpage-dark-background'}>
-        TTS
+      <div className={'w-screen h-screen flex flex-row'}>
+        <TTSMenu/>
+        <TTSMessage/>
       </div>
     </>
   )

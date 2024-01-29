@@ -1,6 +1,6 @@
 import Image from 'next/image'
-import { useEffect, useState } from 'react'
 import { useTheme } from 'next-themes'
+import { useEffect, useState } from 'react'
 
 export default function ThemeChange() {
   const [mounted, setMounted] = useState<boolean>(false)

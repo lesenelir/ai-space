@@ -2,6 +2,9 @@ import Head from 'next/head'
 import type { GetServerSideProps } from 'next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
+import { SummarizeMenu } from '@/components/summarize'
+import SummarizeMessage from '@/components/summarize/SummarizeMessage'
+
 export default function SummarizePage() {
   return (
     <>
@@ -11,8 +14,9 @@ export default function SummarizePage() {
         <link rel='icon' href={`/favicon.ico`}/>
       </Head>
 
-      <div className={'w-full min-h-screen bg-gray-100 dark:bg-dallpage-dark-background'}>
-        Summarize
+      <div className={'w-screen h-screen flex flex-row'}>
+        <SummarizeMenu/>
+        <SummarizeMessage/>
       </div>
     </>
   )
