@@ -29,7 +29,7 @@ export default function DropdownCard() {
       {/* basic information */}
       <div
         className={clsx(
-          'border-b flex flex-col gap-2 p-2 rounded-t-md',
+          'border-b flex flex-col gap-2 p-2 rounded-t-xl',
           'hover:bg-gray-100 dark:border-gray-500 dark:hover:bg-dallpage-dark-background'
         )}
       >
@@ -67,7 +67,7 @@ export default function DropdownCard() {
       {/* information */}
       <div
         className={clsx(
-          'h-10 flex gap-1 p-2 cursor-pointer rounded-b-md',
+          'h-10 flex gap-1 p-2 cursor-pointer rounded-b-xl',
           'hover:bg-gray-100 dark:hover:bg-dallpage-dark-background'
         )}
         onClick={() => router.push('/').then(() => {})}
