@@ -1,13 +1,14 @@
 import clsx from 'clsx'
-import { useAtomValue } from 'jotai'
+import { useAtom } from 'jotai'
 
 import { isMenuOpenAtom } from '@/atoms'
 import I18Change from '@/components/common/I18Change'
+import ColumnsIcon from '@/components/icons/ColumnsIcon'
 import ThemeChange from '@/components/common/ThemeChange'
 import Select from '@/components/chat/Message/HeaderContent/Select'
 
 export default function HeaderContent() {
-  const isMenuOpen = useAtomValue(isMenuOpenAtom)
+  const [isMenuOpen, setIsMenuOpen] = useAtom(isMenuOpenAtom)
 
   return (
     <div
@@ -17,7 +18,18 @@ export default function HeaderContent() {
       )}
     >
       {/* left icon */}
-      <div className={`${isMenuOpen ? '' : 'ml-12'} text-black dark:text-white`}>
+      <div className={'flex gap-2 text-black dark:text-white'}>
+        {!isMenuOpen && (
+          <ColumnsIcon
+            width={24}
+            height={24}
+            className={clsx(
+              'border p-2 rounded-lg cursor-pointer hover:bg-gray-200',
+              'hover-transition-change dark:border-gray-500 dark:hover:bg-gray-500/10',
+            )}
+            onClick={() => setIsMenuOpen(true)}
+          />
+        )}
         <Select/>
       </div>
 

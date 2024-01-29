@@ -1,22 +1,19 @@
 import clsx from 'clsx'
-import { useAtom } from 'jotai'
+import { useAtomValue } from 'jotai'
 
 import { isMenuOpenAtom } from '@/atoms'
-import ColumnsIcon from '@/components/icons/ColumnsIcon'
 import ResizableDiv from '@/components/ui/ResizableDiv'
 import HeaderMenuContent from '@/components/chat/Menu/HeaderMenuContent'
 import MainMenuContent from '@/components/chat/Menu/MainMenuContent'
 import FooterMenuContent from '@/components/chat/Menu/FooterMenuContent'
 
 export default function Menu() {
-  const [isMenuOpen, setIsMenuOpen] = useAtom(isMenuOpenAtom)
-
-  const toggleOpen = () => setIsMenuOpen(!isMenuOpen)
+  const isMenuOpen = useAtomValue(isMenuOpenAtom)
 
   return (
     <>
       {
-        isMenuOpen ? (
+        isMenuOpen && (
           <ResizableDiv
             minWidth={300}
             maxWidth={520}
@@ -36,18 +33,6 @@ export default function Menu() {
               <FooterMenuContent/>
             </div>
           </ResizableDiv>
-        ) : (
-          <div className={'fixed top-3 left-3'}>
-            <ColumnsIcon
-              width={24}
-              height={24}
-              className={clsx(
-                'border p-2 rounded-lg cursor-pointer hover:bg-gray-200',
-                'hover-transition-change dark:border-gray-500 dark:hover:bg-gray-500/10',
-              )}
-              onClick={toggleOpen}
-            />
-          </div>
         )
       }
     </>
