@@ -34,7 +34,7 @@ const handleSurprise = async (req: NextApiRequest, res: NextApiResponse) => {
     })
 
     const text = completion.choices[0].message.content
-    return res.status(200).json({ status: 'New Chat Item', text })
+    return res.status(200).json({ status: 'Surprise me', text })
   } catch (e) {
     return res.status(500).json({ error: e })}
 }

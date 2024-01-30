@@ -25,7 +25,7 @@ const handleCreateImage = async (req: NextApiRequest, res: NextApiResponse) => {
     })
     const url = image.data[0].url
 
-    return res.status(200).json({ status: 'New Chat Item', url })
+    return res.status(200).json({ status: 'Create Image Success', url })
   } catch (e) {
     return res.status(500).json({ error: e })}
 }
