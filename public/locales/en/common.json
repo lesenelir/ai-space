@@ -102,5 +102,20 @@
     "placeholder": "An Impressionist oil painting of a flower ...",
     "generate": "Generate",
     "generating": "Generating"
+  },
+  "ttsPage": {
+    "textPlaceholder": "Enter text here...",
+    "provider": "Provider",
+    "voice": "Voice",
+    "format": "Format",
+    "model": "Model",
+    "speed": "Speed",
+    "convert": "Convert",
+    "loadFromURL": "Load From URL",
+    "enterURL": "Enter URL",
+    "urlModalText": "The URL to extract content from",
+    "urlModalInputPlaceholder": "Enter URL here...",
+    "cancel": "Cancel",
+    "confirm": "Confirm"
   }
 }

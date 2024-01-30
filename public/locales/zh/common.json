@@ -103,5 +103,20 @@
     "placeholder": "一幅印象派的花朵油画 ...",
     "generate": "生成",
     "generating": "生成图片中..."
+  },
+  "ttsPage": {
+    "textPlaceholder": "在此输入内容...",
+    "provider": "提供方",
+    "voice": "声音选择",
+    "format": "输出格式",
+    "model": "处理模型",
+    "speed": "语速",
+    "convert": "确认转换",
+    "loadFromURL": "从 URL 加载",
+    "enterURL": "输入 URL",
+    "urlModalText": "提取文本来自于",
+    "urlModalInputPlaceholder": "在此输入 URL...",
+    "cancel": "取消",
+    "confirm": "确定"
   }
 }

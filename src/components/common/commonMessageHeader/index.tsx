@@ -47,7 +47,7 @@ export default function CommonMessageHeader() {
             onClick={() => setIsMenuOpen(true)}
           />
         )}
-        <p className={'text-lg font-medium dark:text-white'}>{mainText}</p>
+        <p className={'text-xl font-medium dark:text-white'}>{mainText}</p>
       </div>
 
       {/* right icons */}

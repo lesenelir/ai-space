@@ -1,5 +1,5 @@
-import { forwardRef, TextareaHTMLAttributes } from 'react'
 import clsx from 'clsx'
+import { forwardRef, TextareaHTMLAttributes } from 'react'
 
 export interface TextareaProps
   extends TextareaHTMLAttributes<HTMLTextAreaElement> {}
