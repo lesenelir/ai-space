@@ -82,7 +82,7 @@ export default function TTSMessage() {
               )}
               onClose={() => setIsModalOpen(true)}
             >
-              <ModalUrl setIsModalOpen={setIsModalOpen}/>
+              <ModalUrl ref={textAreaRef} setIsModalOpen={setIsModalOpen}/>
             </Modal>
           </>
         )
