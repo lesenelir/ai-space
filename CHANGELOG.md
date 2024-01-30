@@ -110,3 +110,5 @@ This changelog provides a detailed record of the updates and improvements made t
 - Drag and drop `image` to the chat input box for uploading image.
 - Add `generate follow-up questions` feature.
 - Complete `AI Tools` ui design and code.
+- Refactor `common` folder.
+- Integrated `cheerio` for extracting text from url html in tts page.
