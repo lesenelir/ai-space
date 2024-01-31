@@ -13,6 +13,7 @@ import {
 
 import { createVoice } from '@/requests'
 import Modal from '@/components/ui/Modal'
+import TreeIcon from '@/components/icons/TreeIcon'
 import RefreshIcon from '@/components/icons/RefreshIcon'
 import CommonModalUrl from '@/components/common/commonModalUrl'
 import CommonMessageHeader from '@/components/common/commonMessageHeader'
@@ -244,15 +245,19 @@ export default function TTSMessage() {
             type={'submit'}
             disabled={converting}
             className={clsx(
-              'w-fit flex items-center gap-1',
+              'w-fit flex justify-center items-center gap-0.5',
               'bg-blue-500 p-2 rounded-lg text-white',
               'shadow-md text-sm hover:bg-blue-500/90 hover-transition-change',
               'disabled:opacity-80 disabled:cursor-not-allowed'
             )}
           >
-            {converting && (
-              <RefreshIcon width={16} height={16} className={'animate-spinReverse'}/>
-            )}
+            {
+              converting ? (
+                <RefreshIcon width={16} height={16} className={'animate-spinReverse'}/>
+              ) : (
+                <TreeIcon width={16} height={16}/>
+              )
+            }
             {t('ttsPage.convert')}
           </button>
 
