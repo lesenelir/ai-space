@@ -112,3 +112,4 @@ This changelog provides a detailed record of the updates and improvements made t
 - Complete `AI Tools` ui design and code.
 - Refactor `common` folder.
 - Integrated `cheerio` for extracting text from url html in tts page.
+- Complete `tts` page, including text to speech
