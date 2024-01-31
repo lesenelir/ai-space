@@ -28,7 +28,7 @@ import CommonMessageHeader from '@/components/common/commonMessageHeader'
 import CommonMarkdownRender from '@/components/common/commonMarkdownRender'
 
 export default function SummarizeMessage() {
-  const maxHeight = 200
+  const maxHeight = 250
   const router = useRouter()
   const { t } = useTranslation('common')
   const maxTokens = useAtomValue(maxTokensAtom)

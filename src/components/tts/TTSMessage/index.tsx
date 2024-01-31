@@ -18,7 +18,7 @@ import CommonModalUrl from '@/components/common/commonModalUrl'
 import CommonMessageHeader from '@/components/common/commonMessageHeader'
 
 export default function TTSMessage() {
-  const maxHeight = 200
+  const maxHeight = 250
   const { t } = useTranslation('common')
   const textAreaRef = useRef<HTMLTextAreaElement>(null)
   const [isTextAreaFocus, setIsTextAreaFocus] = useState<boolean>(false)

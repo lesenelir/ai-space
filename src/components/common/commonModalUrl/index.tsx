@@ -55,6 +55,8 @@ const CommonModalUrl = forwardRef<HTMLTextAreaElement, IProps>((
         const response = await fetch('/api/tts/extractContent', options)
         const data = await response.json()
         textAreaRef.current.value = data.text
+        textAreaRef.current.style.height = 'auto'
+        textAreaRef.current.style.height = Math.min(Math.max(textAreaRef.current.scrollHeight, 144), 250) + 'px'
       } catch (e) {
         toast.error('extract data error')
       }
@@ -64,6 +66,7 @@ const CommonModalUrl = forwardRef<HTMLTextAreaElement, IProps>((
       setIsModalOpen(false)
     } else {
       toast.error('please input correct url')
+      textAreaRef.current.value = ''
     }
   }
 

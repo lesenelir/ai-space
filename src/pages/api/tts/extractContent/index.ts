@@ -18,7 +18,12 @@ const handleExtractContent = async (req: NextApiRequest, res: NextApiResponse) =
     const html = await response.text()
     const $ = cheerio.load(html)
     $('script, style, link, meta, noscript, footer, header, img').remove()
-    const text = $('body').text().trim()
+
+    let text = ''
+    $('p').each((i, elem) => {
+      text += $(elem).text().trim()
+      text += '\n\n'
+    })
 
     return res.status(200).json({ status: 'New Chat Item', text })
   } catch (e) {
