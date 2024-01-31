@@ -90,3 +90,11 @@
   transition: opacity 0.3s ease-in;
   animation: none;
 }
+
+/* property selector */
+[data-theme="dark"] audio::-webkit-media-controls-play-button,
+[data-theme="dark"] audio::-webkit-media-controls-panel {
+  background-color: #444652;
+  color: #f9fafb;
+}
+

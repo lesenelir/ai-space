@@ -1,15 +1,19 @@
 import clsx from 'clsx'
+import { toast } from 'sonner'
 import { useTranslation } from 'next-i18next'
 import {
   type ChangeEvent,
   type KeyboardEvent,
   type CompositionEvent,
+  type FormEvent,
   useState,
   useRef,
-  useMemo, FormEvent,
+  useMemo,
 } from 'react'
 
+import { createVoice } from '@/requests'
 import Modal from '@/components/ui/Modal'
+import RefreshIcon from '@/components/icons/RefreshIcon'
 import ModalUrl from '@/components/tts/TTSMessage/ModalUrl'
 import CommonMessageHeader from '@/components/common/commonMessageHeader'
 
@@ -17,13 +21,17 @@ export default function TTSMessage() {
   const maxHeight = 200
   const { t } = useTranslation('common')
   const textAreaRef = useRef<HTMLTextAreaElement>(null)
+  const [isTextAreaFocus, setIsTextAreaFocus] = useState<boolean>(false)
   const [isComposing, setIsComposing] = useState<boolean>(false)
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
+  const [converting, setConverting] = useState<boolean>(false)
+  const [showAudio, setShowAudio] = useState<boolean>(false)
   const [provider, setProvider] = useState<string>('openai')
   const [voice, setVoice] = useState<string>('alloy')
   const [format, setFormat] = useState<string>('mp3')
   const [model, setModel] = useState<string>('tts-1')
   const [speed, setSpeed] = useState<number>(1)
+  const [audioUrl, setAudioUrl] = useState<string>('')
 
   const selectClassName = useMemo(() => (
     clsx(
@@ -51,15 +59,28 @@ export default function TTSMessage() {
 
     if (e.key === 'Enter' && !e.shiftKey && !isComposing) {
       e.preventDefault()
-      // TODO: emmit convert trigger
-      // ...
+      handleSubmit(e).then()
     }
   }
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent | KeyboardEvent) => {
     e.preventDefault()
 
+    // because of the `required` attribute, so we don't need to check the value
+    const text = textAreaRef.current!.value || ''
 
+    try {
+      setShowAudio(false)
+      setConverting(true)
+      const response = (await createVoice(text, voice, format, model, speed))!
+      const blob = await response.blob()
+      const url = URL.createObjectURL(blob)
+      setConverting(false)
+      setShowAudio(true)
+      setAudioUrl(url)
+    } catch (e) {
+      toast.error('get voice failed')
+    }
   }
 
   return (
@@ -82,7 +103,7 @@ export default function TTSMessage() {
               )}
               onClose={() => setIsModalOpen(true)}
             >
-              <ModalUrl ref={textAreaRef} setIsModalOpen={setIsModalOpen}/>
+              <ModalUrl ref={textAreaRef} setIsModalOpen={setIsModalOpen} setShowAudio={setShowAudio}/>
             </Modal>
           </>
         )
@@ -90,21 +111,46 @@ export default function TTSMessage() {
 
       {/* Message Content */}
       <form className={'flex flex-col gap-4 p-3'} onSubmit={handleSubmit}>
-        <textarea
-          ref={textAreaRef}
-          required={true}
-          placeholder={t('ttsPage.textPlaceholder')}
+        <div
           className={clsx(
-            'resize-none w-full h-[144px] p-3 text-sm rounded-lg',
-            'border dark:border-gray-500 bg-transparent',
-            'custom-message-light-scrollbar focus:outline-none focus:ring-2',
-            'focus:border-blue-500 dark:focus:border-blue-500 focus:ring-blue-500'
+            showAudio && 'border dark:border-gray-500 rounded-lg',
+            showAudio && isTextAreaFocus && 'border-blue-500 dark:border-blue-500 outline-none ring-2 ring-blue-500'
           )}
-          onChange={handleTextAreaChange}
-          onKeyDown={handleKeyDown}
-          onCompositionStart={handleComposition}
-          onCompositionEnd={handleComposition}
-        />
+        >
+          <textarea
+            ref={textAreaRef}
+            required={true}
+            placeholder={t('ttsPage.textPlaceholder')}
+            className={clsx(
+              'resize-none w-full h-[144px] p-3 text-sm rounded-lg',
+              'custom-message-light-scrollbar bg-transparent focus:outline-none',
+              !showAudio && 'border dark:border-gray-500',
+              !showAudio && 'focus:ring-2 focus:border-blue-500 dark:focus:border-blue-500 focus:ring-blue-500',
+              showAudio && 'focus:ring-0 focus:outline-none'
+            )}
+            onChange={handleTextAreaChange}
+            onKeyDown={handleKeyDown}
+            onCompositionStart={handleComposition}
+            onCompositionEnd={handleComposition}
+            onFocus={() => setIsTextAreaFocus(true)}
+            onBlur={() => setIsTextAreaFocus(false)}
+          />
+          {
+            showAudio && (
+              <audio
+                controls
+                key={audioUrl}
+                className={clsx(
+                  'w-full p-3 h-20',
+                  showAudio && 'border-t dark:border-gray-500'
+                )}
+              >
+                <source src={audioUrl} type="audio/mpeg" className={''}/>
+                Your browser does not support the audio element.
+              </audio>
+            )
+          }
+        </div>
 
         {/* settings */}
         <div className={'flex flex-wrap gap-4 text-black dark:text-white'}>
@@ -187,11 +233,17 @@ export default function TTSMessage() {
         <div className={'flex gap-3'}>
           <button
             type={'submit'}
+            disabled={converting}
             className={clsx(
+              'w-fit flex items-center gap-1',
               'bg-blue-500 p-2 rounded-lg text-white',
-              'shadow-md text-sm hover:bg-blue-500/90 hover-transition-change'
+              'shadow-md text-sm hover:bg-blue-500/90 hover-transition-change',
+              'disabled:opacity-80 disabled:cursor-not-allowed'
             )}
           >
+            {converting && (
+              <RefreshIcon width={16} height={16} className={'animate-spinReverse'}/>
+            )}
             {t('ttsPage.convert')}
           </button>
 
