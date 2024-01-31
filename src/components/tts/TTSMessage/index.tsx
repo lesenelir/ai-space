@@ -1,5 +1,5 @@
 import clsx from 'clsx'
-import { toast } from 'sonner'
+import { toast, Toaster } from 'sonner'
 import { useTranslation } from 'next-i18next'
 import {
   type ChangeEvent,
@@ -73,6 +73,13 @@ export default function TTSMessage() {
       setShowAudio(false)
       setConverting(true)
       const response = (await createVoice(text, voice, format, model, speed))!
+
+      if (!response.ok) {
+        toast.error('convert failed')
+        setConverting(false)
+        return
+      }
+
       const blob = await response.blob()
       const url = URL.createObjectURL(blob)
       setConverting(false)
@@ -91,6 +98,8 @@ export default function TTSMessage() {
       )}
     >
       <CommonMessageHeader/>
+
+      <Toaster richColors position={'top-center'} className={'fixed'}/>
 
       {
         isModalOpen && (

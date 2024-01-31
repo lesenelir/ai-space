@@ -27,7 +27,8 @@ const handleExtractContent = async (req: NextApiRequest, res: NextApiResponse) =
 
     return res.status(200).json({ status: 'New Chat Item', text })
   } catch (e) {
-    return res.status(500).json({ error: e })}
+    return res.status(500).json({ error: e })
+  }
 }
 
 router.post(handleExtractContent)

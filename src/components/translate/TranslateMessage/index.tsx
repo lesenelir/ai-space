@@ -13,7 +13,7 @@ export default function TranslateMessage() {
     >
       <CommonMessageHeader/>
 
-      <div className={'p-3'}>
+      <div className={'w-full p-3 bg-violet-200'}>
         TranslateMessage
       </div>
     </div>

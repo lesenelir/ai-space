@@ -107,7 +107,12 @@ export default function SummarizeMessage() {
     }
 
     const res = await fetch('/api/chat/send', options)
-    if (!res.ok || !res.body) return
+    if (!res.ok || !res.body) {
+      setSummarizing(false)
+      setText('')
+      toast.error('Network Connection Error')
+      return
+    }
 
     let completion = ''
     try {
@@ -121,11 +126,11 @@ export default function SummarizeMessage() {
         setText(completion)
       }
 
+      setSummarizing(false)
     } catch (e) {
       toast.error('network error')
+      setSummarizing(false)
     }
-
-    setSummarizing(false)
   }
 
   return (
@@ -175,7 +180,7 @@ export default function SummarizeMessage() {
         />
 
         {/* icons */}
-        <div className={'flex gap-4'}>
+        <div className={'flex gap-4 flex-wrap'}>
           <CommonSelect/>
 
           <button
