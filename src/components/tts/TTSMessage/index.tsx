@@ -14,7 +14,7 @@ import {
 import { createVoice } from '@/requests'
 import Modal from '@/components/ui/Modal'
 import RefreshIcon from '@/components/icons/RefreshIcon'
-import ModalUrl from '@/components/tts/TTSMessage/ModalUrl'
+import CommonModalUrl from '@/components/common/commonModalUrl'
 import CommonMessageHeader from '@/components/common/commonMessageHeader'
 
 export default function TTSMessage() {
@@ -103,7 +103,7 @@ export default function TTSMessage() {
               )}
               onClose={() => setIsModalOpen(true)}
             >
-              <ModalUrl ref={textAreaRef} setIsModalOpen={setIsModalOpen} setShowAudio={setShowAudio}/>
+              <CommonModalUrl ref={textAreaRef} setIsModalOpen={setIsModalOpen} setShowAudio={setShowAudio}/>
             </Modal>
           </>
         )

@@ -15,10 +15,10 @@ import RefreshIcon from '@/components/icons/RefreshIcon'
 
 interface IProps {
   setIsModalOpen: Dispatch<SetStateAction<boolean>>
-  setShowAudio: Dispatch<SetStateAction<boolean>>
+  setShowAudio?: Dispatch<SetStateAction<boolean>>
 }
 
-const ModalUrl = forwardRef<HTMLTextAreaElement, IProps>((
+const CommonModalUrl = forwardRef<HTMLTextAreaElement, IProps>((
   props,
   ref
 ) => {
@@ -57,7 +57,7 @@ const ModalUrl = forwardRef<HTMLTextAreaElement, IProps>((
       } catch (e) {
         toast.error('extract data error')
       }
-      setShowAudio(false)
+      setShowAudio && setShowAudio(false)
       setExtracting(false)
       setIsModalOpen(false)
     } else {
@@ -81,7 +81,7 @@ const ModalUrl = forwardRef<HTMLTextAreaElement, IProps>((
         <form className={'flex flex-col gap-4'} onSubmit={handleSubmit}>
           <input
             ref={inputRef}
-            type="text"
+            type={'url'}
             required={true}
             placeholder={t('ttsPage.urlModalInputPlaceholder')}
             className={clsx(
@@ -106,9 +106,10 @@ const ModalUrl = forwardRef<HTMLTextAreaElement, IProps>((
               type={'submit'}
               disabled={extracting}
               className={clsx(
-                'w-fit min-w-20 bg-blue-500 p-2 rounded-lg text-white flex items-center gap-1',
+                'w-20 bg-blue-500 p-2 rounded-lg text-white flex justify-center items-center gap-1',
                 'shadow-md text-sm hover:bg-blue-500/90 hover-transition-change active:border-blue-500',
-                'disabled:opacity-80 disabled:hover:bg-blue-500 disabled:cursor-not-allowed'
+                'disabled:opacity-80 disabled:hover:bg-blue-500 disabled:cursor-not-allowed',
+                extracting && 'w-fit'
               )}
             >
               {extracting && (
@@ -123,6 +124,9 @@ const ModalUrl = forwardRef<HTMLTextAreaElement, IProps>((
   )
 })
 
-ModalUrl.displayName = 'ModalUrl'
+CommonModalUrl.displayName = 'CommonModalUrl'
 
-export default ModalUrl
+export default CommonModalUrl
+
+
+
