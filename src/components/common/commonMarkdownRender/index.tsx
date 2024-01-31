@@ -15,7 +15,7 @@ interface IProps {
   markdown: string
 }
 
-export default function MarkdownRender(props: IProps) {
+export default function CommonMarkdownRender(props: IProps) {
   const { markdown } = props
   const { t } = useTranslation('common')
   const [copy, setCopy] = useState<boolean>(false)
@@ -53,7 +53,7 @@ export default function MarkdownRender(props: IProps) {
           'index.css': language === 'css' ? code : `h1 { color: red; }`,
           'index.ts': language === 'typescript' ? code : `console.log('hello world')`,
           'index.jsx': language === 'jsx' ? code : `function App() { return <h1>hello world</h1> }`,
-'package.json': `{
+          'package.json': `{
   "name": "my-project",
   "scripts": { 
     "dev": "node index.js" 
@@ -71,7 +71,6 @@ export default function MarkdownRender(props: IProps) {
       }
     )
   }
-
 
   return (
     <Markdown

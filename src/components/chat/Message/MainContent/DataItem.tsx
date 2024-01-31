@@ -36,7 +36,7 @@ import PlayerPauseIcon from '@/components/icons/PlayerPauseIcon'
 import PlayerStationIcon from '@/components/icons/PlayerStationIcon'
 import RenderModelIcon from '@/components/common/RenderModelIcon'
 import IgnoreLine from '@/components/chat/Message/MainContent/IgnoreLine'
-import MarkdownRender from '@/components/chat/Message/MainContent/MarkdownRender'
+import CommonMarkdownRender from '@/components/common/commonMarkdownRender'
 
 /**
  * In the frontend, the calculation of tokens is only for estimation purposes,
@@ -281,7 +281,7 @@ const DataItem =  forwardRef<HTMLDivElement, IProps>((props, ref) => {
               className={'prose dark:prose-invert break-words whitespace-pre-wrap overflow-x-auto custom-message-light-scrollbar'}
             >
               {/* If data.messageContent is null, the data.content must be existed. */}
-              <MarkdownRender markdown={data.content}/>
+              <CommonMarkdownRender markdown={data.content}/>
             </article>
           </div>
         </div>
