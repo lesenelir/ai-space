@@ -11,13 +11,13 @@ import ChevronDownIcon from '@/components/icons/ChevronDownIcon'
 import RenderModelIcon from '@/components/common/RenderModelIcon'
 import { chatItemsAtom, modelsAtom, selectedModelIdAtom } from '@/atoms'
 
-export default function Select() {
+export default function CommonSelect() {
   const router = useRouter()
   const models = useAtomValue(modelsAtom)
   const chatItemLists =  useAtomValue(chatItemsAtom)
   const [selectedModelId, setSelectedModelId] = useAtom(selectedModelIdAtom)
   const [isDropDownOpen, setIsDropDownOpen] = useState<boolean>(false)
-  const [selectedOption, setSelectedOption] = useState<string>(models[0].modelName)
+  const [selectedOption, setSelectedOption] = useState<string>(models[0]?.modelName)
   const wrapperRef = useRef<HTMLDivElement>(null)
   useOutsideClick(wrapperRef, () => setIsDropDownOpen(false))
 
@@ -40,7 +40,7 @@ export default function Select() {
     [chatItemLists, router.query.id]
   )
   const currentChatModel = useMemo(() =>
-    models.find(model => model.id === currentChatItem?.modelPrimaryId),
+      models.find(model => model.id === currentChatItem?.modelPrimaryId),
     [models, currentChatItem?.modelPrimaryId]
   )
 

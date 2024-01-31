@@ -5,7 +5,7 @@ import { isMenuOpenAtom } from '@/atoms'
 import I18Change from '@/components/common/I18Change'
 import ColumnsIcon from '@/components/icons/ColumnsIcon'
 import ThemeChange from '@/components/common/ThemeChange'
-import Select from '@/components/chat/Message/HeaderContent/Select'
+import CommonSelect from '@/components/common/commonSelect'
 
 export default function HeaderContent() {
   const [isMenuOpen, setIsMenuOpen] = useAtom(isMenuOpenAtom)
@@ -30,7 +30,7 @@ export default function HeaderContent() {
             onClick={() => setIsMenuOpen(true)}
           />
         )}
-        <Select/>
+        <CommonSelect/>
       </div>
 
       {/* right icon */}
