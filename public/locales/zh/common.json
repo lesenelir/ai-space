@@ -118,5 +118,8 @@
     "urlModalInputPlaceholder": "在此输入 URL...",
     "cancel": "取消",
     "confirm": "确定"
+  },
+  "summarizePage": {
+    "summarize": "文本总结"
   }
 }

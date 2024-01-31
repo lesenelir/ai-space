@@ -16,13 +16,14 @@ import RefreshIcon from '@/components/icons/RefreshIcon'
 interface IProps {
   setIsModalOpen: Dispatch<SetStateAction<boolean>>
   setShowAudio?: Dispatch<SetStateAction<boolean>>
+  setText?: Dispatch<SetStateAction<string>>
 }
 
 const CommonModalUrl = forwardRef<HTMLTextAreaElement, IProps>((
   props,
   ref
 ) => {
-  const { setIsModalOpen, setShowAudio } = props
+  const { setIsModalOpen, setShowAudio, setText } = props
   const { t } = useTranslation('common')
   const inputRef = useRef<HTMLInputElement>(null)
   const [extracting, setExtracting] = useState<boolean>(false)
@@ -58,6 +59,7 @@ const CommonModalUrl = forwardRef<HTMLTextAreaElement, IProps>((
         toast.error('extract data error')
       }
       setShowAudio && setShowAudio(false)
+      setText && setText('')
       setExtracting(false)
       setIsModalOpen(false)
     } else {
