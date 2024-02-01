@@ -94,7 +94,7 @@ export default function TTSMessage() {
   return (
     <div
       className={clsx(
-        'flex-1 w-full flex flex-col bg-gray-50',
+        'flex-1 w-full flex flex-col bg-gray-50 overflow-y-auto custom-message-light-scrollbar',
         'dark:bg-chatpage-message-background-dark dark:text-chatpage-message-text-dark'
       )}
     >

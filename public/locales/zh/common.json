@@ -121,5 +121,9 @@
   },
   "summarizePage": {
     "summarize": "文本总结"
+  },
+  "translatePage": {
+    "input": "输入",
+    "translate": "翻译"
   }
 }

@@ -60,7 +60,7 @@ export default function CommonSelect() {
         !router.query.id && (
           <div
             className={clsx(
-              'w-fit relative flex gap-3 p-2 cursor-pointer rounded-lg border border-gray-200',
+              'min-w-fit relative flex gap-3 p-2 cursor-pointer rounded-lg border border-gray-200',
               'hover:bg-gray-200/80 hover-transition-change dark:border-gray-500 dark:hover:bg-gray-500/10'
             )}
             ref={wrapperRef}

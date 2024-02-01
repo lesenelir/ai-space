@@ -120,5 +120,9 @@
   },
   "summarizePage": {
     "summarize": "Summarize"
+  },
+  "translatePage": {
+    "input": "Input",
+    "translate": "Translate"
   }
 }
