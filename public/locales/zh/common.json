@@ -56,6 +56,7 @@
       "text2Speech": "文本转语音",
       "summarize": "文本摘要总结",
       "translate": "文本翻译",
+      "image": "生成图片",
       "delete": "删除"
     },
     "message": {

@@ -4,6 +4,7 @@ import { useTranslation } from 'next-i18next'
 import React, { type Dispatch, type SetStateAction } from 'react'
 
 import XIcon from '@/components/icons/XIcon'
+import PhotoIcon from '@/components/icons/PhotoIcon'
 import FileTextIcon from '@/components/icons/FileTextIcon'
 import MicrophoneIcon from '@/components/icons/MicrophoneIcon'
 import LanguageJapIcon from '@/components/icons/LanguageJapIcon'
@@ -50,6 +51,11 @@ export default function ModalCategory(props: IProps) {
         <div className={itemClassName} onClick={async () => await router.push('/translate')}>
           <LanguageJapIcon width={28} height={28}/>
           {t('chatPage.menu.translate')}
+        </div>
+
+        <div className={itemClassName} onClick={async () => await router.push('/dall')}>
+          <PhotoIcon width={28} height={28}/>
+          {t('chatPage.menu.image')}
         </div>
       </div>
 
