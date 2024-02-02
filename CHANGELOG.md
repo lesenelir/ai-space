@@ -113,3 +113,5 @@ This changelog provides a detailed record of the updates and improvements made t
 - Refactor `common` folder.
 - Integrated `cheerio` for extracting text from url html in tts page.
 - Complete `tts` page, including text to speech
+- Complete `summarize` page
+- Complete `translate` page
