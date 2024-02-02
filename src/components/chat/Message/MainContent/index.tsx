@@ -296,14 +296,14 @@ const MainContent = forwardRef<HTMLTextAreaElement, IProps>((
 
       {/* scroll button */}
       <button
-        className={clsx(buttonClass, 'fixed right-4 top-20')}
+        className={clsx(buttonClass, 'fixed right-4 top-40')}
         onClick={handleScrollToTop}
       >
         <ChevronUpIcon width={16} height={16}/>
       </button>
 
       <button
-        className={clsx(buttonClass, 'fixed right-4 bottom-28')}
+        className={clsx(buttonClass, 'fixed right-4 bottom-64')}
         onClick={handleScrollToBottom}
       >
         <ChevronDownIcon width={16} height={16}/>

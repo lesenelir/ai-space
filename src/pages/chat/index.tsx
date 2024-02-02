@@ -102,7 +102,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const isUserSaveGeminiKey = await prisma.userAPIKey.findMany({
     where: {
       user_primary_id: user!.id,
-      model_primary_id: 3
+      model_primary_id: 4
     }
   })
 
