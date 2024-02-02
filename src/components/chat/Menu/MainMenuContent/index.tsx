@@ -16,7 +16,7 @@ export default function MainMenuContent() {
 
   // Note: category value must be the same as the key in i18n/common.json
   const renderOrder = useMemo(() => {
-    return ['today', 'yesterday', 'previous7Days', 'previous30Days', 'older']
+    return ['today', 'yesterday', 'previous7Days', 'previous30Days', 'all']
   }, [])
 
   // { key: Date, value: [chatItem, chatItem, ...] }
@@ -132,15 +132,19 @@ export default function MainMenuContent() {
       <div className={'w-full flex flex-col gap-1'}>
         {
           renderOrder.map((categoryDate: string) => {
-            const chatItemsList = categorizedChatItemLists[categoryDate]
-            if (!chatItemsList) return null
+            const chatItemsBasedDate = categorizedChatItemLists[categoryDate]
+            if (!chatItemsBasedDate) return null
+            if (categoryDate === renderOrder[0]) {
+              const temp = chatItemsBasedDate.filter((chatItem: TChatItem) => !chatItem.isStarred)
+              if (temp.length === 0) return null
+            }
 
             return (
               <div key={categoryDate} className={'mb-1'}>
                 <p className={'text-xs font-light text-gray-400 mb-1'}>{t(`chatPage.menu.${categoryDate}`)}</p>
                 <div className={'flex flex-col gap-1'}>
                   {
-                    chatItemsList
+                    chatItemsBasedDate
                       .filter((chatItem: TChatItem) => !chatItem.isStarred)
                       .sort((a: TChatItem, b: TChatItem) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
                       .map((chatItem: TChatItem) => (

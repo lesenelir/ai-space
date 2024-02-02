@@ -99,8 +99,8 @@ export default function CommonMarkdownRender(props: IProps) {
                   {
                     copy ? (
                       <button className={'p-2 inline-flex items-center gap-1 text-sm'}>
-                        <CheckIcon width={16} height={16}/>
-                        <span>{t('chatPage.message.copied')}!</span>
+                        <CheckIcon width={16} height={16} className={'text-green-500'}/>
+                        <span className={'text-green-500'}>{t('chatPage.message.copied')}!</span>
                       </button>
                     ): (
                       <button
