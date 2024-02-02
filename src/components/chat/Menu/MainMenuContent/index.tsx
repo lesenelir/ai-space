@@ -65,7 +65,7 @@ export default function MainMenuContent() {
     return (
       <div className={'flex-1 overflow-y-auto custom-scrollbar mb-2'}>
         {/* Star Lists */}
-        <div className={'w-full'}>
+        <div className={'w-full flex flex-col gap-1'}>
           {
             searchChatItems
               .filter((chatItem: TChatItem) => chatItem.isStarred)
@@ -85,7 +85,7 @@ export default function MainMenuContent() {
         <div className={'border-b border-gray-500 mt-1 mb-2'}/>
 
         {/* No Star Lists */}
-        <div className={'w-full'}>
+        <div className={'w-full flex flex-col gap-1'}>
           {
             searchChatItems
               .filter((chatItem: TChatItem) => !chatItem.isStarred)
@@ -105,10 +105,11 @@ export default function MainMenuContent() {
     )
   }
 
+  // !isSearchActive
   return (
     <div className={'flex-1 overflow-y-auto custom-scrollbar mb-2'}>
       {/* Star Lists */}
-      <div className={'w-full'}>
+      <div className={'w-full flex flex-col gap-1'}>
         {
           chatItemLists
             .filter((chatItem: TChatItem) => chatItem.isStarred)
@@ -128,7 +129,7 @@ export default function MainMenuContent() {
       <div className={'border-b border-gray-500 mt-1 mb-2'}/>
 
       {/* No Star Lists based on Date */}
-      <div className={'w-full'}>
+      <div className={'w-full flex flex-col gap-1'}>
         {
           renderOrder.map((categoryDate: string) => {
             const chatItemsList = categorizedChatItemLists[categoryDate]

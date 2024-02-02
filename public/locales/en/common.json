@@ -55,7 +55,8 @@
       "aiTools": "AI Tools",
       "text2Speech": "Text to Speech",
       "summarize": "Summarize",
-      "translate": "Translate"
+      "translate": "Translate",
+      "delete": "Delete"
     },
     "message": {
       "textAreaPlaceholder": "Type a message...",

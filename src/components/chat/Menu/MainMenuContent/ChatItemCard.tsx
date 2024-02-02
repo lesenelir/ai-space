@@ -1,6 +1,7 @@
 import clsx from 'clsx'
 import { useSetAtom } from 'jotai'
 import { useRouter } from 'next/router'
+import { useTranslation } from 'next-i18next'
 import {
   type KeyboardEvent,
   type MouseEvent,
@@ -15,6 +16,7 @@ import StarIcon from '@/components/icons/StarIcon'
 import TrashIcon from '@/components/icons/TrashIcon'
 import CheckIcon from '@/components/icons/CheckIcon'
 import MessageIcon from '@/components/icons/MessageIcon'
+import MessageChatIcon from '@/components/icons/MessageChatIcon'
 
 interface IProps {
   id?: number
@@ -26,6 +28,7 @@ interface IProps {
 export default function ChatItemCard(props: IProps) {
   const { text, uuid, isStarred } = props
   const router = useRouter()
+  const { t } = useTranslation('common')
   const setChatItems = useSetAtom(chatItemsAtom)
   const inputRef = useRef<HTMLInputElement>(null)
   const [isEdit, setIsEdit] = useState<boolean>(false)
@@ -134,7 +137,7 @@ export default function ChatItemCard(props: IProps) {
   return (
     <div
       className={clsx(
-        'w-full h-11 p-2 flex justify-between cursor-pointer rounded-md',
+        'w-full p-2 h-10 flex justify-between cursor-pointer rounded-lg',
         'hover:bg-chatpage-menu-hover hover-transition-change group',
         isCurrentChat && 'bg-chatpage-menu-hover'
       )}
@@ -142,31 +145,14 @@ export default function ChatItemCard(props: IProps) {
     >
       {!isEdit && (
         <>
-          {/* left */}
-          <div className={'flex flex-row gap-2 overflow-hidden'}>
-            <MessageIcon
-              width={16}
-              height={16}
-              className={`
-                ${isStarred ? 'hidden' : 'flex items-center group-hover:hidden'}
-                ${isCurrentChat && 'text-blue-200'}
-              `}
-            />
-            <StarIcon
-              width={16}
-              height={16}
-              className={clsx(
-                isStarred ? 'flex items-center text-yellow-500' : 'hidden group-hover:flex group-hover:items-center hover:text-yellow-500',
-              )}
-              onClick={handleStarClick}
-            />
-            <p className={'truncate flex items-center tracking-wide'}>{text}</p>
-          </div>
-          {/* right */}
-          <div className={'flex flex-row gap-2 ml-4'}>
-            {
-              isDelete ? (
-                <>
+          {
+            // When user click delete icon, rather than click edit icon
+            isDelete ? (
+              <div className={'w-full flex gap-2 overflow-hidden justify-between'}>
+                <p className={'truncate flex items-center tracking-wide'}>
+                  {t('chatPage.menu.delete') + ' ' + `"${text}"`}
+                </p>
+                <div className={'flex gap-2 ml-2'}>
                   <CheckIcon
                     width={16}
                     height={16}
@@ -188,9 +174,44 @@ export default function ChatItemCard(props: IProps) {
                       setIsDelete(false)
                     }}
                   />
-                </>
-              ) : (
-                <>
+                </div>
+              </div>
+            ) : (
+              // when user don't click edit icon and user don't click delete icon
+              // normal display
+              <>
+                {/* left */}
+                <div className={'flex flex-row gap-2 overflow-hidden'}>
+                  {
+                    isCurrentChat ? (
+                      <MessageChatIcon
+                        width={16}
+                        height={16}
+                        className={clsx(isStarred ? 'hidden' : 'flex items-center group-hover:hidden')}
+                      />
+                    ) : (
+                      <MessageIcon
+                        width={16}
+                        height={16}
+                        className={clsx(isStarred ? 'hidden' : 'flex items-center group-hover:hidden')}
+                      />
+                    )
+                  }
+
+                  <StarIcon
+                    width={16}
+                    height={16}
+                    className={clsx(
+                      isStarred
+                        ? 'flex items-center text-yellow-500'
+                        : 'hidden group-hover:flex group-hover:items-center hover:text-yellow-500',
+                    )}
+                    onClick={handleStarClick}
+                  />
+                  <p className={'truncate flex items-center tracking-wide'}>{text}</p>
+                </div>
+                {/* right */}
+                <div className={'flex gap-2 ml-4'}>
                   <EditIcon
                     width={16}
                     height={16}
@@ -206,10 +227,10 @@ export default function ChatItemCard(props: IProps) {
                       setIsDelete(true)
                     }}
                   />
-                </>
-              )
-            }
-          </div>
+                </div>
+              </>
+            )
+          }
         </>
       )}
 
@@ -224,8 +245,8 @@ export default function ChatItemCard(props: IProps) {
               onClick={(e) => e.stopPropagation()}
               onKeyDown={handleInputKeyDown}
               className={clsx(
-                'rounded-md w-2/3 h-full p-2 bg-gray-500',
-                'focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent',
+                'rounded-md w-2/3 p-2 bg-gray-500',
+                'focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:border-transparent',
               )}
             />
 

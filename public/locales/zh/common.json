@@ -55,7 +55,8 @@
       "aiTools": "AI 工具",
       "text2Speech": "文本转语音",
       "summarize": "文本摘要总结",
-      "translate": "文本翻译"
+      "translate": "文本翻译",
+      "delete": "删除"
     },
     "message": {
       "textAreaPlaceholder": "输入消息...",
