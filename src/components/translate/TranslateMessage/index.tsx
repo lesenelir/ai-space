@@ -10,7 +10,7 @@ import {
   useState
 } from 'react'
 
-import { maxTokensAtom, selectedModelIdAtom } from '@/atoms'
+import { maxTokensAtom, selectedModelIdAtom, userOpenAIKeyAtom } from '@/atoms'
 import { useGetChatInformation } from '@/hooks'
 import RefreshIcon from '@/components/icons/RefreshIcon'
 import ConfettiIcon from '@/components/icons/ConfettiIcon'
@@ -23,6 +23,7 @@ export default function TranslateMessage() {
   const router = useRouter()
   const maxTokens = useAtomValue(maxTokensAtom)
   const [text, setText] = useState<string>('')
+  const userOpenAIKey = useAtomValue(userOpenAIKeyAtom)
   const selectedModelId = useAtomValue(selectedModelIdAtom)
   const inputTextAreaRef = useRef<HTMLTextAreaElement>(null)
   const [translating, setTranslating] = useState<boolean>(false)
@@ -61,9 +62,16 @@ export default function TranslateMessage() {
         max_tokens: maxTokens,
         model_name: modelName!,
         send_content: sendContent,
+        api_key: userOpenAIKey
       })
     }
     const res = await fetch('/api/chat/send', options)
+    if (!res.ok && res.status === 401) {
+      setTranslating(false)
+      toast.error('Incorrect API key provided')
+      return
+    }
+
     if (!res.ok || !res.body) {
       setTranslating(false)
       toast.error('Network Connection Error')

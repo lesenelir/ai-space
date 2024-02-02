@@ -91,10 +91,14 @@ export default function FooterMoreIconsData(props: IProps) {
     setGeneratingChatTitle(true)
     try {
       const response = await generateChatTitle(sendContent, modelName!, router.query.id! as string)
+      if (!response?.ok && response?.status === 401) {
+        toast.error('Incorrect API key provided')
+        setGeneratingChatTitle(false)
+        return
+      }
       const data = (await response?.json()).chatItems
       setChatItems(data)
     } catch (e) {
-      console.log('generator chat title error: ', e)
       toast.error('Failed to generate chat title')
     }
     setGeneratingChatTitle(false)
@@ -122,11 +126,15 @@ export default function FooterMoreIconsData(props: IProps) {
     try {
       // const response = await
       const response = await generateQuestions(sendContent, modelName!)
+      if (!response?.ok && response?.status === 401) {
+        toast.error('Incorrect API key provided')
+        setIsQuestionLoading(false)
+        return
+      }
       const data = (await response?.json())
       const questions = data.questions.trim().split('\n')
       setNextQuestions(questions)
     } catch (e) {
-      console.log('generate follow questions error: ', e)
       toast.error('Failed to generate follow questions')
     }
     setIsQuestionLoading(false)

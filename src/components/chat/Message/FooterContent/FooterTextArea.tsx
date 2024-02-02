@@ -1,4 +1,5 @@
 import clsx from 'clsx'
+import { toast } from 'sonner'
 import { v4 as uuid } from 'uuid'
 import { useRouter } from 'next/router'
 import { useTranslation } from 'next-i18next'
@@ -27,7 +28,8 @@ import {
   remoteUrlsAtom,
   selectedModelIdAtom,
   temperatureAtom,
-  uploadingAtom
+  uploadingAtom,
+  userOpenAIKeyAtom
 } from '@/atoms'
 import {
   saveCompletionRequest,
@@ -75,6 +77,7 @@ const FooterTextArea = forwardRef<HTMLTextAreaElement, IProps>((
   const chatMessages = useAtomValue(chatMessagesAtom)
   const setChatItems = useSetAtom(chatItemsAtom)
   const uploading = useAtomValue(uploadingAtom)
+  const userOpenAIKey = useAtomValue(userOpenAIKeyAtom)
   const [remoteUrls, setRemoteUrls] = useAtom(remoteUrlsAtom)
   const [previewUrls, setPreviewUrls] = useAtom(previewUrlsAtom)
   const [isDisabled, setIsDisabled] = useState<boolean>(true)
@@ -164,7 +167,7 @@ const FooterTextArea = forwardRef<HTMLTextAreaElement, IProps>((
       textAreaRef.current.style.height = 'auto' // reset height
     }
 
-    // 2. update messages state from user input and save user input to the database.
+    // 2. send user input to the LLM Model and get the response.
     const userMessage: TMessage = {
       id: uuid(),
       messageContent: value || '',
@@ -178,22 +181,7 @@ const FooterTextArea = forwardRef<HTMLTextAreaElement, IProps>((
     setPreviewUrls([])
     setRemoteUrls([])
 
-    let data
-    try {
-      // To update the chat items list, we need to get saveUserInput response to get the new chat item.
-      let response
-      if (router.query.id) {
-        response = await saveUserInputRequest(value!, router.query.id as string, remoteUrls)
-      } else {
-        response = await saveUserInputFromHomeRequest(value!, selectedModelId, remoteUrls)
-      }
-      data = await response!.json()
-      setChatItems(data.chatItems)
-    } catch (e) {
-      console.log('save user input error', e)
-    }
-
-    // 3. update messages state from LLM response, and display the response to the user.
+    // 2. update messages state from LLM response, and display the response to the user.
     const receivedMessage: TMessage = {
       id: uuid(),
       messageContent: '',
@@ -213,13 +201,40 @@ const FooterTextArea = forwardRef<HTMLTextAreaElement, IProps>((
         temperature,
         max_tokens: maxTokens,
         model_name: modelName!,
-        send_content: sendContent
+        send_content: sendContent,
+        api_key: userOpenAIKey
       }),
       signal: abortController.current.signal
     }
     const res = await fetch('/api/chat/send', options)
+    if (!res.ok && res.status === 401) {
+      setMessages(prev => prev.slice(0, -2))
+      abortController.current = null
+      setIsLoading(false)
+      toast.error('Incorrect API key provided')
+      return
+    }
+
     if (!res.ok || !res.body) return
 
+    // res.ok
+    // 3. save user input to the database
+    let data
+    try {
+      // To update the chat items list, we need to get saveUserInput response to get the new chat item.
+      let response
+      if (router.query.id) {
+        response = await saveUserInputRequest(value!, router.query.id as string, remoteUrls)
+      } else {
+        response = await saveUserInputFromHomeRequest(value!, selectedModelId, remoteUrls)
+      }
+      data = await response!.json()
+      setChatItems(data.chatItems)
+    } catch (e) {
+      toast.error('Failed to save user input')
+    }
+
+    // 4. streaming responses
     let completion = ''
     try {
       const reader = res.body.getReader()
@@ -235,7 +250,7 @@ const FooterTextArea = forwardRef<HTMLTextAreaElement, IProps>((
           try {
             await saveCompletionRequest(completion, modelName!, router.query.id as string | undefined, data)
           } catch (e) {
-            console.log('save response error', e)
+            toast.error('Failed to save response')
           }
           break
         }

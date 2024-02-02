@@ -1,5 +1,5 @@
+import { toast } from 'sonner'
 import { useAtom } from 'jotai'
-import { Toaster, toast } from 'sonner'
 import { useTranslation } from 'next-i18next'
 import {
   type Dispatch,
@@ -81,7 +81,6 @@ export default function ChatHome(props: IProps) {
             <div className={'flex justify-center'}>
               <h1 className={'text-xl'}>AI Space Chat App</h1>
             </div>
-            <Toaster richColors position={'top-center'}/>
             {
               !isUserSaveOpenAIKey && (
                 <form className={'w-full mt-8 flex gap-2'} onSubmit={handleSubmit}>

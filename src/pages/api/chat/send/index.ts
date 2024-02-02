@@ -1,18 +1,22 @@
-import OpenAI from 'openai'
+import OpenAI, { OpenAIError } from 'openai'
 import { OpenAIStream, StreamingTextResponse } from 'ai'
 
 // Create an OpenAI API client (that's edge-friendly!)
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY || ''
-})
+// const openai = new OpenAI({
+//   apiKey: process.env.OPENAI_API_KEY || ''
+// })
 
 // IMPORTANT! Set the runtime to edge
 export const runtime = 'edge'
 
 export default async function handler(req: Request) {
-  const { send_content, temperature, max_tokens, model_name } = await req.json()
+  const { send_content, temperature, max_tokens, model_name, api_key } = await req.json()
 
   try {
+    const openai = new OpenAI({
+      apiKey: api_key
+    })
+
     // Ask OpenAI for a streaming chat completion given the prompt
     const response = await openai.chat.completions.create({
       // messages: [{role: 'user', content}],
@@ -29,7 +33,10 @@ export default async function handler(req: Request) {
     // Respond with the stream
     return new StreamingTextResponse(stream)
   } catch (error) {
-    throw error
+    if (error instanceof OpenAIError && error.message.includes('401')) {
+      return new Response('Incorrect API key provided', { status: 401 })
+    }
+    return new Response('Network Error', { status: 500 })
   }
 }
 

@@ -1,6 +1,6 @@
 import clsx from 'clsx'
-import { toast, Toaster } from 'sonner'
 import { useAtomValue } from 'jotai'
+import { toast, Toaster } from 'sonner'
 import { useRouter } from 'next/router'
 import { useTranslation } from 'next-i18next'
 import {
@@ -17,6 +17,7 @@ import {
   selectedModelIdAtom,
   temperatureAtom,
   maxTokensAtom,
+  userOpenAIKeyAtom,
 } from '@/atoms'
 import { useGetChatInformation } from '@/hooks'
 import Modal from '@/components/ui/Modal'
@@ -33,6 +34,7 @@ export default function SummarizeMessage() {
   const { t } = useTranslation('common')
   const maxTokens = useAtomValue(maxTokensAtom)
   const temperature  = useAtomValue(temperatureAtom)
+  const userOpenAIKey = useAtomValue(userOpenAIKeyAtom)
   const selectedModelId = useAtomValue(selectedModelIdAtom)
   const textAreaRef = useRef<HTMLTextAreaElement>(null)
   const [text, setText] = useState<string>('')
@@ -103,10 +105,18 @@ export default function SummarizeMessage() {
         max_tokens: maxTokens,
         model_name: modelName!,
         send_content: sendContent,
+        api_key: userOpenAIKey
       })
     }
 
     const res = await fetch('/api/chat/send', options)
+    if (!res.ok && res.status === 401) {
+      setSummarizing(false)
+      setText('')
+      toast.error('Incorrect API key provided')
+      return
+    }
+
     if (!res.ok || !res.body) {
       setSummarizing(false)
       setText('')

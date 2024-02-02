@@ -75,6 +75,12 @@ export default function TTSMessage() {
       setConverting(true)
       const response = (await createVoice(text, voice, format, model, speed))!
 
+      if (!response.ok && response.status === 401) {
+        toast.error('Incorrect API key provided')
+        setConverting(false)
+        return
+      }
+
       if (!response.ok) {
         toast.error('convert failed')
         setConverting(false)

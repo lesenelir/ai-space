@@ -1,4 +1,5 @@
 import clsx from 'clsx'
+import { toast, Toaster } from 'sonner'
 import { useRouter } from 'next/router'
 import { useTranslation } from 'next-i18next'
 import { type FormEvent, useRef, useState } from 'react'
@@ -29,6 +30,11 @@ export default function MainContent() {
     try {
       setSurpriseLoading(true)
       const response = await fetch('/api/dall/surprise', options)
+      if (!response.ok && response.status === 401) {
+        setSurpriseLoading(false)
+        toast.error('Incorrect API key provided')
+        return Promise.reject('Incorrect API key provided')
+      }
       const data = await response.json()
       setSurpriseLoading(false)
       if (inputRef.current) inputRef.current.value = data.text
@@ -44,7 +50,11 @@ export default function MainContent() {
 
     const value = window.innerWidth >=768 ? inputRef.current?.value : textareaRef.current?.value
     if (value === '') {
-      await handleSurprise()
+      try {
+        await handleSurprise()
+      } catch (e) {
+        return
+      }
     }
 
     const options = {
@@ -59,6 +69,13 @@ export default function MainContent() {
     try {
       setGenerateLoading(true)
       const response = await fetch('/api/dall/createImage', options)
+      if (!response.ok && response.status === 401) {
+        setGenerateLoading(false)
+        toast.error('Incorrect API key provided')
+        if (inputRef.current) inputRef.current.value = ''
+        if (textareaRef.current) textareaRef.current.value = ''
+        return
+      }
       const data = await response.json()
       setUrls(prevState => [...prevState, data.url])
       setGenerateLoading(false)
@@ -78,6 +95,7 @@ export default function MainContent() {
         'lg:px-32 px-8 py-4 max-sm:px-4',
       )}
     >
+      <Toaster richColors position={'top-center'} className={'fixed'}/>
       {/* text */}
       <div className={'flex items-center gap-2 mt-36 mb-4'}>
         <p className={'text-gray-600 text-sm font-light dark:text-[#aaa]'}>

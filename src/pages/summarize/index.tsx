@@ -6,20 +6,24 @@ import type { GetServerSideProps } from 'next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 import { toCamelArr } from '@/utils'
-import { modelsAtom } from '@/atoms'
 import { type TModel } from '@/types'
+import { modelsAtom, userGeminiKeyAtom, userOpenAIKeyAtom } from '@/atoms'
 import { SummarizeMenu } from '@/components/summarize'
 import SummarizeMessage from '@/components/summarize/SummarizeMessage'
 
 interface IProps {
   models: TModel[]
+  userOpenAIKey: string
+  userGeminiKey: string
 }
 
 export default function SummarizePage(props: IProps) {
-  const { models } = props
+  const { models, userOpenAIKey, userGeminiKey } = props
 
   useHydrateAtoms([
-    [modelsAtom, models]
+    [modelsAtom, models],
+    [userOpenAIKeyAtom, userOpenAIKey],
+    [userGeminiKeyAtom, userGeminiKey]
   ])
 
   return (
@@ -52,10 +56,32 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
   const models = toCamelArr(await prisma.model.findMany()) // This data will never change.
 
+  const user = await prisma.user.findUnique({
+    where: {
+      userId
+    }
+  })
+
+  const isUserSaveOpenAIKey = await prisma.userAPIKey.findMany({
+    where: {
+      user_primary_id: user!.id,
+      model_primary_id: 1
+    }
+  })
+
+  const isUserSaveGeminiKey = await prisma.userAPIKey.findMany({
+    where: {
+      user_primary_id: user!.id,
+      model_primary_id: 3
+    }
+  })
+
   return {
     props: {
       ...(await serverSideTranslations(ctx.locale!, ['common'])),
-      models
+      models,
+      userOpenAIKey: isUserSaveOpenAIKey.length > 0 ? isUserSaveOpenAIKey[0].api_key : '',
+      userGeminiKey: isUserSaveGeminiKey.length > 0 ? isUserSaveGeminiKey[0].api_key : '',
     }
   }
 }
