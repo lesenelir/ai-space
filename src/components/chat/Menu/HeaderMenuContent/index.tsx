@@ -4,9 +4,16 @@ import { useTranslation } from 'next-i18next'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { type ChangeEvent, useRef } from 'react'
 
-import FolderPlusIcon from '@/components/icons/FolderPlusIcon'
+import {
+  chatItemsAtom,
+  isMenuOpenAtom,
+  isSearchActiveAtom,
+  searchQueryNameAtom,
+  selectedModelIdAtom
+} from '@/atoms'
+import SearchIcon from '@/components/icons/SearchIcon'
 import ColumnsIcon from '@/components/icons/ColumnsIcon'
-import { chatItemsAtom, isMenuOpenAtom, isSearchActiveAtom, searchQueryNameAtom, selectedModelIdAtom } from '@/atoms'
+import FolderPlusIcon from '@/components/icons/FolderPlusIcon'
 
 export default function HeaderMenuContent() {
   const router = useRouter()
@@ -97,18 +104,30 @@ export default function HeaderMenuContent() {
       </div>
 
       {/* second content Search */}
-      <input
-        ref={inputRef}
-        type="text"
-        placeholder={t('chatPage.menu.search')}
+      <div
         className={clsx(
-          'w-full h-[48px] menu-first-content-item bg-chatpage-menu-background',
-          'focus:outline-none focus:ring-2 focus:ring-gray-400 focus:border-transparent'
+          'w-full h-12 rounded-lg border border-gray-500 flex items-center gap-1',
+          'focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-blue-500'
         )}
-        onChange={handleSearchChange}
-        onFocus={handleSearchFocus}
-        onBlur={handleSearchBlur}
-      />
+      >
+        <label htmlFor={'search'}>
+          <SearchIcon width={22} height={22} className={'text-gray-400/80 ml-1.5 cursor-text'}/>
+        </label>
+
+        <input
+          id={'search'}
+          ref={inputRef}
+          type={'text'}
+          placeholder={t('chatPage.menu.search')}
+          className={clsx(
+            'w-full h-full bg-transparent',
+            'focus:outline-none focus:ring-0'
+          )}
+          onChange={handleSearchChange}
+          onFocus={handleSearchFocus}
+          onBlur={handleSearchBlur}
+        />
+      </div>
     </div>
   )
 }
