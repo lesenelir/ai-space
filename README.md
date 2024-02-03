@@ -51,6 +51,7 @@ Tech Stack: Next.js (Pages Router) + React + TypeScript + Tailwind CSS + Jotai +
   - [x] Add generate chat title feature
   - [x] Add generate follow-up questions feature
   - [x] Integrate dall-E model for generating images
+  - [x] Integrate tts-1 and tts-1-hd model for text to speech
 
 
 ## Inspirations
