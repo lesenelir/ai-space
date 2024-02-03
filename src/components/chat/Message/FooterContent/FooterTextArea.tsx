@@ -323,7 +323,7 @@ const FooterTextArea = forwardRef<HTMLTextAreaElement, IProps>((
         />
         {
           isLoading ? (
-            <Tooltip title={t('chatPage.message.stop')} className={'right-0 bottom-[38px]'}>
+            <Tooltip title={t('chatPage.message.stop')} className={'right-0 bottom-10'}>
               <div
                 className={'absolute bottom-5 right-3 border rounded-lg p-1 cursor-pointer'}
                 onClick={handleCancelStreaming}
@@ -332,7 +332,7 @@ const FooterTextArea = forwardRef<HTMLTextAreaElement, IProps>((
               </div>
             </Tooltip>
           ) : (
-            <Tooltip title={t('chatPage.message.send')} className={'right-0 bottom-[38px]'}>
+            <Tooltip title={t('chatPage.message.send')} className={'right-0 bottom-10'}>
               <button
                 type={'submit'}
                 disabled={isDisabled}
