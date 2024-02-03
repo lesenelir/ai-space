@@ -1,7 +1,9 @@
 import clsx from 'clsx'
 import { useAtom } from 'jotai'
+import type { MouseEvent } from 'react'
 import { useRouter } from 'next/router'
 import { useTranslation } from 'next-i18next'
+import { UserButton, useUser } from '@clerk/nextjs'
 
 import { isMenuOpenAtom } from '@/atoms'
 import ResizableDiv from '@/components/ui/ResizableDiv'
@@ -13,6 +15,7 @@ import LanguageJapIcon from '@/components/icons/LanguageJapIcon'
 
 export default function CommonMenu() {
   const router = useRouter()
+  const { user } = useUser()
   const { t } = useTranslation('common')
   const [isMenuOpen, setIsMenuOpen] = useAtom(isMenuOpenAtom)
 
@@ -101,6 +104,21 @@ export default function CommonMenu() {
                 >
                   <LanguageJapIcon width={16} height={16}/>
                   <p>{t('chatPage.menu.translate')}</p>
+                </div>
+              </div>
+
+              {/* footer component */}
+              <div
+                className={clsx(
+                  'absolute bottom-0 w-full rounded-lg',
+                  'hover:bg-gray-500/10 hover-transition-change'
+                )}
+              >
+                <div className={'flex gap-4 items-center p-2'}>
+                  <div onClick={(e: MouseEvent) => e.stopPropagation()}>
+                    <UserButton afterSignOutUrl={'/'}/>
+                  </div>
+                  <p>{user?.firstName}</p>
                 </div>
               </div>
             </div>
