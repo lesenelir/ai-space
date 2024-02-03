@@ -12,7 +12,6 @@ import React, {
   useEffect,
   useRef,
   useState,
-  useMemo,
   forwardRef,
 } from 'react'
 
@@ -26,10 +25,10 @@ import {
 import { useGetChatInformation, useUploadHandler } from '@/hooks'
 import type { TImage, TMessage } from '@/types'
 import RefreshIcon from '@/components/icons/RefreshIcon'
-import ChevronUpIcon from '@/components/icons/ChevronUpIcon'
-import ChevronDownIcon from '@/components/icons/ChevronDownIcon'
 import ChatHome from '@/components/chat/Message/MainContent/ChatHome'
 import ChatContent from '@/components/chat/Message/MainContent/ChatContent'
+// import ChevronUpIcon from '@/components/icons/ChevronUpIcon'
+// import ChevronDownIcon from '@/components/icons/ChevronDownIcon'
 
 interface IProps {
   messages: TMessage[]
