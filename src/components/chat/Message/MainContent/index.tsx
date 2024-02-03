@@ -115,19 +115,19 @@ const MainContent = forwardRef<HTMLTextAreaElement, IProps>((
     }
   }
 
-  const handleScrollToTop = () => {
-    containerRef.current?.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    })
-  }
-
-  const handleScrollToBottom = () => {
-    containerRef.current?.scrollTo({
-      top: containerRef.current.scrollHeight,
-      behavior: 'smooth'
-    })
-  }
+  // const handleScrollToTop = () => {
+  //   containerRef.current?.scrollTo({
+  //     top: 0,
+  //     behavior: 'smooth'
+  //   })
+  // }
+  //
+  // const handleScrollToBottom = () => {
+  //   containerRef.current?.scrollTo({
+  //     top: containerRef.current.scrollHeight,
+  //     behavior: 'smooth'
+  //   })
+  // }
 
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault()
@@ -173,13 +173,13 @@ const MainContent = forwardRef<HTMLTextAreaElement, IProps>((
     textAreaRef.current.value = question
   }
 
-  const buttonClass = useMemo(() => (
-    clsx(
-      'max-md:hidden',
-      'rounded-md p-1 border dark:border-gray-500 hover-transition-change',
-      'hover:bg-gray-300/90 dark:hover:bg-gray-500/20',
-    )
-  ), [])
+  // const buttonClass = useMemo(() => (
+  //   clsx(
+  //     'max-md:hidden',
+  //     'rounded-md p-1 border dark:border-gray-500 hover-transition-change',
+  //     'hover:bg-gray-300/90 dark:hover:bg-gray-500/20',
+  //   )
+  // ), [])
 
   if (!router.query.id) {
     return (
@@ -295,19 +295,19 @@ const MainContent = forwardRef<HTMLTextAreaElement, IProps>((
       </div>
 
       {/* scroll button */}
-      <button
-        className={clsx(buttonClass, 'fixed right-4 top-40')}
-        onClick={handleScrollToTop}
-      >
-        <ChevronUpIcon width={16} height={16}/>
-      </button>
+      {/*<button*/}
+      {/*  className={clsx(buttonClass, 'fixed right-4 top-40')}*/}
+      {/*  onClick={handleScrollToTop}*/}
+      {/*>*/}
+      {/*  <ChevronUpIcon width={16} height={16}/>*/}
+      {/*</button>*/}
 
-      <button
-        className={clsx(buttonClass, 'fixed right-4 bottom-64')}
-        onClick={handleScrollToBottom}
-      >
-        <ChevronDownIcon width={16} height={16}/>
-      </button>
+      {/*<button*/}
+      {/*  className={clsx(buttonClass, 'fixed right-4 bottom-64')}*/}
+      {/*  onClick={handleScrollToBottom}*/}
+      {/*>*/}
+      {/*  <ChevronDownIcon width={16} height={16}/>*/}
+      {/*</button>*/}
     </div>
   )
 })
