@@ -23,6 +23,7 @@ import {
   chatMessagesAtom,
   isLoadingAtom,
   maxHistorySizeAtom,
+  nextQuestionsAtom,
   maxTokensAtom,
   previewUrlsAtom,
   remoteUrlsAtom,
@@ -77,6 +78,7 @@ const FooterTextArea = forwardRef<HTMLTextAreaElement, IProps>((
   const chatMessages = useAtomValue(chatMessagesAtom)
   const setChatItems = useSetAtom(chatItemsAtom)
   const uploading = useAtomValue(uploadingAtom)
+  const setNextQuestions = useSetAtom(nextQuestionsAtom)
   const userOpenAIKey = useAtomValue(userOpenAIKeyAtom)
   const [remoteUrls, setRemoteUrls] = useAtom(remoteUrlsAtom)
   const [previewUrls, setPreviewUrls] = useAtom(previewUrlsAtom)
@@ -161,6 +163,7 @@ const FooterTextArea = forwardRef<HTMLTextAreaElement, IProps>((
 
     // 1. reset the textarea value and height.
     setIsLoading(true)
+    setNextQuestions([])
     const value = textAreaRef.current?.value // save textValue temporary [Must Important!!!]
     if (textAreaRef.current) {
       textAreaRef.current.value = '' // sync textValue [Must Important!]

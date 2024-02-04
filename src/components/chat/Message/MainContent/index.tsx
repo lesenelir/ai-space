@@ -53,7 +53,7 @@ const MainContent = forwardRef<HTMLTextAreaElement, IProps>((
   const setPreviewUrls = useSetAtom(previewUrlsAtom)
   const selectedModelId = useAtomValue(selectedModelIdAtom)
   const isQuestionLoading = useAtomValue(isQuestionLoadingAtom)
-  const [nextQuestions, setNextQuestions] = useAtom(nextQuestionsAtom)
+  const nextQuestions = useAtomValue(nextQuestionsAtom)
   const containerRef = useRef<HTMLDivElement>(null)
   const handleUploadSubmit = useUploadHandler(abortImageController)
   const [isDragging, setIsDragging] = useState<boolean>(false)
@@ -167,9 +167,9 @@ const MainContent = forwardRef<HTMLTextAreaElement, IProps>((
     }
   }
 
-  const handleClickQuestion = async (question: string) => {
-    setNextQuestions([])
-    textAreaRef.current.value = question
+  const handleClickQuestion = (question: string) => {
+    textAreaRef.current.value += question
+    textAreaRef.current.focus()
   }
 
   // const buttonClass = useMemo(() => (
