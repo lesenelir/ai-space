@@ -4,7 +4,7 @@ import { franc } from 'franc-min'
 import { v4 as uuid } from 'uuid'
 import { useRouter } from 'next/router'
 import { useTranslation } from 'next-i18next'
-import { useAtom, useAtomValue, useSetAtom } from 'jotai'
+import { useAtomValue, useSetAtom } from 'jotai'
 import React, {
   type Dispatch,
   type SetStateAction,
