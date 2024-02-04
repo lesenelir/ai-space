@@ -31,6 +31,7 @@ Tech Stack: Next.js (Pages Router) + React + TypeScript + Tailwind CSS + Jotai +
 - Backend
   - [x] Integrate mysql database and save the chat data to the server
   - [x] Create database tables and restful api routes for data persistence
+  - [ ] Count all the tokens spent by a user on this website, and push an alert to the user for every $5 spent.
 
 ![tables logo](/public/docs/dark.png#gh-dark-mode-only)
 ![tables logo](/public/docs/light.png#gh-light-mode-only)
