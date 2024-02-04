@@ -49,11 +49,9 @@ const handleGenerateChatTitle = async (req: NextApiRequest, res: NextApiResponse
 
     // Update the item_name of the chatItem identified by item_uuid
     await prisma.chatItem.update({
-      where: {
-        item_uuid
-      },
+      where: {item_uuid},
       data: {
-        item_name: title || 'Untitled'
+        item_name: title?.slice(0, 50) || 'Untitled'
       }
     })
 

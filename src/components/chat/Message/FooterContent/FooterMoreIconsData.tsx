@@ -96,6 +96,11 @@ export default function FooterMoreIconsData(props: IProps) {
         setGeneratingChatTitle(false)
         return
       }
+      if (!response?.ok) {
+        toast.error('Failed to generate chat title, please try again later.')
+        setGeneratingChatTitle(false)
+        return
+      }
       const data = (await response?.json()).chatItems
       setChatItems(data)
     } catch (e) {
