@@ -218,7 +218,12 @@ const FooterTextArea = forwardRef<HTMLTextAreaElement, IProps>((
       return
     }
 
-    if (!res.ok || !res.body) return
+    if (!res.ok || !res.body) {
+      abortController.current = null
+      setIsLoading(false)
+      toast.error('Network error, please try again later.')
+      return
+    }
 
     // res.ok
     // 3. save user input to the database

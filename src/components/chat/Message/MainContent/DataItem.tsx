@@ -1,5 +1,6 @@
 import clsx from 'clsx'
 import Image from 'next/image'
+import { toast } from 'sonner'
 import { v4 as uuid } from 'uuid'
 import { useUser } from '@clerk/nextjs'
 import { useRouter } from 'next/router'
@@ -21,7 +22,7 @@ import {
   maxTokensAtom,
   temperatureAtom,
   maxHistorySizeAtom,
-  selectedModelIdAtom
+  selectedModelIdAtom, userOpenAIKeyAtom
 } from '@/atoms'
 import { deleteLastChatMessage, saveCompletionRequest } from '@/requests'
 import { getCurrentChatHistory } from '@/utils/getCurrentChatHistory'
@@ -82,6 +83,7 @@ const DataItem =  forwardRef<HTMLDivElement, IProps>((props, ref) => {
   const maxHistorySize = useAtomValue(maxHistorySizeAtom)
   const [isLoading, setIsLoading] = useAtom(isLoadingAtom)
   const selectedModelId =  useAtomValue(selectedModelIdAtom)
+  const userOpenAIKey = useAtomValue(userOpenAIKeyAtom)
   const [ignoreLine, setIgnoreLine] = useAtom(ignoreLineAtom)
   const [chatMessages, setChatMessages] = useAtom(chatMessagesAtom)
   const [rateId, setRateId] = useState<number>(1)
@@ -175,15 +177,21 @@ const DataItem =  forwardRef<HTMLDivElement, IProps>((props, ref) => {
         temperature,
         max_tokens: maxTokens,
         model_name: modelName!,
-        send_content: sendContent
+        send_content: sendContent,
+        api_key: userOpenAIKey
       }),
       signal: abortController.current.signal
     }
 
     const res = await fetch('/api/chat/send', options)
-    if (!res.ok || !res.body) return
-    let completion = ''
+    if (!res.ok || !res.body) {
+      abortController.current = null
+      setIsLoading(false)
+      toast.error('Network error, please try again later.')
+      return
+    }
 
+    let completion = ''
     try {
       const reader = res.body.getReader()
       const decoder = new TextDecoder()
