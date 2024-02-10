@@ -289,7 +289,14 @@ const DataItem =  forwardRef<HTMLDivElement, IProps>((props, ref) => {
               className={'prose dark:prose-invert break-words whitespace-pre-wrap overflow-x-auto custom-message-light-scrollbar'}
             >
               {/* If data.messageContent is null, the data.content must be existed. */}
-              <CommonMarkdownRender markdown={data.content}/>
+              {/*<CommonMarkdownRender markdown={data.content}/>*/}
+              {
+                data.role === 'assistant' ? (
+                  <CommonMarkdownRender markdown={data.content}/>
+                ) : (
+                  <p>{data.content}</p>
+                )
+              }
             </article>
           </div>
         </div>
