@@ -4,7 +4,7 @@ import type { AppProps } from 'next/app'
 import { ThemeProvider } from 'next-themes'
 import { ClerkProvider } from '@clerk/nextjs'
 import { appWithTranslation } from 'next-i18next'
-import { Analytics } from '@vercel/analytics/react'
+// import { Analytics } from '@vercel/analytics/react'
 
 import '@/styles/globals.css'
 
@@ -13,7 +13,7 @@ const inter = Inter({ subsets: ['latin'] })
 function App({ Component, pageProps }: AppProps) {
   return (
     <div className={`${inter.className}`}>
-      <Analytics/>
+      {/*<Analytics/>*/}
       <Provider>
         <ThemeProvider>
           <ClerkProvider {...pageProps}>

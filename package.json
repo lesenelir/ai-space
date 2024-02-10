@@ -22,7 +22,6 @@
     "@clerk/nextjs": "^4.29.3",
     "@prisma/client": "5.7.0",
     "@stackblitz/sdk": "^1.9.0",
-    "@vercel/analytics": "^1.1.1",
     "ai": "^2.2.30",
     "cheerio": "1.0.0-rc.12",
     "cloudinary": "^1.41.1",
