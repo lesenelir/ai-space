@@ -1,9 +1,6 @@
 import clsx from 'clsx'
-import { Ephesis } from 'next/font/google'
 
 import Card from '@/components/home/SecondContentArea/Card'
-
-const ephesis = Ephesis({ subsets: ['latin'], weight: '400' })
 
 const cardData = [
   {
@@ -47,7 +44,7 @@ export default function SecondContentArea() {
       <div className={'border border-homepage-second-text mt-12 mb-6'}/>
 
       <h1 className={'text-xl'}>
-        <span className={`font-bold text-6xl ${ephesis.className}`}>AI Space {' '}</span>
+        <span className={`text-6xl font-ephesis`}>AI Space {' '}</span>
         integrates AI applications,
       </h1>
       <h1 className={'text-xl mb-6'}>which can see, hear, and speak.</h1>

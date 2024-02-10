@@ -16,6 +16,9 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        ephesis: ['var(--font-ephesis)'],
+      },
       keyframes: {
         blink: {
           '0%, 100%': { opacity: '0.2' },

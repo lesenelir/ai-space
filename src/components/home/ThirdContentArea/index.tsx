@@ -1,8 +1,5 @@
 import clsx from 'clsx'
 import { motion } from 'framer-motion'
-import { Ephesis } from 'next/font/google'
-
-const ephesis = Ephesis({ subsets: ['latin'], weight: '400' })
 
 export default function ThirdContentArea() {
   return (
@@ -16,7 +13,7 @@ export default function ThirdContentArea() {
 
       <div className={'border border-homepage-third-text mt-12 mb-6'}/>
 
-      <h1 className={`text-6xl font-semibold mb-6 ${ephesis.className}`}>Safety</h1>
+      <h1 className={`text-6xl mb-6 font-ephesis`}>Safety</h1>
 
       <motion.div
         initial={{ opacity: 0, x: -100 }}
