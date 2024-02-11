@@ -71,7 +71,7 @@ export default function CommonSelect() {
               isDropDownOpen ? (
                 <ChevronUpIcon width={16} height={16} className={'flex items-center'}/>
               ) : (
-                <ChevronDownIcon width={16} height={16} className={'flex items-center'}/>
+                <ChevronDownIcon width={16} height={16} strokeWidth={2} className={'flex items-center'}/>
               )
             }
 

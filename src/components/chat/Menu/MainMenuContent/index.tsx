@@ -1,21 +1,39 @@
-import { useMemo } from 'react'
+import clsx from 'clsx'
 import { useAtomValue } from 'jotai'
+import { useMemo, useState } from 'react'
 import { useTranslation } from 'next-i18next'
 import { isToday, isYesterday, subDays } from 'date-fns'
 
-import { chatItemsAtom, isSearchActiveAtom, searchQueryNameAtom } from '@/atoms'
+import {
+  chatItemsAtom,
+  isSearchActiveAtom,
+  searchQueryNameAtom
+} from '@/atoms'
 import type { TCategorizedChatItems, TChatItem } from '@/types'
 import DatabaseOffIcon from '@/components/icons/DatabaseOffIcon'
+import ChevronDownIcon from '@/components/icons/ChevronDownIcon'
+import ChevronRightIcon from '@/components/icons/ChevronRightIcon'
 import ChatItemCard from '@/components/chat/Menu/MainMenuContent/ChatItemCard'
+
+type TypeCategory = 'today' | 'yesterday' | 'previous7Days' | 'previous30Days' | 'all'
 
 export default function MainMenuContent() {
   const { t } = useTranslation('common')
   const chatItemLists =  useAtomValue(chatItemsAtom)
   const isSearchActive = useAtomValue(isSearchActiveAtom)
   const searchQueryName = useAtomValue(searchQueryNameAtom)
+  const [elastic, setElastic] = useState<{[key in TypeCategory]: boolean}>(
+    {
+      today: true,
+      yesterday: true,
+      previous7Days: true,
+      previous30Days: true,
+      all: false
+    }
+  )
 
   // Note: category value must be the same as the key in i18n/common.json
-  const renderOrder = useMemo(() => {
+  const renderOrder: TypeCategory[] = useMemo(() => {
     return ['today', 'yesterday', 'previous7Days', 'previous30Days', 'all']
   }, [])
 
@@ -45,6 +63,15 @@ export default function MainMenuContent() {
       return pre
     }, {})
   }, [chatItemLists, renderOrder])
+
+  const handleElasticClick = (key: TypeCategory) => {
+    setElastic((prev) => {
+      return {
+        ...prev,
+        [key]: !prev[key]
+      }
+    })
+  }
 
   if (isSearchActive) {
     const searchChatItems: TChatItem[] = chatItemLists.filter((chatItem: TChatItem) => chatItem.itemName.includes(searchQueryName))
@@ -131,7 +158,7 @@ export default function MainMenuContent() {
       {/* No Star Lists based on Date */}
       <div className={'w-full flex flex-col gap-1'}>
         {
-          renderOrder.map((categoryDate: string) => {
+          renderOrder.map((categoryDate: TypeCategory) => {
             const chatItemsBasedDate = categorizedChatItemLists[categoryDate]
             if (!chatItemsBasedDate) return null
             if (categoryDate === renderOrder[0]) {
@@ -140,9 +167,41 @@ export default function MainMenuContent() {
             }
 
             return (
-              <div key={categoryDate} className={'mb-1'}>
-                <p className={'text-xs font-light text-gray-400 mb-1'}>{t(`chatPage.menu.${categoryDate}`)}</p>
-                <div className={'flex flex-col gap-1'}>
+              <div key={categoryDate} className={'mb-2'}>
+                <div
+                  className={'flex gap-2.5 items-center cursor-pointer group mb-1.5'}
+                  onClick={() => handleElasticClick(categoryDate)}
+                >
+                  <p className={'text-xs font-light text-gray-400 group-hover:text-gray-300 hover-transition-change'}>
+                    {t(`chatPage.menu.${categoryDate}`)}
+                  </p>
+
+                    <p
+                      className={clsx(
+                        'text-xs rounded-full text-gray-400 bg-zinc-700 px-1 py-0.5',
+                        'group-hover:text-gray-300 hover-transition-change'
+                      )}
+                    >
+                      {chatItemsBasedDate.length}
+                    </p>
+                    {
+                      elastic[categoryDate] ? (
+                        <ChevronDownIcon
+                          width={16}
+                          height={16}
+                          strokeWidth={1}
+                          className={'text-gray-400 group-hover:text-gray-300 hover-transition-change'}
+                        />
+                      ) : (
+                        <ChevronRightIcon
+                          width={16}
+                          height={16}
+                          className={'text-gray-400 group-hover:text-gray-300 hover-transition-change'}
+                        />
+                      )
+                    }
+                </div>
+                <div className={clsx(elastic[categoryDate] ? 'flex flex-col gap-1' : 'hidden')}>
                   {
                     chatItemsBasedDate
                       .filter((chatItem: TChatItem) => !chatItem.isStarred)
