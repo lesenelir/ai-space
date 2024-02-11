@@ -115,3 +115,8 @@ This changelog provides a detailed record of the updates and improvements made t
 - Complete `tts` page, including text to speech
 - Complete `summarize` page
 - Complete `translate` page
+
+### 0.0.8
+
+- Integrated `cookie and js-cookie` for syncing ssr and client side state.
+- Add expand and collapse feature for chatItem list.
