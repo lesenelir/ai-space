@@ -26,7 +26,9 @@ Tech Stack: Next.js (Pages Router) + React + TypeScript + Tailwind CSS + Jotai +
   - [x] Maintain the token consumption of each chat
   - [x] Using Jotai for global state management
   - [x] SSR to prefetch data, and hydrate the prefetched data on the client side 
-  - [x] Create and save screenshot 
+  - [x] Create and save screenshot
+  - [x] ChatItem list management based on the update time
+  - [ ] ChatItem group management based on the user created groups
 
 - Backend
   - [x] Integrate mysql database and save the chat data to the server
@@ -57,9 +59,9 @@ Tech Stack: Next.js (Pages Router) + React + TypeScript + Tailwind CSS + Jotai +
 
 ## Inspirations
 
-- [https://openai.com/chatgpt](https://openai.com/chatgpt)
-- [https://chat.openai.com](https://chat.openai.com)
 - [https://chatkit.app](https://chatkit.app)
+- [https://chat.openai.com](https://chat.openai.com)
+- [https://openai.com/chatgpt](https://openai.com/chatgpt)
 - [https://web.chatboxai.app](https://web.chatboxai.app)
 
 
