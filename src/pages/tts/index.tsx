@@ -1,3 +1,4 @@
+import cookie from 'cookie'
 import Head from 'next/head'
 import type { GetServerSideProps } from 'next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
@@ -5,7 +6,13 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import TTSMenu from '@/components/tts/TTSMenu'
 import TTSMessage from '@/components/tts/TTSMessage'
 
-export default function TTSPage() {
+interface IProps {
+  initialWidth: number
+}
+
+export default function TTSPage(props: IProps) {
+  const { initialWidth } = props
+
   return (
     <>
       <Head>
@@ -15,7 +22,7 @@ export default function TTSPage() {
       </Head>
 
       <div className={'w-screen h-screen flex flex-row'}>
-        <TTSMenu/>
+        <TTSMenu initialWidth={initialWidth}/>
         <TTSMessage/>
       </div>
     </>
@@ -23,9 +30,13 @@ export default function TTSPage() {
 }
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const cookies = ctx.req.headers.cookie ? cookie.parse(ctx.req.headers.cookie) : {}
+  const initialWidth = cookies.resizableWidth ? parseInt(cookies.resizableWidth, 10) : 320
+
   return {
     props: {
       ...(await serverSideTranslations(ctx.locale!, ['common'])),
+      initialWidth
     }
   }
 }

@@ -13,7 +13,12 @@ import AlignLeftIcon from '@/components/icons/AlignLeftIcon'
 import MicrophoneIcon from '@/components/icons/MicrophoneIcon'
 import LanguageJapIcon from '@/components/icons/LanguageJapIcon'
 
-export default function CommonMenu() {
+interface IProps {
+  initialWidth: number
+}
+
+export default function CommonMenu(props: IProps) {
+  const { initialWidth } = props
   const router = useRouter()
   const { user } = useUser()
   const { t } = useTranslation('common')
@@ -28,6 +33,7 @@ export default function CommonMenu() {
           <ResizableDiv
             minWidth={300}
             maxWidth={520}
+            initialWidth={initialWidth}
             className={clsx(
               'w-full h-full p-3 text-chatpage-menu-text bg-chatpage-menu-background',
               'max-md:fixed max-md:top-0 max-md:left-0 z-50 max-md:h-full',

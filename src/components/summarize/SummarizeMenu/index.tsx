@@ -1,10 +1,15 @@
 import CommonMenu from '@/components/common/commonMenu'
 
-export function SummarizeMenu() {
+interface IProps {
+  initialWidth: number
+}
+
+export function SummarizeMenu(props: IProps) {
+  const { initialWidth } = props
 
   return (
     <>
-      <CommonMenu/>
+      <CommonMenu initialWidth={initialWidth}/>
     </>
   )
 }

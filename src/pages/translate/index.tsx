@@ -10,15 +10,17 @@ import type { TModel } from '@/types'
 import { modelsAtom, userGeminiKeyAtom, userOpenAIKeyAtom } from '@/atoms'
 import TranslateMenu from '@/components/translate/TranslateMenu'
 import TranslateMessage from '@/components/translate/TranslateMessage'
+import cookie from 'cookie'
 
 interface IProps {
+  initialWidth: number
   models: TModel[]
   userOpenAIKey: string
   userGeminiKey: string
 }
 
 export default function SummarizePage(props: IProps) {
-  const { models, userOpenAIKey, userGeminiKey } = props
+  const { initialWidth, models, userOpenAIKey, userGeminiKey } = props
 
   useHydrateAtoms([
     [modelsAtom, models],
@@ -35,7 +37,7 @@ export default function SummarizePage(props: IProps) {
       </Head>
 
       <div className={'w-screen h-screen flex flex-row'}>
-        <TranslateMenu/>
+        <TranslateMenu initialWidth={initialWidth}/>
         <TranslateMessage/>
       </div>
     </>
@@ -44,6 +46,9 @@ export default function SummarizePage(props: IProps) {
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { userId } = getAuth(ctx.req)
+
+  const cookies = ctx.req.headers.cookie ? cookie.parse(ctx.req.headers.cookie) : {}
+  const initialWidth = cookies.resizableWidth ? parseInt(cookies.resizableWidth, 10) : 320
 
   if (!userId) {
     return {
@@ -79,6 +84,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   return {
     props: {
       ...(await serverSideTranslations(ctx.locale!, ['common'])),
+      initialWidth,
       models,
       userOpenAIKey: isUserSaveOpenAIKey.length > 0 ? isUserSaveOpenAIKey[0].api_key : '',
       userGeminiKey: isUserSaveGeminiKey.length > 0 ? isUserSaveGeminiKey[0].api_key : '',

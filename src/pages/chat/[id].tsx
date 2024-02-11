@@ -1,3 +1,4 @@
+import cookie from 'cookie'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useHydrateAtoms } from 'jotai/utils'
@@ -21,6 +22,7 @@ import {
 } from '@/atoms'
 
 interface IProps {
+  initialWidth: number
   chatItems: TChatItem[]
   models: TModel[]
   isUserSaveOpenAIKey: boolean
@@ -32,6 +34,7 @@ interface IProps {
 
 export default function ChatPage(props: IProps) {
   const {
+    initialWidth,
     chatItems,
     models,
     isUserSaveOpenAIKey,
@@ -68,7 +71,7 @@ export default function ChatPage(props: IProps) {
       </Head>
 
       <div className={'w-screen h-screen flex flex-row'}>
-        <Menu/>
+        <Menu initialWidth={initialWidth}/>
         <Message/>
       </div>
     </>
@@ -78,6 +81,9 @@ export default function ChatPage(props: IProps) {
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { userId } = getAuth(ctx.req)
   const currentChatUuid = ctx.query.id as string
+
+  const cookies = ctx.req.headers.cookie ? cookie.parse(ctx.req.headers.cookie) : {}
+  const initialWidth = cookies.resizableWidth ? parseInt(cookies.resizableWidth, 10) : 320
 
   if (!userId) {
     return {
@@ -140,6 +146,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   return {
     props: {
       ...(await serverSideTranslations(ctx.locale!, ['common'])),
+      initialWidth,
       chatItems,
       models,
       isUserSaveOpenAIKey: isUserSaveOpenAIKey.length > 0,

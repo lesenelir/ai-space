@@ -1,10 +1,15 @@
 import CommonMenu from '@/components/common/commonMenu'
 
-export default function TTSMenu() {
+interface IProps {
+  initialWidth: number
+}
+
+export default function TTSMenu(props: IProps) {
+  const { initialWidth } = props
 
   return (
     <>
-      <CommonMenu/>
+      <CommonMenu initialWidth={initialWidth}/>
     </>
   )
 }

@@ -1,10 +1,15 @@
 import CommonMenu from '@/components/common/commonMenu'
 
-export default function TranslateMenu() {
+interface IProps {
+  initialWidth: number
+}
+
+export default function TranslateMenu(props: IProps) {
+  const { initialWidth } = props
 
   return (
     <>
-      <CommonMenu/>
+      <CommonMenu initialWidth={initialWidth}/>
     </>
   )
 }

@@ -1,3 +1,4 @@
+import cookie from 'cookie'
 import Head from 'next/head'
 import { type GetServerSideProps } from 'next'
 import { getAuth } from '@clerk/nextjs/server'
@@ -19,6 +20,7 @@ import {
 } from '@/atoms'
 
 interface IProps {
+  initialWidth: number
   chatItems: TChatItem[]
   models: TModel[]
   isUserSaveOpenAIKey: boolean
@@ -28,7 +30,15 @@ interface IProps {
 }
 
 export default function ChatPage(props: IProps) {
-  const { chatItems, models, isUserSaveOpenAIKey, isUserSaveGeminiKey, userOpenAIKey, userGeminiKey } = props
+  const {
+    initialWidth,
+    chatItems,
+    models,
+    isUserSaveOpenAIKey,
+    isUserSaveGeminiKey,
+    userOpenAIKey,
+    userGeminiKey
+  } = props
 
   // setChatItems(chatItems)  // wrong, because setState is the effect of render
   // useEffect + setChatItems(chatItems) // wrong, because it will wait for the first render, wasting ssr advantage
@@ -52,7 +62,7 @@ export default function ChatPage(props: IProps) {
       </Head>
 
       <div className={'w-screen h-screen flex flex-row'}>
-        <Menu/>
+        <Menu initialWidth={initialWidth}/>
         <Message/>
       </div>
     </>
@@ -61,6 +71,9 @@ export default function ChatPage(props: IProps) {
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { userId } = getAuth(ctx.req)
+
+  const cookies = ctx.req.headers.cookie ? cookie.parse(ctx.req.headers.cookie) : {}
+  const initialWidth = cookies.resizableWidth ? parseInt(cookies.resizableWidth, 10) : 320
 
   if (!userId) {
     return {
@@ -109,6 +122,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   return {
     props: {
       ...(await serverSideTranslations(ctx.locale!, ['common'])),
+      initialWidth,
       chatItems,
       models,
       isUserSaveOpenAIKey: isUserSaveOpenAIKey.length > 0,
