@@ -3,8 +3,8 @@ import { toast } from 'sonner'
 import { v4 as uuid } from 'uuid'
 import { useRouter } from 'next/router'
 import { useTranslation } from 'next-i18next'
-import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import SpeechRecognition from 'react-speech-recognition'
+import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import {
   type ChangeEvent,
   type CompositionEvent,
@@ -266,6 +266,7 @@ const FooterTextArea = forwardRef<HTMLTextAreaElement, IProps>((
     } catch (e) {
       // stream interrupted, save the response to the database.
       await saveCompletionRequest(completion, modelName!, router.query.id as string | undefined, data)
+      toast.error('Network Streaming error, please try again later.')
     }
 
     // 4. redirect /chat/[id]
