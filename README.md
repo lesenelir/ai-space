@@ -6,7 +6,10 @@ This project is a chat application that uses various AI models to chat with user
 The application is built with Next.js Pages Router and Tailwind CSS.
 
 Tech Stack: Next.js (Pages Router) + React + TypeScript + Tailwind CSS + Jotai + AI + Prisma + MySQL (Client side storage will be added in the future)
+ 
+Online: [https://ai-space.fly.dev/](https://ai-space.fly.dev/)
 
+Video: [https://www.bilibili.com/video/BV1C2421A7Nb/](https://www.bilibili.com/video/BV1C2421A7Nb/)
 
 ## Features
 
@@ -34,6 +37,8 @@ Tech Stack: Next.js (Pages Router) + React + TypeScript + Tailwind CSS + Jotai +
   - [x] Integrate mysql database and save the chat data to the server
   - [x] Create database tables and restful api routes for data persistence
   - [ ] Count all the tokens spent by a user on this website, and push an alert to the user for every $5 spent.
+
+[https://excalidraw.com/#json=vgp-id8HsxPn0Oy0LyNOQ,U6JMCGeAzL8D4MZPq88Kfg](https://excalidraw.com/#json=vgp-id8HsxPn0Oy0LyNOQ,U6JMCGeAzL8D4MZPq88Kfg)
 
 ![tables logo](/public/docs/dark.png#gh-dark-mode-only)
 ![tables logo](/public/docs/light.png#gh-light-mode-only)
