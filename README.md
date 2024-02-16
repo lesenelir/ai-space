@@ -5,11 +5,11 @@
 This project is a chat application that uses various AI models to chat with users. 
 The application is built with Next.js Pages Router and Tailwind CSS.
 
-Tech Stack: Next.js (Pages Router) + React + TypeScript + Tailwind CSS + Jotai + AI + Prisma + MySQL (Client side storage will be added in the future)
+Tech Stack: Next.js (Pages Router) + React + TypeScript + Tailwind CSS + Clerk + Jotai + AI + Prisma + MySQL (Client side storage will be added in the future)
  
-Online: [https://ai-space.fly.dev/](https://ai-space.fly.dev/)
+Online: [https://ai-space.fly.dev](https://ai-space.fly.dev/)
 
-Video: [https://www.bilibili.com/video/BV1C2421A7Nb/](https://www.bilibili.com/video/BV1C2421A7Nb/)
+Video: [https://www.bilibili.com/video/BV1C2421A7Nb](https://www.bilibili.com/video/BV1C2421A7Nb/)
 
 ## Features
 
