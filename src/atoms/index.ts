@@ -5,7 +5,7 @@ import { superCopilots } from '@/utils'
 import type { TChatItem, TChatMessages, TImage, TModel, TMyCopilot } from '@/types'
 
 // client atoms:
-export const resizableWidthAtom = atomWithStorage<number>('resizableWidth', 320)
+// export const resizableWidthAtom = atomWithStorage<number>('resizableWidth', 320)
 export const isMenuOpenAtom = atom<boolean>(true)
 export const isSearchActiveAtom = atom<boolean>(false)
 export const isLoadingAtom = atom<boolean>(false)
