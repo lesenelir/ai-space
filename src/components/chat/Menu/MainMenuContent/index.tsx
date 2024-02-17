@@ -39,7 +39,7 @@ export default function MainMenuContent() {
 
   // { key: Date, value: [chatItem, chatItem, ...] }
   const categorizedChatItemLists = useMemo(() => {
-    return chatItemLists.reduce<TCategorizedChatItems>((pre: TCategorizedChatItems, item: TChatItem) => {
+    return chatItemLists?.reduce<TCategorizedChatItems>((pre: TCategorizedChatItems, item: TChatItem) => {
       let category
       const updatedAt = new Date(item.updatedAt)
 
@@ -115,9 +115,9 @@ export default function MainMenuContent() {
         <div className={'w-full flex flex-col gap-1'}>
           {
             searchChatItems
-              .filter((chatItem: TChatItem) => !chatItem.isStarred)
-              .sort((a: TChatItem, b: TChatItem) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
-              .map((chatItem: TChatItem) => (
+              ?.filter((chatItem: TChatItem) => !chatItem.isStarred)
+              ?.sort((a: TChatItem, b: TChatItem) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
+              ?.map((chatItem: TChatItem) => (
                 <ChatItemCard
                   key={chatItem.id}
                   id={chatItem.id}
@@ -139,9 +139,9 @@ export default function MainMenuContent() {
       <div className={'w-full flex flex-col gap-1'}>
         {
           chatItemLists
-            .filter((chatItem: TChatItem) => chatItem.isStarred)
-            .sort((a: TChatItem, b: TChatItem) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
-            .map((chatItem: TChatItem) => (
+            ?.filter((chatItem: TChatItem) => chatItem.isStarred)
+            ?.sort((a: TChatItem, b: TChatItem) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
+            ?.map((chatItem: TChatItem) => (
               <ChatItemCard
                 key={chatItem.id}
                 id={chatItem.id}
@@ -158,7 +158,7 @@ export default function MainMenuContent() {
       {/* No Star Lists based on Date */}
       <div className={'w-full flex flex-col gap-1'}>
         {
-          renderOrder.map((categoryDate: TypeCategory) => {
+          renderOrder?.map((categoryDate: TypeCategory) => {
             const chatItemsBasedDate = categorizedChatItemLists[categoryDate]
             if (!chatItemsBasedDate) return null
             if (categoryDate === renderOrder[0]) {
@@ -204,9 +204,9 @@ export default function MainMenuContent() {
                 <div className={clsx(elastic[categoryDate] ? 'flex flex-col gap-1' : 'hidden')}>
                   {
                     chatItemsBasedDate
-                      .filter((chatItem: TChatItem) => !chatItem.isStarred)
-                      .sort((a: TChatItem, b: TChatItem) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
-                      .map((chatItem: TChatItem) => (
+                      ?.filter((chatItem: TChatItem) => !chatItem.isStarred)
+                      ?.sort((a: TChatItem, b: TChatItem) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
+                      ?.map((chatItem: TChatItem) => (
                         <ChatItemCard
                           key={chatItem.id}
                           id={chatItem.id}

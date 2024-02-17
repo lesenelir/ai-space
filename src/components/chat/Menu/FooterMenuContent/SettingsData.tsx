@@ -1,4 +1,5 @@
 import clsx from 'clsx'
+import { format } from 'date-fns'
 import { useTheme } from 'next-themes'
 import { Toaster, toast } from 'sonner'
 import { useRouter } from 'next/router'
@@ -19,6 +20,7 @@ import LeafIcon from '@/components/icons/LeafIcon'
 import PuzzleIcon from '@/components/icons/PuzzleIcon'
 import SettingsBoltIcon from '@/components/icons/SettingsBoltIcon'
 import {
+  chatItemsAtom,
   isUserSaveGeminiKeyAtom,
   isUserSaveOpenAIKeyAtom,
   maxHistorySizeAtom,
@@ -69,6 +71,12 @@ export const GeneralContent = () => {
   const router = useRouter()
   const currentLocale = router.locale
   const currentThemeRef = useRef<string>('system')
+  const setChatItems = useSetAtom(chatItemsAtom)
+  const hiddenImportDataRef = useRef<HTMLInputElement>(null)
+
+  useEffect(() => {
+    currentThemeRef.current = localStorage.getItem('theme') || 'system'
+  }, [])
 
   const handleLanguageChange = async (e: ChangeEvent<HTMLSelectElement>) => {
     const newLocale = e.target.value
@@ -82,66 +90,134 @@ export const GeneralContent = () => {
     currentThemeRef.current = e.target.value
   }
 
-  useEffect(() => {
-    currentThemeRef.current = localStorage.getItem('theme') || 'system'
-  }, [])
+  const handleExportData = async () => {
+    const options = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }
+    toast.loading('Exporting...')
+    try {
+      const response = await fetch('/api/chat/exportData', options)
+      const data = await response.json()
+      const dataStr = JSON.stringify(data.chatItemWithMessages, null, 2)
+      const blob = new Blob([dataStr], { type: 'application/json' })
+      const url = URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = `AI-Space-Chat-Data-${format(new Date(), 'yyyy-MM-dd')}.json`
+      a.click()
+      toast.success('Exported!')
+    } catch (e) {
+      toast.error('UnExported!')
+    }
+  }
 
+  const handleImportDataChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files || e.target.files.length === 0) return
+
+    const file = e.target.files[0]
+    const reader = new FileReader()
+    toast.loading('Importing...')
+
+    reader.onload = async (e) => {
+      const fileContent = e.target?.result
+      const jsonData = JSON.parse(fileContent as string)
+
+      const options = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({jsonData})
+      }
+
+      try {
+        const response = await fetch('/api/chat/importData', options)
+        if (!response.ok && response.status === 400) {
+          toast.error('Invalid File!')
+          return
+        }
+        const data = await response.json()
+        setChatItems(data?.chatItems)
+        toast.success('Imported!')
+      } catch (e) {
+        toast.error('UnImported!')
+      }
+    }
+
+    reader.readAsText(file)
+  }
 
   const exportImportClass = useMemo(() => (
     clsx(
-      'border border-gray-500 rounded-md p-1 text-sm disabled:cursor-not-allowed',
-      'bg-chatpage-message-background-dark !disabled:hover:bg-gray-500/10 transition-change'
+      'border border-gray-500 rounded-md p-1 text-sm cursor-pointer disabled:cursor-not-allowed',
+      'bg-gray-500/10 hover:bg-chatpage-message-background-dark transition-change',
     )
   ), [])
 
   return (
-    <div className={'flex flex-col gap-8'}>
-      {/* header */}
+    <>
+      <Toaster richColors position={'top-center'}/>
       <div className={'flex flex-col gap-8'}>
-        <div className={'flex gap-4 items-center'}>
-          <p className={'w-28'}>{t('chatPage.menu.language')} {' '}:</p>
-          <select
-            value={currentLocale}
-            onChange={handleLanguageChange}
-            className={'bg-chatpage-message-background-dark cursor-pointer rounded-lg py-2 px-6'}
-          >
-            <option value="zh">{t('chatPage.menu.zh')}</option>
-            <option value="en">{t('chatPage.menu.en')}</option>
-          </select>
+        {/* header */}
+        <div className={'flex flex-col gap-8'}>
+          <div className={'flex gap-4 items-center'}>
+            <p className={'w-28'}>{t('chatPage.menu.language')} {' '}:</p>
+            <select
+              value={currentLocale}
+              onChange={handleLanguageChange}
+              className={'bg-chatpage-message-background-dark cursor-pointer rounded-lg py-2 px-6'}
+            >
+              <option value="zh">{t('chatPage.menu.zh')}</option>
+              <option value="en">{t('chatPage.menu.en')}</option>
+            </select>
+          </div>
+          <div className={'flex gap-4 items-center'}>
+            <p className={'w-28'}>{t('chatPage.menu.theme')} {' '}:</p>
+            <select
+              value={currentThemeRef.current}
+              onChange={handleThemeChange}
+              className={'bg-chatpage-message-background-dark cursor-pointer rounded-lg py-2 px-6'}
+            >
+              <option value="system">{t('chatPage.menu.system')}</option>
+              <option value="light">{t('chatPage.menu.light')}</option>
+              <option value="dark">{t('chatPage.menu.dark')}</option>
+            </select>
+          </div>
         </div>
-        <div className={'flex gap-4 items-center'}>
-          <p className={'w-28'}>{t('chatPage.menu.theme')} {' '}:</p>
-          <select
-            value={currentThemeRef.current}
-            onChange={handleThemeChange}
-            className={'bg-chatpage-message-background-dark cursor-pointer rounded-lg py-2 px-6'}
-          >
-            <option value="system">{t('chatPage.menu.system')}</option>
-            <option value="light">{t('chatPage.menu.light')}</option>
-            <option value="dark">{t('chatPage.menu.dark')}</option>
-          </select>
+
+        <div className={'border-b border-gray-500'}/>
+
+        {/* import and export content */}
+        <div className={'flex flex-col gap-4'}>
+          <div className={'flex gap-4 items-center'}>
+            <span>{t('chatPage.menu.importTitle')} {' '}:</span>
+            <span className={'text-sm'}>{' '} {t('chatPage.menu.importContent')}</span>
+          </div>
+
+          <div className={'flex gap-4'}>
+            <span
+              className={clsx(exportImportClass, 'relative')}
+              onClick={() => hiddenImportDataRef.current?.click()}
+            >
+              {t('chatPage.menu.importData')}
+              <input
+                type='file'
+                ref={hiddenImportDataRef}
+                accept={'application/json'}
+                className={'absolute -z-10 left-0 top-0 w-full h-full opacity-0'}
+                onChange={handleImportDataChange}
+              />
+            </span>
+            <button onClick={handleExportData} className={exportImportClass}>
+              {t('chatPage.menu.exportData')}
+            </button>
+          </div>
         </div>
       </div>
-
-      <div className={'border-b border-gray-500'}/>
-
-      {/* import and export content */}
-      <div className={'flex flex-col gap-4'}>
-        <div className={'flex gap-4 items-center'}>
-          <span>{t('chatPage.menu.importTitle')} {' '}:</span>
-          <span className={'text-sm'}>{' '} {t('chatPage.menu.importContent')}</span>
-        </div>
-
-        <div className={'flex gap-4'}>
-          <button disabled={true} className={exportImportClass}>
-            {t('chatPage.menu.importData')}
-          </button>
-          <button disabled={true} className={exportImportClass}>
-            {t('chatPage.menu.exportData')}
-          </button>
-        </div>
-      </div>
-    </div>
+    </>
   )
 }
 
@@ -150,7 +226,7 @@ export const ModelContent = () => {
   const [userOpenAIKey, setUserOpenAIKey] = useAtom(userOpenAIKeyAtom)
   const [userGeminiKey, setUserGeminiKey] = useAtom(userGeminiKeyAtom)
   const setIsUserSaveOpenAIKey = useSetAtom(isUserSaveOpenAIKeyAtom)
-  const setIsUserSaveGeminiKey =  useSetAtom(isUserSaveGeminiKeyAtom)
+  const setIsUserSaveGeminiKey = useSetAtom(isUserSaveGeminiKeyAtom)
 
   const handleSaveOpenAIKey = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
