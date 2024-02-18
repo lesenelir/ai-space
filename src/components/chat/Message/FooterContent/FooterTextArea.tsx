@@ -221,6 +221,7 @@ const FooterTextArea = forwardRef<HTMLTextAreaElement, IProps>((
     if (!res.ok || !res.body) {
       abortController.current = null
       setIsLoading(false)
+      setMessages(prev => prev.slice(0, -2))
       toast.error('Network error, please try again later.')
       return
     }

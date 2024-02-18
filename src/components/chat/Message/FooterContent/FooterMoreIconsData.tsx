@@ -96,8 +96,8 @@ export default function FooterMoreIconsData(props: IProps) {
         setGeneratingChatTitle(false)
         return
       }
-      if (!response?.ok) {
-        toast.error('Failed to generate chat title, please try again later.')
+      if (!response?.ok && response?.status === 504) {
+        toast.error('Network Timeout')
         setGeneratingChatTitle(false)
         return
       }
@@ -136,6 +136,12 @@ export default function FooterMoreIconsData(props: IProps) {
         setIsQuestionLoading(false)
         return
       }
+      if (!response?.ok || response?.status === 504) {
+        toast.error('Network Timeout')
+        setIsQuestionLoading(false)
+        return
+      }
+
       const data = (await response?.json())
       const questions = data.questions.trim().split('\n')
       setNextQuestions(questions)

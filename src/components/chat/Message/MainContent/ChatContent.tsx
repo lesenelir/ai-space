@@ -41,7 +41,7 @@ export default function ChatContent(props: IProps) {
     endOfMessagesRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' })
   }, [messages, chatMessages])
 
-  if (chatMessages.length === 0 && messages.length === 0) {
+  if (chatMessages?.length === 0 && messages?.length === 0) {
     return (
       <div className={'flex-1 flex flex-col justify-center items-center'}>
         <p className={'text-gray-700 dark:text-chatpage-message-text-dark text-sm'}>{t('chatPage.message.noMessages')}</p>
@@ -53,7 +53,7 @@ export default function ChatContent(props: IProps) {
     <>
       {/*first render to load data from the database*/}
       {
-        chatMessages.map((m, index) => (
+        chatMessages?.map((m, index) => (
           <DataItem
             key={m.id}
             ref={endOfMessagesRef}
@@ -77,7 +77,7 @@ export default function ChatContent(props: IProps) {
 
       {/* Real time  */}
       {
-        messages.map((m, index) => (
+        messages?.map((m, index) => (
           <DataItem
             key={m.id}
             ref={endOfMessagesRef}
