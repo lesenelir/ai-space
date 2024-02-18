@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import { Toaster, toast } from 'sonner'
 import { useTranslation } from 'next-i18next'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
-import { type Dispatch, type SetStateAction, useMemo } from 'react'
+import { type Dispatch, type SetStateAction, useMemo, useState } from 'react'
 
 import {
   chatItemsAtom,
@@ -23,6 +23,7 @@ import TIcon from '@/components/icons/TIcon'
 import SeparatorIcon from '@/components/icons/SeparatorIcon'
 import ScreenshotIcon from '@/components/icons/ScreenshotIcon'
 import PhotoShareIcon from '@/components/icons/PhotoShareIcon'
+import CopyFolderIcon from '@/components/icons/CopyFolderIcon'
 import MessageClearIcon from '@/components/icons/MessageClearIcon'
 import MessageQuestionIcon from '@/components/icons/MessageQuestionIcon'
 
@@ -44,6 +45,7 @@ export default function FooterMoreIconsData(props: IProps) {
   const maxHistorySize = useAtomValue(maxHistorySizeAtom)
   const selectedModelId =  useAtomValue(selectedModelIdAtom)
   const [ignoreLine, setIgnoredLine] = useAtom(ignoreLineAtom)
+  const [_, setLoadingDuplicateChat] = useState<boolean>(false)
   const { modelName } = useGetChatInformation(router.query.id as string, selectedModelId)
 
   const handleAddIgnoreLine = async () => {
@@ -151,6 +153,36 @@ export default function FooterMoreIconsData(props: IProps) {
     setIsQuestionLoading(false)
   }
 
+  const handleDuplicateChat = async () => {
+    const handleResponse = async (response: Response) => {
+      if (!response.ok) {
+        throw new Error('Failed to duplicate chat')
+      }
+      const data = await response.json()
+      setChatItems(data.chatItems)
+      await router.push(`/chat/${data.newChatItem.item_uuid}`)
+    }
+
+    const options = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        chatUuid: router.query.id
+      })
+    }
+
+    toast.promise(fetch('/api/chat/generateDuplicateChat', options), {
+      loading: 'Duplicating chat...',
+      success: (response) => {
+        handleResponse(response)
+        return 'Chat duplicated successfully'
+      },
+      error: 'Failed to duplicate chat'
+    })
+  }
+
   const handleViewScreenshot = () => {
     const chatContent = document.getElementById('chat-content')!
 
@@ -213,6 +245,12 @@ export default function FooterMoreIconsData(props: IProps) {
       <div className={normalDivClass} onClick={handleGenerateFollowQuestions}>
         <MessageQuestionIcon width={16} height={16}/>
         {t('chatPage.message.generateQuestions')}
+      </div>
+
+      {/* duplicate chat */}
+      <div className={normalDivClass} onClick={handleDuplicateChat}>
+        <CopyFolderIcon width={16} height={16}/>
+        {t('chatPage.message.duplicateChat')}
       </div>
 
       {/* View Screenshot */}

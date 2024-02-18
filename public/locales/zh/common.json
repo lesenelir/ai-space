@@ -88,7 +88,8 @@
       "addPictures": "添加图片",
       "dropPictures": "在这里拖放任何图片..",
       "generatingQuestions": "正在生成推荐问题...",
-      "suggestQuestions": "推荐问题"
+      "suggestQuestions": "推荐问题",
+      "duplicateChat": "复制当前聊天"
     }
   },
   "dallPage": {

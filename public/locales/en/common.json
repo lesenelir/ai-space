@@ -87,7 +87,8 @@
       "addPictures": "Add pictures",
       "dropPictures": "Drop any pictures here..",
       "generatingQuestions": "Generating follow up questions ...",
-      "suggestQuestions": "Suggested Follow-up Questions"
+      "suggestQuestions": "Suggested Follow-up Questions",
+      "duplicateChat": "Duplicate Chat"
     }
   },
   "dallPage": {
