@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import { Toaster, toast } from 'sonner'
 import { useTranslation } from 'next-i18next'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
-import { type Dispatch, type SetStateAction, useMemo, useState } from 'react'
+import { type Dispatch, type SetStateAction, useMemo } from 'react'
 
 import {
   chatItemsAtom,
@@ -45,7 +45,6 @@ export default function FooterMoreIconsData(props: IProps) {
   const maxHistorySize = useAtomValue(maxHistorySizeAtom)
   const selectedModelId =  useAtomValue(selectedModelIdAtom)
   const [ignoreLine, setIgnoredLine] = useAtom(ignoreLineAtom)
-  const [_, setLoadingDuplicateChat] = useState<boolean>(false)
   const { modelName } = useGetChatInformation(router.query.id as string, selectedModelId)
 
   const handleAddIgnoreLine = async () => {

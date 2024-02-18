@@ -1,11 +1,10 @@
 import { v4 as uuidv4 } from 'uuid'
-import OpenAI, { OpenAIError } from 'openai'
 import { createRouter } from 'next-connect'
 import { getAuth } from '@clerk/nextjs/server'
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 import prisma from '@/utils/db.server'
-import { isNetworkError, timeoutPromise, toCamelArr } from '@/utils'
+import { toCamelArr } from '@/utils'
 
 const router = createRouter<NextApiRequest, NextApiResponse>()
 
