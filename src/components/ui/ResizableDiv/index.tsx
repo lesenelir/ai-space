@@ -1,3 +1,4 @@
+import clsx from 'clsx'
 import Cookies from 'js-cookie'
 import React, {
   type ReactNode,
@@ -96,10 +97,11 @@ export default function ResizableDiv({
     >
       {children}
       <span
-        className={`
-          absolute top-0 right-0 z-10 w-1 h-full 
-          cursor-ew-resize active:border-r-4 active:border-r-blue-500
-        `}
+        className={clsx(
+          'absolute top-0 right-0 z-10 w-0.5 h-full',
+          'cursor-ew-resize hover:border-r-4 hover:border-blue-500',
+          'active:border-r-4 active:border-r-blue-500'
+        )}
         onMouseDown={startResizing}
       />
     </div>
