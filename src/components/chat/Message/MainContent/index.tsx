@@ -130,12 +130,14 @@ const MainContent = forwardRef<HTMLTextAreaElement, IProps>((
 
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault()
+    if (modelName !== 'gpt-4-vision-preview') return
     // when a user drags over the chat content, set the isDragOver to true
     setIsDragging(true)
   }
 
   const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault()
+    if (modelName !== 'gpt-4-vision-preview') return
     // when a user drags leave the chat content, set the isDragOver to false
     setIsDragging(false)
   }
@@ -210,7 +212,7 @@ const MainContent = forwardRef<HTMLTextAreaElement, IProps>((
     >
       {/* onDrag */}
       {
-        isDragging && (
+        isDragging && modelName === 'gpt-4-vision-preview' && (
           <div
             className={clsx(
               'bg-gray-50/90 fixed w-full h-full z-30',
