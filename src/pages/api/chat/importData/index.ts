@@ -9,6 +9,7 @@ import { toCamelArr } from '@/utils'
 const router = createRouter<NextApiRequest, NextApiResponse>()
 
 const chatMessageSchema = yup.object().shape({
+  id: yup.number().required(),
   message_type: yup.string().required(),
   message_content: yup.string().required(),
   message_role: yup.string().required(),
@@ -20,11 +21,12 @@ const chatMessageSchema = yup.object().shape({
 })
 
 const chatItemSchema = yup.object().shape({
+  id: yup.number().required(),
   item_name: yup.string().required(),
   item_uuid: yup.string().required(),
   created_at: yup.date().required(),
   updated_at: yup.date().required(),
-  isStarred: yup.boolean().required(),
+  isStarred: yup.bool().required(),
   user_primary_id: yup.number().required(),
   model_primary_id: yup.number().required(),
   ChatMessage: yup.array().of(chatMessageSchema).optional(),
@@ -97,7 +99,7 @@ const handleImportData = async (req: NextApiRequest, res: NextApiResponse) => {
     return res.status(200).json({ status: 'Import data successful', chatItems })
   } catch (e) {
     if (e instanceof yup.ValidationError) {
-      return res.status(400).json({ status: 'Validation error', errors: e.errors })
+      return res.status(408).json({ status: 'Validation error', errors: e.errors })
     }
     return res.status(500).json({ error: e })}
 }

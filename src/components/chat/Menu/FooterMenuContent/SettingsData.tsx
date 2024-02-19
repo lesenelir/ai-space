@@ -135,7 +135,8 @@ export const GeneralContent = () => {
 
       try {
         const response = await fetch('/api/chat/importData', options)
-        if (!response.ok && response.status === 400) {
+        console.log(response)
+        if (!response.ok && response.status === 408) {
           toast.error('Invalid File!')
           return
         }
