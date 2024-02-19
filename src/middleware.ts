@@ -17,7 +17,7 @@ export default authMiddleware({
   async afterAuth(auth, req) {
     // When you are in Postman to debug api, it will run this code. So you should comment on it.
     if (!auth.userId && !auth.isPublicRoute) {
-      return redirectToSignIn({ returnBackUrl: req.url })
+      return redirectToSignIn({ returnBackUrl: process.env.NEXT_PUBLIC_API_URL })
     }
 
     // Check if the current user exists in my database.
