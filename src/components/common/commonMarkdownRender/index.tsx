@@ -44,17 +44,17 @@ export default function CommonMarkdownRender(props: IProps) {
 
     sdk.openProject(
       {
-        title: 'Chat App',
-        description: 'preview code',
+        title: 'AI Space',
+        description: 'preview code from ai-space',
         template: 'node',
         files: {
           'index.js': language === 'javascript' ? code : `console.log('hello world')`,
-          'index.html': language === 'html' ? code : `<html lang="en"><body><h1>hello world</h1></body></html>`,
+          'index.html': language === 'html' ? code : `<html lang="en"><body><div id="app"></div></body></html>`,
           'index.css': language === 'css' ? code : `h1 { color: red; }`,
           'index.ts': language === 'typescript' ? code : `console.log('hello world')`,
           'index.jsx': language === 'jsx' ? code : `function App() { return <h1>hello world</h1> }`,
           'package.json': `{
-  "name": "my-project",
+  "name": "ai-space",
   "scripts": { 
     "dev": "node index.js" 
   },
