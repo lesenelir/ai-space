@@ -1,5 +1,6 @@
 import clsx from 'clsx'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import Typewriter, { TypewriterClass } from 'typewriter-effect'
 
@@ -21,6 +22,7 @@ export default function FirstContentArea() {
   const [colorIndex, setColorIndex] = useState<number>(0)
   // Save typewriter instance
   const typewriterRef = useRef<TypewriterClass | null>(null)
+  const router = useRouter()
 
   // When textIndex changed, start typewriter
   useEffect(() => {
@@ -110,7 +112,8 @@ export default function FirstContentArea() {
             </li>
 
             <li className={cliClassName}>
-              <Link href={'/dall'}>DALL-E</Link>
+              <span onClick={() => router.push('/dall')}>DALL-E</span>
+              {/*<Link href={'/dall'}>DALL-E</Link>*/}
               <ArrowUpRightIcon width={20} height={20}/>
             </li>
           </ul>
