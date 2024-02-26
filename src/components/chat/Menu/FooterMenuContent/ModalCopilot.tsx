@@ -2,6 +2,7 @@ import clsx from 'clsx'
 import { v4 as uuid } from 'uuid'
 import { useRouter } from 'next/router'
 import { useTranslation } from 'next-i18next'
+import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import React, {
   type FormEvent,
   type MouseEvent,
@@ -9,9 +10,13 @@ import React, {
   useState
 } from 'react'
 
+import {
+  chatItemsAtom,
+  myCopilotsAtom,
+  selectedModelIdAtom,
+  superCopilotsAtom,
+} from '@/atoms'
 import type { TMyCopilot } from '@/types'
-import { useAtom, useAtomValue, useSetAtom } from 'jotai'
-import { chatItemsAtom, myCopilotsAtom, selectedModelIdAtom, superCopilotsAtom, } from '@/atoms'
 import XIcon from '@/components/icons/XIcon'
 import EditIcon from '@/components/icons/EditIcon'
 import TrashIcon from '@/components/icons/TrashIcon'
