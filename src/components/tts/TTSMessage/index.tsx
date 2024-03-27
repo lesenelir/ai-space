@@ -7,8 +7,7 @@ import {
   type CompositionEvent,
   type FormEvent,
   useState,
-  useRef,
-  useMemo,
+  useRef
 } from 'react'
 
 import { createVoice } from '@/requests'
@@ -34,12 +33,10 @@ export default function TTSMessage() {
   const [speed, setSpeed] = useState<number>(1)
   const [audioUrl, setAudioUrl] = useState<string>('')
 
-  const selectClassName = useMemo(() => (
-    clsx(
-      'bg-transparent text-sm border dark:border-gray-500 p-1 rounded-md focus:outline-none',
-      'focus:border-blue-500 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-500'
-    )
-  ), [])
+  const selectClassName = clsx(
+    'bg-transparent text-sm border dark:border-gray-500 p-1 rounded-md focus:outline-none',
+    'focus:border-blue-500 dark:focus:border-blue-500 focus:ring-1 focus:ring-blue-500'
+  )
 
   const handleComposition = (e: CompositionEvent) => {
     if (e.type === 'compositionstart') {

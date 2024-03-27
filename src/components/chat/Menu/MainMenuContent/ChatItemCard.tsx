@@ -129,19 +129,14 @@ export default function ChatItemCard(props: IProps) {
     }
   }
 
-  // handle click event on container div -> go to specific chat page /chat/*(uuid)
-  const handleContainerDivClick = async () => {
-    await router.push(`/chat/${uuid}`)
-  }
-
   return (
     <div
       className={clsx(
         'w-full p-2 h-10 flex justify-between cursor-pointer rounded-lg',
         'hover:bg-chatpage-menu-hover hover-transition-change group',
-        isCurrentChat && 'bg-chatpage-menu-hover'
+        isCurrentChat && 'bg-chatpage-menu-hover',
       )}
-      onClick={handleContainerDivClick}
+      onClick={() => router.push(`/chat/${uuid}`)}
     >
       {!isEdit && (
         <>

@@ -5,7 +5,6 @@ import { toast, Toaster } from 'sonner'
 import { useTranslation } from 'next-i18next'
 import {
   type FormEvent,
-  useMemo,
   useRef,
   useState
 } from 'react'
@@ -97,13 +96,11 @@ export default function TranslateMessage() {
     }
   }
 
-  const textAreaClassName = useMemo(() => (
-    clsx(
-      'w-full h-96 bg-transparent border dark:border-gray-500',
-      'resize-none rounded-lg p-2',
-      'focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:focus:border-blue-500',
-    )
-  ), [])
+  const textAreaClassName = clsx(
+    'w-full h-96 bg-transparent border dark:border-gray-500',
+    'resize-none rounded-lg p-2',
+    'focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:focus:border-blue-500',
+  )
 
   return (
     <div

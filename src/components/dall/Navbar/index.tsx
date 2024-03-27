@@ -1,8 +1,8 @@
 import clsx from 'clsx'
 import { useRouter } from 'next/router'
+import { useRef, useState } from 'react'
 import { UserButton } from '@clerk/nextjs'
 import { useTranslation } from 'next-i18next'
-import { useMemo, useRef, useState } from 'react'
 
 import { useOutsideClick } from '@/hooks'
 import LZIcon from '@/components/icons/LZIcon'
@@ -19,12 +19,10 @@ export default function Navbar() {
     if (!triggerRef.current?.contains(event!.target as Node)) setDropdownOpen(false)
   })
 
-  const navbarPClass = useMemo(() => (
-    clsx(
-      'font-serif cursor-pointer font-medium',
-      'hover-transition-change hover:opacity-80'
-    )
-  ), [])
+  const navbarClass = clsx(
+    'font-serif cursor-pointer font-medium',
+    'hover-transition-change hover:opacity-80'
+  )
 
   return (
     <nav
@@ -38,23 +36,23 @@ export default function Navbar() {
           width={40}
           height={40}
           className={'cursor-pointer'}
-          onClick={() => router.push('/').then(() => {})}
+          onClick={() => router.push('/')}
         />
         <p
           className={clsx(
-            navbarPClass,
+            navbarClass,
             router.pathname === '/dall' ? 'text-black dark:text-white hover:opacity-100' : 'text-[#777] dark:text-[#aaa]'
           )}
-          onClick={() => router.push('/dall').then(() => {})}
+          onClick={() => router.push('/dall')}
         >
           {t('dallPage.dall')}
         </p>
         <p
           className={clsx(
-            navbarPClass,
+            navbarClass,
             router.pathname === '/dall/history' ? 'text-black dark:text-white hover:opacity-100' : 'text-[#777] dark:text-[#aaa]'
           )}
-          onClick={() => router.push('/dall/history').then(() => {})}
+          onClick={() => router.push('/dall/history')}
         >
           {t('dallPage.history')}
         </p>

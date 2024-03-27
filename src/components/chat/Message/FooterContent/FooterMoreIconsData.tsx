@@ -223,13 +223,11 @@ export default function FooterMoreIconsData(props: IProps) {
     })
   }
 
-  const normalDivClass = useMemo(() => (
-    clsx(
-      'flex items-center gap-2 p-2 rounded-lg text-sm hover:bg-gray-200/60',
-      'dark:hover:bg-chatpage-message-robot-content-dark',
-      disabled && 'opacity-40'
-    )
-  ), [disabled])
+  const normalDivClass = clsx(
+    'flex items-center gap-2 p-2 rounded-lg text-sm hover:bg-gray-200/60',
+    'dark:hover:bg-chatpage-message-robot-content-dark',
+    disabled && 'opacity-40'
+  )
 
   return (
     <div>

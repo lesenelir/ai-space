@@ -150,12 +150,10 @@ export const GeneralContent = () => {
     reader.readAsText(file)
   }
 
-  const exportImportClass = useMemo(() => (
-    clsx(
-      'border border-gray-500 rounded-md p-1 text-sm cursor-pointer disabled:cursor-not-allowed',
-      'bg-gray-500/10 hover:bg-chatpage-message-background-dark transition-change',
-    )
-  ), [])
+  const exportImportClass = clsx(
+    'border border-gray-500 rounded-md p-1 text-sm cursor-pointer disabled:cursor-not-allowed',
+    'bg-gray-500/10 hover:bg-chatpage-message-background-dark transition-change',
+  )
 
   return (
     <>

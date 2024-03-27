@@ -17,6 +17,9 @@ import ChatItemCard from '@/components/chat/Menu/MainMenuContent/ChatItemCard'
 
 type TypeCategory = 'today' | 'yesterday' | 'previous7Days' | 'previous30Days' | 'all'
 
+// Note: category value must be the same as the key in i18n/common.json
+const renderOrder: TypeCategory[] = ['today', 'yesterday', 'previous7Days', 'previous30Days', 'all']
+
 export default function MainMenuContent() {
   const { t } = useTranslation('common')
   const chatItemLists =  useAtomValue(chatItemsAtom)
@@ -31,11 +34,6 @@ export default function MainMenuContent() {
       all: false
     }
   )
-
-  // Note: category value must be the same as the key in i18n/common.json
-  const renderOrder: TypeCategory[] = useMemo(() => {
-    return ['today', 'yesterday', 'previous7Days', 'previous30Days', 'all']
-  }, [])
 
   // { key: Date, value: [chatItem, chatItem, ...] }
   const categorizedChatItemLists = useMemo(() => {
