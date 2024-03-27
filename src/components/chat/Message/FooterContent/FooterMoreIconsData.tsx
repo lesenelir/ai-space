@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import { Toaster, toast } from 'sonner'
 import { useTranslation } from 'next-i18next'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
-import { type Dispatch, type SetStateAction, useMemo } from 'react'
+import { type Dispatch, type SetStateAction } from 'react'
 
 import {
   chatItemsAtom,

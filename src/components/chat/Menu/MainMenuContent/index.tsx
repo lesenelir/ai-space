@@ -60,7 +60,7 @@ export default function MainMenuContent() {
       pre[category].push(item)
       return pre
     }, {})
-  }, [chatItemLists, renderOrder])
+  }, [chatItemLists])
 
   const handleElasticClick = (key: TypeCategory) => {
     setElastic((prev) => {
