@@ -1,3 +1,4 @@
+import cookie from 'cookie'
 import Head from 'next/head'
 import prisma from '@/utils/db.server'
 import { useHydrateAtoms } from 'jotai/utils'
@@ -10,7 +11,6 @@ import { type TModel } from '@/types'
 import { modelsAtom, userGeminiKeyAtom, userOpenAIKeyAtom } from '@/atoms'
 import { SummarizeMenu } from '@/components/summarize'
 import SummarizeMessage from '@/components/summarize/SummarizeMessage'
-import cookie from 'cookie'
 
 interface IProps {
   initialWidth: number
