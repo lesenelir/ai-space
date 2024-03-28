@@ -66,8 +66,8 @@ dependencies:
     specifier: ^0.2.1
     version: 0.2.1(next@14.0.3)(react-dom@18.2.0)(react@18.2.0)
   openai:
-    specifier: ^4.24.1
-    version: 4.24.1
+    specifier: ^4.29.2
+    version: 4.29.2
   prismjs:
     specifier: ^1.29.0
     version: 1.29.0
@@ -5149,8 +5149,8 @@ packages:
       mimic-fn: 4.0.0
     dev: true
 
-  /openai@4.24.1:
-    resolution: {integrity: sha512-ezm/O3eiZMnyBqirUnWm9N6INJU1WhNtz+nK/Zj/2oyKvRz9pgpViDxa5wYOtyGYXPn1sIKBV0I/S4BDhtydqw==}
+  /openai@4.29.2:
+    resolution: {integrity: sha512-cPkT6zjEcE4qU5OW/SoDDuXEsdOLrXlAORhzmaguj5xZSPlgKvLhi27sFWhLKj07Y6WKNWxcwIbzm512FzTBNQ==}
     hasBin: true
     dependencies:
       '@types/node': 18.19.3
