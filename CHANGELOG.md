@@ -121,3 +121,7 @@ This changelog provides a detailed record of the updates and improvements made t
 - Integrated `cookie and js-cookie` for syncing ssr and client side state.
 - Add expand and collapse feature for chatItem list.
 - Add import and export chatItem list feature.
+
+### 0.0.9
+
+- Integrated `function calling` to build plugin systems.
