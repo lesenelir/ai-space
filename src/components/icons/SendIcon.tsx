@@ -5,7 +5,7 @@ interface IProps {
   onClick?: () => void
 }
 
-export default function FolderPlusIcon(props: IProps) {
+export default function SendIcon(props: IProps) {
   const {width, height, className, onClick} = props
 
   return (

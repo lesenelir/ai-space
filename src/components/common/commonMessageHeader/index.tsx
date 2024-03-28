@@ -22,6 +22,12 @@ export default function CommonMessageHeader() {
         return t('chatPage.menu.summarize')
       case '/translate':
         return t('chatPage.menu.translate')
+      case '/plugins/weather':
+        return t('chatPage.menu.weather')
+      case '/plugins/music':
+        return t('chatPage.menu.music')
+      case '/plugins/news':
+        return t('chatPage.menu.news')
       default:
         return ''
     }

@@ -135,5 +135,9 @@
   "translatePage": {
     "input": "输入",
     "translate": "翻译"
+  },
+  "pluginPage": {
+    "send": "发送",
+    "weatherPlaceholder": "在此处输入问题内容..."
   }
 }

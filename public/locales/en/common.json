@@ -134,5 +134,9 @@
   "translatePage": {
     "input": "Input",
     "translate": "Translate"
+  },
+  "pluginPage": {
+    "send": "Send",
+    "weatherPlaceholder": "Enter your question here..."
   }
 }

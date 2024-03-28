@@ -31,6 +31,7 @@ import type { TMessage } from '@/types'
 import CheckIcon from '@/components/icons/CheckIcon'
 import CopyIcon from '@/components/icons/CopyIcon'
 import SpeedIcon from '@/components/icons/SpeedIcon'
+import RobotIcon from '@/components/icons/RobotIcon'
 import VolumeIcon from '@/components/icons/VolumeIcon'
 import RefreshIcon from '@/components/icons/RefreshIcon'
 import PlayerPauseIcon from '@/components/icons/PlayerPauseIcon'
@@ -244,13 +245,7 @@ const DataItem =  forwardRef<HTMLDivElement, IProps>((props, ref) => {
             }
             {
               data.role === 'system' && (
-                <Image
-                  width={30}
-                  height={30}
-                  src={'/robot.svg'}
-                  alt='avatar'
-                  className={'rounded-full'}
-                />
+                <RobotIcon width={24} height={24}/>
               )
             }
             {

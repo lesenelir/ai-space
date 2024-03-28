@@ -1,7 +1,9 @@
+import CommonMessageHeader from '@/components/common/commonMessageHeader'
+
 export default function NewsMessage() {
   return (
-    <>
-      news message
-    </>
+    <div className={'flex-1 flex flex-col bg-gray-50 dark:bg-chatpage-message-background-dark'}>
+      <CommonMessageHeader/>
+    </div>
   )
 }
