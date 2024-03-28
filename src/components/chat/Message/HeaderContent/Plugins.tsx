@@ -24,8 +24,9 @@ export default function Plugins() {
           <Modal
             motionClassName={clsx(
               'w-2/5 h-1/3 max-lg:w-4/5 max-md:w-full max-sm:w-full max-sm:h-5/6 bg-white border',
+              'dark:bg-chatpage-menu-background dark:border-none'
             )}
-            className={'bg-gray-300 bg-opacity-30 drop-shadow-lg'}
+            className={'bg-gray-300 bg-opacity-30 drop-shadow-lg dark:bg-black dark:bg-opacity-60'}
             onClose={() => setIsModalOpen(false)}
           >
             <ModalPlugins setIsModalOpen={setIsModalOpen}/>

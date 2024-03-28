@@ -53,16 +53,19 @@ export default function ModalPlugins(props: IProps) {
   return (
     <div className={'flex flex-col h-full'}>
       {/* header */}
-      <div className={'p-4 flex justify-between bg-gray-50'}>
+      <div className={'p-4 flex justify-between bg-gray-50 dark:bg-chatpage-message-background-dark'}>
         <p className={'font-semibold'}>{t(`chatPage.menu.plugins`)}</p>
         <XIcon
           width={20}
           height={20}
-          className={'h-1/4 cursor-pointer text-gray-800 hover:text-gray-800/70 transition-change'}
+          className={clsx(
+            'h-1/4 cursor-pointer text-gray-800 hover:text-gray-800/70',
+            'dark:text-gray-50 dark:hover:opacity-60 transition-change'
+          )}
           onClick={() => setIsModalOpen(false)}
         />
       </div>
-      <div className={'border-b'}/>
+      <div className={'border-b dark:border-gray-500'}/>
 
       {/* content */}
       <div className={'p-4 flex-1 flex flex-wrap gap-4 overflow-auto'}>
@@ -72,7 +75,8 @@ export default function ModalPlugins(props: IProps) {
               key={plugin.title}
               className={clsx(
                 'w-1/3 h-20 rounded-md flex flex-col items-center justify-around cursor-pointer',
-                'bg-zinc-200/20 hover:bg-zinc-200/60 transition-change'
+                'bg-zinc-200/20 hover:bg-zinc-200/60 transition-change',
+                'dark:bg-chatpage-message-background-dark dark:hover:bg-chatpage-message-robot-content-dark'
               )}
               onClick={() => handleClick(plugin.title)}
             >
@@ -82,10 +86,10 @@ export default function ModalPlugins(props: IProps) {
           ))
         }
       </div>
-      <div className={'border-b'}/>
+      <div className={'border-b dark:border-gray-500'}/>
 
       {/* footer */}
-      <div className={'p-4 bg-gray-50'}>
+      <div className={'p-4 bg-gray-50 dark:bg-chatpage-message-background-dark'}>
         <p className={'flex justify-center gap-1'}>
           {t('chatPage.menu.footer')}
           <span className={'underline cursor-pointer'} onClick={() => router.push('/#research')}>
