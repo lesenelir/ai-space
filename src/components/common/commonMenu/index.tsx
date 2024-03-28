@@ -109,7 +109,6 @@ export default function CommonMenu(props: IProps) {
               </div>
 
               {/* basic content */}
-
               <p
                 className={clsx(
                   'text-base font-extrabold p-2 inline-flex items-center cursor-pointer',
@@ -118,7 +117,7 @@ export default function CommonMenu(props: IProps) {
               >
                 AI Tools
               </p>
-              <div className={'flex flex-col gap-2'}>
+              <div className={'flex flex-col gap-2 overflow-y-auto custom-scrollbar'}>
                 {
                   AITools.map(item => (
                     <div
@@ -140,7 +139,6 @@ export default function CommonMenu(props: IProps) {
               <div className={'my-2 border-b border-chatpage-message-robot-content-dark'}/>
 
               {/* plugins */}
-
               <p
                 className={clsx(
                   'text-base font-extrabold p-2 inline-flex items-center cursor-pointer',
@@ -149,8 +147,7 @@ export default function CommonMenu(props: IProps) {
               >
                 Plugins
               </p>
-
-              <div className={'flex flex-col gap-2'}>
+              <div className={'flex flex-col gap-2 overflow-y-auto custom-scrollbar'}>
                 {
                   plugins.map(item => (
                     <div
