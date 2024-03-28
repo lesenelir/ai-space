@@ -7,7 +7,10 @@ import { UserButton, useUser } from '@clerk/nextjs'
 
 import { isMenuOpenAtom } from '@/atoms'
 import ResizableDiv from '@/components/ui/ResizableDiv'
+import NewsIcon from '@/components/icons/NewsIcon'
+import MusicIcon from '@/components/icons/MusicIcon'
 import MessageIcon from '@/components/icons/MessageIcon'
+import WeatherIcon from '@/components/icons/WeatherIcon'
 import FileTextIcon from '@/components/icons/FileTextIcon'
 import AlignLeftIcon from '@/components/icons/AlignLeftIcon'
 import MicrophoneIcon from '@/components/icons/MicrophoneIcon'
@@ -16,6 +19,48 @@ import LanguageJapIcon from '@/components/icons/LanguageJapIcon'
 interface IProps {
   initialWidth: number
 }
+
+const AITools = [
+  {
+    title: 'chatPage.menu.chat',
+    path: '/chat',
+    icon: <MessageIcon width={16} height={16}/>
+  },
+  {
+    title: 'chatPage.menu.text2Speech',
+    path: '/tts',
+    icon: <MicrophoneIcon width={16} height={16}/>
+
+  },
+  {
+    title: 'chatPage.menu.summarize',
+    path: '/summarize',
+    icon: <FileTextIcon width={16} height={16}/>
+  },
+  {
+    title: 'chatPage.menu.translate',
+    path: '/translate',
+    icon: <LanguageJapIcon width={16} height={16}/>
+  }
+]
+
+const plugins = [
+  {
+    title: 'chatPage.menu.weather',
+    path: '/plugins/weather',
+    icon: <WeatherIcon width={16} height={16}/>
+  },
+  {
+    title: 'chatPage.menu.music',
+    path: '/plugins/music',
+    icon: <MusicIcon width={16} height={16}/>
+  },
+  {
+    title: 'chatPage.menu.news',
+    path: '/plugins/news',
+    icon: <NewsIcon width={16} height={16}/>
+  }
+]
 
 export default function CommonMenu(props: IProps) {
   const { initialWidth } = props
@@ -64,53 +109,64 @@ export default function CommonMenu(props: IProps) {
               </div>
 
               {/* basic content */}
+
+              <p
+                className={clsx(
+                  'text-base font-extrabold p-2 inline-flex items-center cursor-pointer',
+                  'text-transparent bg-clip-text bg-gradient-to-r from-lime-500 to-orange-300'
+                )}
+              >
+                AI Tools
+              </p>
               <div className={'flex flex-col gap-2'}>
-                <div
-                  className={clsx(
-                    'flex items-center gap-2 p-2 rounded-md cursor-pointer',
-                    'hover:bg-chatpage-menu-hover hover-transition-change'
-                  )}
-                  onClick={() => router.push('/chat')}
-                >
-                  <MessageIcon width={16} height={16}/>
-                  <p>{t('chatPage.menu.chat')}</p>
-                </div>
+                {
+                  AITools.map(item => (
+                    <div
+                      key={item.title}
+                      className={clsx(
+                        'flex items-center gap-2 p-2 rounded-md cursor-pointer',
+                        'hover:bg-chatpage-menu-hover hover-transition-change',
+                        selectContent === item.path && 'bg-chatpage-menu-hover'
+                      )}
+                      onClick={() => router.push(item.path)}
+                    >
+                      {item.icon}
+                      <p>{t(item.title)}</p>
+                    </div>
+                  ))
+                }
+              </div>
 
-                <div
-                  className={clsx(
-                    'flex items-center gap-2 p-2 rounded-md cursor-pointer',
-                    'hover:bg-chatpage-menu-hover hover-transition-change',
-                    selectContent === '/tts' && 'bg-chatpage-menu-hover'
-                  )}
-                  onClick={() => router.push('/tts')}
-                >
-                  <MicrophoneIcon width={16} height={16}/>
-                  <p>{t('chatPage.menu.text2Speech')}</p>
-                </div>
+              <div className={'my-2 border-b border-chatpage-message-robot-content-dark'}/>
 
-                <div
-                  className={clsx(
-                    'flex items-center gap-2 p-2 rounded-md cursor-pointer',
-                    'hover:bg-chatpage-menu-hover hover-transition-change',
-                    selectContent === '/summarize' && 'bg-chatpage-menu-hover'
-                  )}
-                  onClick={() => router.push('/summarize')}
-                >
-                  <FileTextIcon width={16} height={16}/>
-                  <p>{t('chatPage.menu.summarize')}</p>
-                </div>
+              {/* plugins */}
 
-                <div
-                  className={clsx(
-                    'flex items-center gap-2 p-2 rounded-md cursor-pointer',
-                    'hover:bg-chatpage-menu-hover hover-transition-change',
-                    selectContent === '/translate' && 'bg-chatpage-menu-hover'
-                  )}
-                  onClick={() => router.push('/translate')}
-                >
-                  <LanguageJapIcon width={16} height={16}/>
-                  <p>{t('chatPage.menu.translate')}</p>
-                </div>
+              <p
+                className={clsx(
+                  'text-base font-extrabold p-2 inline-flex items-center cursor-pointer',
+                  'text-transparent bg-clip-text bg-gradient-to-r from-lime-500 to-orange-300'
+                )}
+              >
+                Plugins
+              </p>
+
+              <div className={'flex flex-col gap-2'}>
+                {
+                  plugins.map(item => (
+                    <div
+                      key={item.title}
+                      className={clsx(
+                        'flex items-center gap-2 p-2 rounded-md cursor-pointer',
+                        'hover:bg-chatpage-menu-hover hover-transition-change',
+                        selectContent === item.path && 'bg-chatpage-menu-hover'
+                      )}
+                      onClick={() => router.push(item.path)}
+                    >
+                      {item.icon}
+                      <p>{t(item.title)}</p>
+                    </div>
+                  ))
+                }
               </div>
 
               {/* footer component */}

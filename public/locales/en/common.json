@@ -61,7 +61,10 @@
       "plugins": "Plugins",
       "searchMusic": "search music",
       "searchNews": "search news",
-      "searchWeather": "search weather"
+      "searchWeather": "search weather",
+      "music": "Music",
+      "news": "News",
+      "weather": "Weather"
     },
     "message": {
       "textAreaPlaceholder": "Type a message...",

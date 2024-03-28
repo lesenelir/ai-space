@@ -32,22 +32,21 @@ export default function ModalPlugins(props: IProps) {
     }
   ]
 
-  const handleClick = (title: string) => {
-    let search = ''
+  const handleClick = async (title: string) => {
+    let path = ''
     switch (title) {
       case 'searchMusic':
-        console.log('searchMusic')
+        path='/plugins/music'
         break
       case 'searchWeather':
-        console.log('searchWeather')
+        path='/plugins/weather'
         break
       case 'searchNews':
-        console.log('searchNews')
+        path='/plugins/news'
         break
     }
 
-    // create a chatItem
-
+    await router.push(path)
     setIsModalOpen(false)
   }
 

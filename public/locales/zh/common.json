@@ -61,7 +61,10 @@
       "plugins": "插件",
       "searchMusic": "搜索音乐",
       "searchNews": "搜索新闻",
-      "searchWeather": "搜索天气"
+      "searchWeather": "搜索天气",
+      "music": "音乐",
+      "news": "新闻",
+      "weather": "天气"
     },
     "message": {
       "textAreaPlaceholder": "输入消息...",
