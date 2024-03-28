@@ -60,6 +60,7 @@ Video: [https://www.bilibili.com/video/BV1C2421A7Nb](https://www.bilibili.com/vi
   - [x] Add generate follow-up questions feature
   - [x] Integrate dall-E model for generating images
   - [x] Integrate tts-1 and tts-1-hd model for text to speech
+  - [x] Integrate function calling to build plugin systems
 
 
 ## Inspirations
