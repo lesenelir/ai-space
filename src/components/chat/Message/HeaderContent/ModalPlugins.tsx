@@ -1,11 +1,8 @@
 import clsx from 'clsx'
 import { useRouter } from 'next/router'
-import { toast, Toaster } from 'sonner'
 import { useTranslation } from 'next-i18next'
-import { useAtomValue, useSetAtom } from 'jotai'
 import { type Dispatch, type SetStateAction } from 'react'
 
-import { chatItemsAtom, selectedModelIdAtom } from '@/atoms'
 import XIcon from '@/components/icons/XIcon'
 import NewsIcon from '@/components/icons/NewsIcon'
 import MusicIcon from '@/components/icons/MusicIcon'
@@ -19,8 +16,6 @@ export default function ModalPlugins(props: IProps) {
   const router = useRouter()
   const { setIsModalOpen } = props
   const { t } = useTranslation('common')
-  const setChatItems = useSetAtom(chatItemsAtom)
-  const selectedModelId = useAtomValue(selectedModelIdAtom)
 
   const pluginsArr = [
     {
@@ -37,46 +32,27 @@ export default function ModalPlugins(props: IProps) {
     }
   ]
 
-  const handleClick = async (title: string) => {
-    let searchName = ''
+  const handleClick = (title: string) => {
+    let search = ''
     switch (title) {
       case 'searchMusic':
-        searchName = 'Music'
+        console.log('searchMusic')
         break
       case 'searchWeather':
-        searchName = 'Weather'
+        console.log('searchWeather')
         break
       case 'searchNews':
-        searchName = 'News'
+        console.log('searchNews')
         break
     }
 
     // create a chatItem
-    const options = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        searchName,
-        modelPrimaryId: selectedModelId,
-      })
-    }
 
-    const response = await fetch('/api/chat/createPlugin', options)
-    if (!response.ok) {
-      toast.error('Failed to create a chat item')
-      return
-    }
-    const data = await response.json()
-    setChatItems(data.chatItems)
-    await router.push(`/chat/${data.newChatItem.item_uuid}`)
     setIsModalOpen(false)
   }
 
   return (
     <div className={'flex flex-col h-full'}>
-      <Toaster richColors position={'top-center'}/>
       {/* header */}
       <div className={'p-4 flex justify-between bg-gray-50'}>
         <p className={'font-semibold'}>{t(`chatPage.menu.plugins`)}</p>
