@@ -57,7 +57,11 @@
       "summarize": "Summarize",
       "translate": "Translate",
       "image": "Generate Image",
-      "delete": "Delete"
+      "delete": "Delete",
+      "plugins": "Plugins",
+      "searchMusic": "search music",
+      "searchNews": "search news",
+      "searchWeather": "search weather"
     },
     "message": {
       "textAreaPlaceholder": "Type a message...",

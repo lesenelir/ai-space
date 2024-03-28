@@ -57,7 +57,11 @@
       "summarize": "文本摘要总结",
       "translate": "文本翻译",
       "image": "生成图片",
-      "delete": "删除"
+      "delete": "删除",
+      "plugins": "插件",
+      "searchMusic": "搜索音乐",
+      "searchNews": "搜索新闻",
+      "searchWeather": "搜索天气"
     },
     "message": {
       "textAreaPlaceholder": "输入消息...",

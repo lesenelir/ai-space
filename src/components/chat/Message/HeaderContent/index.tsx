@@ -6,6 +6,7 @@ import I18Change from '@/components/common/I18Change'
 import ColumnsIcon from '@/components/icons/ColumnsIcon'
 import ThemeChange from '@/components/common/ThemeChange'
 import CommonSelect from '@/components/common/commonSelect'
+import Plugins from '@/components/chat/Message/HeaderContent/Plugins'
 
 export default function HeaderContent() {
   const [isMenuOpen, setIsMenuOpen] = useAtom(isMenuOpenAtom)
@@ -30,6 +31,7 @@ export default function HeaderContent() {
             onClick={() => setIsMenuOpen(true)}
           />
         )}
+        <Plugins/>
         <CommonSelect/>
       </div>
 
