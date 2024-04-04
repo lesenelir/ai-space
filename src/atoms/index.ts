@@ -1,3 +1,16 @@
+/**
+ *  This file contains incorrect usage of Jotai.
+ *
+ *  The core of Jotai is the derived atom.
+ *  I haven't used the derived atom in this file.
+ *
+ *  It's a bad practice to use Jotai like this.
+ *
+ *  If you wonder how to use Jotai, you can visit my blog:
+ *  https://lesenelir.me/posts/jotai
+ *
+ *  In my blog, I describe how to use Jotai correctly.
+ */
 import { atom } from 'jotai'
 import { atomWithStorage } from 'jotai/utils'
 
